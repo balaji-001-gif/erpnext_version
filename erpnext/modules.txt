@@ -10,6 +10,7 @@ Utilities
 Assets
 Portal
 Maintenance
+Manufacturing
 Regional
 ERPNext Integrations
 Communication
