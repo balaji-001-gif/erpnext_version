@@ -1,0 +1,19 @@
+Accounts
+CRM
+Buying
+Projects
+Selling
+Setup
+Stock
+Support
+Utilities
+Assets
+Portal
+Maintenance
+Regional
+ERPNext Integrations
+Communication
+Telephony
+Bulk Transaction
+Subcontracting
+EDI
