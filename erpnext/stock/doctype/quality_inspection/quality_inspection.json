@@ -78,7 +78,7 @@
    "fieldname": "reference_type",
    "fieldtype": "Select",
    "label": "Reference Type",
-   "options": "\nPurchase Receipt\nPurchase Invoice\nSubcontracting Receipt\nDelivery Note\nSales Invoice\nStock Entry\nJob Card",
+   "options": "\nPurchase Receipt\nPurchase Invoice\nSubcontracting Receipt\nDelivery Note\nSales Invoice\nStock Entry",
    "reqd": 1
   },
   {
@@ -180,9 +180,8 @@
   },
   {
    "fieldname": "bom_no",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "BOM No",
-   "options": "BOM",
    "read_only": 1
   },
   {

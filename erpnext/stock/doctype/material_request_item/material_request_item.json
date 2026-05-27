@@ -282,10 +282,9 @@
   },
   {
    "fieldname": "production_plan",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Production Plan",
    "no_copy": 1,
-   "options": "Production Plan",
    "print_hide": 1,
    "read_only": 1
   },
@@ -432,10 +431,9 @@
   {
    "allow_on_submit": 1,
    "fieldname": "bom_no",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "BOM No",
    "no_copy": 1,
-   "options": "BOM",
    "print_hide": 1
   },
   {

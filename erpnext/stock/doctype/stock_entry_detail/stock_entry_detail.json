@@ -375,10 +375,9 @@
   {
    "description": "BOM No. for a Finished Good Item",
    "fieldname": "bom_no",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "hidden": 1,
    "label": "BOM No",
-   "options": "BOM",
    "print_hide": 1
   },
   {

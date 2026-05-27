@@ -252,10 +252,9 @@
    "fetch_from": "item_code.default_bom",
    "fetch_if_empty": 1,
    "fieldname": "bom",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "in_list_view": 1,
    "label": "BOM",
-   "options": "BOM",
    "print_hide": 1,
    "reqd": 1
   },
@@ -390,9 +389,8 @@
   },
   {
    "fieldname": "job_card",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Job Card",
-   "options": "Job Card",
    "read_only": 1
   },
   {

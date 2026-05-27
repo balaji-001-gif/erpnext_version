@@ -72,9 +72,8 @@
   {
    "depends_on": "eval:doc.purpose==='Material Transfer for Manufacture'",
    "fieldname": "work_order",
-   "fieldtype": "Link",
-   "label": "Work Order",
-   "options": "Work Order"
+   "fieldtype": "Data",
+   "label": "Work Order"
   },
   {
    "fieldname": "locations",

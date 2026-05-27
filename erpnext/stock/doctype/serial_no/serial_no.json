@@ -224,9 +224,8 @@
   },
   {
    "fieldname": "work_order",
-   "fieldtype": "Link",
-   "label": "Work Order",
-   "options": "Work Order"
+   "fieldtype": "Data",
+   "label": "Work Order"
   },
   {
    "fieldname": "warehouse",

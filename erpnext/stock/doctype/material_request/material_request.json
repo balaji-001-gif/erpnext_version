@@ -266,9 +266,8 @@
   },
   {
    "fieldname": "job_card",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Job Card",
-   "options": "Job Card",
    "print_hide": 1,
    "read_only": 1
   },
@@ -312,9 +311,8 @@
   },
   {
    "fieldname": "work_order",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Work Order",
-   "options": "Work Order",
    "read_only": 1
   },
   {

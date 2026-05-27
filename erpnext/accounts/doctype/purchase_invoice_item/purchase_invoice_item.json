@@ -641,9 +641,8 @@
   {
    "depends_on": "eval:parent.is_old_subcontracting_flow",
    "fieldname": "bom",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "BOM",
-   "options": "BOM",
    "read_only": 1,
    "read_only_depends_on": "eval:!parent.is_old_subcontracting_flow"
   },

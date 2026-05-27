@@ -362,10 +362,9 @@
   },
   {
    "fieldname": "bom",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "BOM",
    "no_copy": 1,
-   "options": "BOM",
    "print_hide": 1,
    "read_only_depends_on": "eval: doc.is_scrap_item"
   },
