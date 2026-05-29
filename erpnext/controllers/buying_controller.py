@@ -368,14 +368,15 @@ class BuyingController(StockController):
 				if not qty_in_stock_uom and item.get("rejected_qty"):
 					qty_in_stock_uom = flt(item.rejected_qty * item.conversion_factor)
 
-			item.valuation_rate = (
-				net_rate
-				+ item.item_tax_amount
-				+ flt(item.landed_cost_voucher_amount)
-				+ flt(item.get("amount_difference_with_purchase_invoice"))
-			) / qty_in_stock_uom
-			else:
-				item.valuation_rate = 0.0
+				if qty_in_stock_uom:
+					item.valuation_rate = (
+						net_rate
+						+ item.item_tax_amount
+						+ flt(item.landed_cost_voucher_amount)
+						+ flt(item.get("amount_difference_with_purchase_invoice"))
+					) / qty_in_stock_uom
+				else:
+					item.valuation_rate = 0.0
 
 		update_regional_item_valuation_rate(self)
 
