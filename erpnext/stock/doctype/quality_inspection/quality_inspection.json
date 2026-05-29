@@ -78,7 +78,7 @@
    "fieldname": "reference_type",
    "fieldtype": "Select",
    "label": "Reference Type",
-   "options": "\nPurchase Receipt\nPurchase Invoice\nSubcontracting Receipt\nDelivery Note\nSales Invoice\nStock Entry",
+   "options": "\nPurchase Receipt\nPurchase Invoice\nDelivery Note\nSales Invoice\nStock Entry",
    "reqd": 1
   },
   {

@@ -23,8 +23,7 @@
   "company",
   "apply_tds",
   "tax_withholding_category",
-  "is_subcontracted",
-  "has_unit_price_items",
+    "has_unit_price_items",
   "supplier_warehouse",
   "amended_from",
   "accounting_dimensions_section",
@@ -160,8 +159,7 @@
   "column_break_74",
   "party_account_currency",
   "inter_company_order_reference",
-  "is_old_subcontracting_flow",
-  "connections_tab"
+    "connections_tab"
  ],
  "fields": [
   {
@@ -468,13 +466,6 @@
    "fieldtype": "Link",
    "label": "Set Target Warehouse",
    "options": "Warehouse",
-   "print_hide": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "is_subcontracted",
-   "fieldtype": "Check",
-   "label": "Is Subcontracted",
    "print_hide": 1
   },
   {
@@ -1165,14 +1156,6 @@
    "fieldtype": "Link",
    "label": "Project",
    "options": "Project"
-  },
-  {
-   "default": "0",
-   "fieldname": "is_old_subcontracting_flow",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Is Old Subcontracting Flow",
-   "read_only": 1
   },
   {
    "depends_on": "is_internal_supplier",

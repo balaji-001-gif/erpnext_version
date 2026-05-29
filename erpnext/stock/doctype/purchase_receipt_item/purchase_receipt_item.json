@@ -1088,17 +1088,6 @@
    "search_index": 1
   },
   {
-   "fieldname": "subcontracting_receipt_item",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Subcontracting Receipt Item",
-   "no_copy": 1,
-   "print_hide": 1,
-   "read_only": 1,
-   "report_hide": 1,
-   "search_index": 1
-  },
-  {
    "default": "0",
    "fieldname": "use_serial_batch_fields",
    "fieldtype": "Check",

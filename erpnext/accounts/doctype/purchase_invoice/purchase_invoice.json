@@ -1468,14 +1468,6 @@
   },
   {
    "default": "0",
-   "fieldname": "is_old_subcontracting_flow",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Is Old Subcontracting Flow",
-   "read_only": 1
-  },
-  {
-   "default": "0",
    "depends_on": "apply_tds",
    "fieldname": "tax_withholding_net_total",
    "fieldtype": "Currency",

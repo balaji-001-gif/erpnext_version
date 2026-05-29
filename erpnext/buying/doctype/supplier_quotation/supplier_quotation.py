@@ -66,7 +66,7 @@ class SupplierQuotation(BuyingController):
 		ignore_pricing_rule: DF.Check
 		in_words: DF.Data | None
 		incoterm: DF.Link | None
-		is_subcontracted: DF.Check
+		
 		items: DF.Table[SupplierQuotationItem]
 		language: DF.Data | None
 		letter_head: DF.Link | None

@@ -702,12 +702,10 @@ class SerialandBatchBundle(Document):
 			self.voucher_type
 			in [
 				"Delivery Note",
-				"Sales Invoice",
-				"Purchase Invoice",
-				"Purchase Receipt",
-				"POS Invoice",
-				"Subcontracting Receipt",
-			]
+				"Sales Invoice",			"Purchase Invoice",
+			"Purchase Receipt",
+			"POS Invoice",
+		]
 			and self.voucher_type
 			and self.voucher_no
 		):
@@ -733,16 +731,6 @@ class SerialandBatchBundle(Document):
 
 		rate = row.get(valuation_field) if row else 0.0
 		child_table = self.child_table
-
-		if self.voucher_type == "Subcontracting Receipt":
-			if not self.voucher_detail_no:
-				return
-			elif frappe.db.exists("Subcontracting Receipt Supplied Item", self.voucher_detail_no):
-				valuation_field = "rate"
-				child_table = "Subcontracting Receipt Supplied Item"
-			else:
-				valuation_field = "rate"
-				child_table = "Subcontracting Receipt Item"
 
 		if not rate and self.voucher_detail_no and self.voucher_no:
 			rate = frappe.db.get_value(child_table, self.voucher_detail_no, valuation_field)
@@ -1083,9 +1071,7 @@ class SerialandBatchBundle(Document):
 		if not qty_field:
 			qty_field = "qty"
 
-		if row.get("doctype") == "Subcontracting Receipt Supplied Item":
-			qty_field = "consumed_qty"
-		elif row.get("doctype") == "Stock Entry Detail":
+		if row.get("doctype") == "Stock Entry Detail":
 			qty_field = "transfer_qty"
 		elif row.get("doctype") in ["Sales Invoice Item", "Purchase Invoice Item"]:
 			qty_field = "stock_qty"
@@ -1360,12 +1346,6 @@ class SerialandBatchBundle(Document):
 			or_filters["rejected_serial_and_batch_bundle"] = self.name
 
 		if (
-			self.voucher_type == "Subcontracting Receipt"
-			and self.voucher_detail_no
-			and not frappe.db.exists("Subcontracting Receipt Item", self.voucher_detail_no)
-		):
-			self.voucher_type = "Subcontracting Receipt Supplied"
-
 		vouchers = frappe.get_all(
 			self.child_table,
 			fields=fields,
@@ -1649,10 +1629,7 @@ class SerialandBatchBundle(Document):
 		):
 			child_doctype = "Packed Item"
 
-		elif self.voucher_type == "Subcontracting Receipt" and not frappe.db.exists(
-			"Subcontracting Receipt Item", self.voucher_detail_no
-		):
-			child_doctype = "Subcontracting Receipt Supplied Item"
+
 
 		if (
 			frappe.db.get_value(self.voucher_type, self.voucher_no, "docstatus") == 1
@@ -2150,18 +2127,13 @@ def get_type_of_transaction(parent_doc, child_row):
 		if parent_doc.get("doctype") in ["Purchase Receipt", "Purchase Invoice"]:
 			type_of_transaction = "Inward"
 
-	if parent_doc.get("doctype") == "Subcontracting Receipt":
-		type_of_transaction = "Outward"
-		if child_row.get("doctype") == "Subcontracting Receipt Item":
-			type_of_transaction = "Inward"
-	elif parent_doc.get("doctype") == "Stock Reconciliation":
+	if parent_doc.get("doctype") == "Stock Reconciliation":
 		type_of_transaction = "Inward"
 
 	if parent_doc.get("is_return") and parent_doc.get("doctype") != "Stock Entry":
 		type_of_transaction = "Inward"
 		if (
 			parent_doc.get("doctype") in ["Purchase Receipt", "Purchase Invoice"]
-			or child_row.get("doctype") == "Subcontracting Receipt Item"
 		):
 			type_of_transaction = "Outward"
 
@@ -2893,7 +2865,6 @@ def get_available_batches(kwargs):
 	return data
 
 
-# For work order and subcontracting
 def get_voucher_wise_serial_batch_from_bundle(**kwargs) -> dict[str, dict]:
 	data = get_ledgers_from_serial_batch_bundle(**kwargs)
 	if not data:

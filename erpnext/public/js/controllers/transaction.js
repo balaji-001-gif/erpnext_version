@@ -326,7 +326,6 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 				() => set_value('currency', currency),
 				() => set_value('price_list_currency', currency),
 				() => set_value('status', 'Draft'),
-				() => set_value('is_subcontracted', 0),
 				() => {
 					if(this.frm.doc.company && !this.frm.doc.amended_from) {
 						this.frm.trigger("company");
@@ -343,7 +342,7 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 	}
 
 	setup_quality_inspection() {
-		if(!["Delivery Note", "Sales Invoice", "Purchase Receipt", "Purchase Invoice", "Subcontracting Receipt"].includes(this.frm.doc.doctype)) {
+		if(!["Delivery Note", "Sales Invoice", "Purchase Receipt", "Purchase Invoice"].includes(this.frm.doc.doctype)) {
 			return;
 		}
 
@@ -362,7 +361,7 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 			}, __("Create"));
 		}
 
-		const inspection_type = ["Purchase Receipt", "Purchase Invoice", "Subcontracting Receipt"].includes(this.frm.doc.doctype)
+		const inspection_type = ["Purchase Receipt", "Purchase Invoice"].includes(this.frm.doc.doctype)
 			? "Incoming" : "Outgoing";
 
 		let quality_inspection_field = this.frm.get_docfield("items", "quality_inspection");
@@ -611,7 +610,6 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 							order_type: me.frm.doc.order_type,
 							is_pos: cint(me.frm.doc.is_pos),
 							is_return: cint(me.frm.doc.is_return),
-							is_subcontracted: me.frm.doc.is_subcontracted,
 							ignore_pricing_rule: me.frm.doc.ignore_pricing_rule,
 							doctype: me.frm.doc.doctype,
 							name: me.frm.doc.name,
@@ -632,7 +630,6 @@ erpnext.TransactionController = class TransactionController extends erpnext.taxe
 							item_tax_template: item.item_tax_template,
 							child_doctype: item.doctype,
 							child_docname: item.name,
-							is_old_subcontracting_flow: me.frm.doc.is_old_subcontracting_flow,
 							use_serial_batch_fields: item.use_serial_batch_fields,
 							serial_and_batch_bundle: item.serial_and_batch_bundle,
 						}

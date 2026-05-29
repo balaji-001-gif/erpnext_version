@@ -656,8 +656,6 @@ erpnext.utils.update_child_items = function (opts) {
 				if (frm.doc.doctype == "Sales Order") {
 					filters = { is_sales_item: 1 };
 				} else if (frm.doc.doctype == "Purchase Order") {
-					if (frm.doc.is_subcontracted) {
-						if (frm.doc.is_old_subcontracting_flow) {
 							filters = { is_sub_contracted_item: 1 };
 						} else {
 							filters = { is_stock_item: 0 };
@@ -695,7 +693,6 @@ erpnext.utils.update_child_items = function (opts) {
 							order_type: frm.doc.order_type,
 							is_pos: cint(frm.doc.is_pos),
 							is_return: cint(frm.doc.is_return),
-							is_subcontracted: frm.doc.is_subcontracted,
 							ignore_pricing_rule: frm.doc.ignore_pricing_rule,
 							doctype: frm.doc.doctype,
 							name: frm.doc.name,
@@ -704,7 +701,6 @@ erpnext.utils.update_child_items = function (opts) {
 							pos_profile: cint(frm.doc.is_pos) ? frm.doc.pos_profile : "",
 							tax_category: frm.doc.tax_category,
 							child_doctype: frm.doc.doctype + " Item",
-							is_old_subcontracting_flow: frm.doc.is_old_subcontracting_flow,
 						},
 					},
 					callback: function (r) {
@@ -796,8 +792,6 @@ erpnext.utils.update_child_items = function (opts) {
 
 	if (
 		frm.doc.doctype == "Purchase Order" &&
-		frm.doc.is_subcontracted &&
-		!frm.doc.is_old_subcontracting_flow
 	) {
 		fields.push(
 			{

@@ -15,7 +15,6 @@ def get_level(site_info):
 	min_count = 0
 	doctypes = {
 		"Asset": 5,
-		"BOM": 3,
 		"Customer": 5,
 		"Delivery Note": 5,
 		"Employee": 3,
@@ -37,7 +36,6 @@ def get_level(site_info):
 		"Supplier": 5,
 		"Task": 5,
 		"User": 5,
-		"Work Order": 5,
 	}
 
 	for doctype, min_count in doctypes.items():

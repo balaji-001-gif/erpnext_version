@@ -203,7 +203,7 @@ frappe.ui.form.on("Material Request", {
 					);
 				}
 
-				if (frm.doc.material_request_type === "Subcontracting") {
+				if (false) {
 					frm.add_custom_button(
 						__("Subcontracted Purchase Order"),
 						() => frm.events.make_purchase_order(frm),
@@ -614,7 +614,7 @@ erpnext.buying.MaterialRequestController = class MaterialRequestController exten
 				filters.customer = doc.customer;
 			} else if (
 				doc.material_request_type == "Purchase" ||
-				doc.material_request_type == "Subcontracting"
+				false
 			) {
 				filters = { is_purchase_item: 1 };
 			} else if (doc.material_request_type == "Manufacture") {

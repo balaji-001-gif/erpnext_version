@@ -3,8 +3,7 @@
  "autoname": "hash",
  "creation": "2013-01-10 16:34:25",
  "doctype": "DocType",
- "engine": "InnoDB",
- "field_order": [
+ "engine": "InnoDB",  "field_order": [
   "item_code",
   "column_break_yreo",
   "warehouse",
@@ -16,9 +15,6 @@
   "projected_qty",
   "column_break_xn5j",
   "reserved_qty",
-  "reserved_qty_for_production",
-  "reserved_qty_for_sub_contract",
-  "reserved_qty_for_production_plan",
   "reserved_stock",
   "section_break_pmrs",
   "stock_uom",
@@ -111,18 +107,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "reserved_qty_for_production",
-   "fieldtype": "Float",
-   "label": "Reserved Qty for Production",
-   "read_only": 1
-  },
-  {
-   "fieldname": "reserved_qty_for_sub_contract",
-   "fieldtype": "Float",
-   "label": "Reserved Qty for Subcontract",
-   "read_only": 1
-  },
-  {
    "fieldname": "stock_uom",
    "fieldtype": "Link",
    "in_filter": 1,
@@ -146,12 +130,6 @@
    "label": "Stock Value",
    "oldfieldname": "stock_value",
    "oldfieldtype": "Currency",
-   "read_only": 1
-  },
-  {
-   "fieldname": "reserved_qty_for_production_plan",
-   "fieldtype": "Float",
-   "label": "Reserved Qty for Production Plan",
    "read_only": 1
   },
   {

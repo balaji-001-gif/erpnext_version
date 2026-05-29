@@ -134,9 +134,6 @@ def get_item_details(args, doc=None, for_validate=False, overwrite_warehouse=Tru
 	if args.transaction_date and item.lead_time_days:
 		out.schedule_date = out.lead_time_date = add_days(args.transaction_date, item.lead_time_days)
 
-	if args.get("is_subcontracted"):
-		out.bom = args.get("bom") or get_default_bom(args.item_code)
-
 	get_gross_profit(out)
 	if args.doctype == "Material Request":
 		out.rate = args.rate or out.price_list_rate
@@ -335,14 +332,7 @@ def validate_item_details(args, item):
 
 		throw(_(msg), title=_("Template Item Selected"))
 
-	elif args.transaction_type == "buying" and args.doctype != "Material Request":
-		if args.get("is_subcontracted"):
-			if args.get("is_old_subcontracting_flow"):
-				if item.is_sub_contracted_item != 1:
-					throw(_("Item {0} must be a Sub-contracted Item").format(item.name))
-			else:
-				if item.is_stock_item:
-					throw(_("Item {0} must be a Non-Stock Item").format(item.name))
+	elif args.transaction_type == "buying" and args.doctype != "Material Request":			pass  # subcontracting module removed
 
 
 def get_basic_details(args, item, overwrite_warehouse=True):

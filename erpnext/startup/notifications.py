@@ -35,7 +35,6 @@ def get_notification_config():
 			"Supplier Quotation": {"docstatus": 0},
 			"Purchase Order": {"status": ("not in", ("Completed", "Closed")), "docstatus": ("<", 2)},
 			"Purchase Receipt": {"status": ("not in", ("Completed", "Closed")), "docstatus": ("<", 2)},
-			"Work Order": {"status": ("in", ("Draft", "Not Started", "In Process"))},
 			"Timesheet": {"status": "Draft"},
 			"Lab Test": {"docstatus": 0},
 			"Sample Collection": {"docstatus": 0},

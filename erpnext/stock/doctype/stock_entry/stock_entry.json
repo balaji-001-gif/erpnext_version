@@ -16,7 +16,6 @@
   "add_to_transit",
   "work_order",
   "purchase_order",
-  "subcontracting_order",
   "delivery_note_no",
   "sales_invoice_no",
   "pick_list",
@@ -169,13 +168,6 @@
    "fieldtype": "Link",
    "label": "Purchase Order",
    "options": "Purchase Order"
-  },
-  {
-   "depends_on": "eval: erpnext.stock.is_subcontracting_or_return_transfer(doc)",
-   "fieldname": "subcontracting_order",
-   "fieldtype": "Link",
-   "label": "Subcontracting Order",
-   "options": "Subcontracting Order"
   },
   {
    "depends_on": "eval:doc.purpose==\"Sales Return\"",

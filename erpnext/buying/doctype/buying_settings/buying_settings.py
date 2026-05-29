@@ -22,7 +22,7 @@ class BuyingSettings(Document):
 		allow_zero_qty_in_request_for_quotation: DF.Check
 		allow_zero_qty_in_supplier_quotation: DF.Check
 		auto_create_purchase_receipt: DF.Check
-		auto_create_subcontracting_order: DF.Check
+		
 		backflush_raw_materials_of_subcontract_based_on: DF.Literal[
 			"BOM", "Material Transferred for Subcontract"
 		]

@@ -1032,9 +1032,6 @@ class AccountsController(TransactionBase):
 					if not args.get("transaction_date"):
 						args["transaction_date"] = args.get("posting_date")
 
-					if self.get("is_subcontracted"):
-						args["is_subcontracted"] = self.is_subcontracted
-
 					ret = get_item_details(args, self, for_validate=for_validate, overwrite_warehouse=False)
 					for fieldname, value in ret.items():
 						if item.meta.get_field(fieldname) and value is not None:
@@ -3734,7 +3731,7 @@ def validate_child_on_delete(row, parent, ordered_item=None):
 					row.idx, row.item_code
 				)
 			)
-		if flt(row.work_order_qty):
+		# subcontracting removed
 			frappe.throw(
 				_("Row #{0}: Cannot delete item {1} which has work order assigned to it.").format(
 					row.idx, row.item_code
@@ -3913,54 +3910,6 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 				if flt(new_data.get("qty")) < qty_to_check:
 					frappe.throw(_("Cannot reduce quantity than ordered or purchased quantity"))
 
-	def should_update_supplied_items(doc) -> bool:
-		"""Subcontracted PO can allow following changes *after submit*:
-
-		1. Change rate of subcontracting - regardless of other changes.
-		2. Change qty and/or add new items and/or remove items
-		        Exception: Transfer/Consumption is already made, qty change not allowed.
-		"""
-
-		supplied_items_processed = any(
-			item.supplied_qty or item.consumed_qty or item.returned_qty for item in doc.supplied_items
-		)
-
-		update_supplied_items = any_qty_changed or items_added_or_removed or any_conversion_factor_changed
-		if update_supplied_items and supplied_items_processed:
-			frappe.throw(_("Item qty can not be updated as raw materials are already processed."))
-
-		return update_supplied_items
-
-	def validate_fg_item_for_subcontracting(new_data, is_new):
-		if is_new:
-			if not new_data.get("fg_item"):
-				frappe.throw(
-					_("Finished Good Item is not specified for service item {0}").format(
-						new_data["item_code"]
-					)
-				)
-			else:
-				is_sub_contracted_item, default_bom = frappe.db.get_value(
-					"Item", new_data["fg_item"], ["is_sub_contracted_item", "default_bom"]
-				)
-
-				if not is_sub_contracted_item:
-					frappe.throw(
-						_("Finished Good Item {0} must be a sub-contracted item").format(new_data["fg_item"])
-					)
-				elif not default_bom:
-					frappe.throw(_("Default BOM not found for FG Item {0}").format(new_data["fg_item"]))
-
-		if not new_data.get("fg_item_qty"):
-			frappe.throw(_("Finished Good Item {0} Qty can not be zero").format(new_data["fg_item"]))
-
-	data = json.loads(trans_items)
-	any_qty_changed = False  # updated to true if any item's qty changes
-	items_added_or_removed = False  # updated to true if any new item is added or removed
-	any_conversion_factor_changed = False
-
-	parent = frappe.get_doc(parent_doctype, parent_doctype_name)
-
 	check_doc_permissions(parent, "write")
 
 	if parent_doctype == "Quotation":
@@ -4029,17 +3978,6 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 
 		if flt(child_item.get("qty")) != flt(d.get("qty")):
 			any_qty_changed = True
-
-		if (
-			parent.doctype == "Purchase Order"
-			and parent.is_subcontracted
-			and not parent.is_old_subcontracting_flow
-		):
-			validate_fg_item_for_subcontracting(d, new_child_flag)
-			child_item.fg_item_qty = flt(d["fg_item_qty"])
-
-			if new_child_flag:
-				child_item.fg_item = d["fg_item"]
 
 		child_item.qty = flt(d.get("qty"))
 		rate_precision = child_item.precision("rate") or 2
@@ -4168,19 +4106,6 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 		parent.update_ordered_and_reserved_qty()
 		parent.update_receiving_percentage()
 
-		if parent.is_subcontracted:
-			if parent.is_old_subcontracting_flow:
-				if should_update_supplied_items(parent):
-					parent.update_reserved_qty_for_subcontract()
-					parent.create_raw_materials_supplied()
-				parent.save()
-			else:
-				if not parent.can_update_items():
-					frappe.throw(
-						_(
-							"Items cannot be updated as Subcontracting Order is created against the Purchase Order {0}."
-						).format(frappe.bold(parent.name))
-					)
 	elif parent_doctype == "Sales Order":
 		parent.validate_selling_price()
 		parent.validate_for_duplicate_items()

@@ -47,7 +47,7 @@ class QualityInspection(Document):
 			"",
 			"Purchase Receipt",
 			"Purchase Invoice",
-			"Subcontracting Receipt",
+			
 			"Delivery Note",
 			"Sales Invoice",
 			"Stock Entry",

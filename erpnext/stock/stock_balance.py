@@ -156,7 +156,7 @@ def get_indented_qty(item_code, warehouse):
 		select sum(mr_item.stock_qty - mr_item.ordered_qty)
 		from `tabMaterial Request Item` mr_item, `tabMaterial Request` mr
 		where mr_item.item_code=%s and mr_item.warehouse=%s
-			and mr.material_request_type in ('Purchase', 'Manufacture', 'Customer Provided', 'Material Transfer')
+			and mr.material_request_type in ('Purchase', 'Customer Provided', 'Material Transfer')
 			and mr_item.stock_qty > mr_item.ordered_qty and mr_item.parent=mr.name
 			and mr.status!='Stopped' and mr.docstatus=1
 	""",
@@ -183,13 +183,9 @@ def get_indented_qty(item_code, warehouse):
 
 
 def get_ordered_qty(item_code, warehouse):
-	"""Return total pending ordered quantity for an item in a warehouse.
-	Includes outstanding quantities from Purchase Orders and Subcontracting Orders"""
+	"""Return total pending ordered quantity for an item in a warehouse."""
 
-	purchase_order_qty = get_purchase_order_qty(item_code, warehouse)
-	subcontracting_order_qty = get_subcontracting_order_qty(item_code, warehouse)
-
-	return flt(purchase_order_qty) + flt(subcontracting_order_qty)
+	return get_purchase_order_qty(item_code, warehouse)
 
 
 def get_purchase_order_qty(item_code, warehouse):
@@ -217,33 +213,6 @@ def get_purchase_order_qty(item_code, warehouse):
 	)
 
 	return purchase_order_qty[0][0] if purchase_order_qty else 0
-
-
-def get_subcontracting_order_qty(item_code, warehouse):
-	SubcontractingOrder = frappe.qb.DocType("Subcontracting Order")
-	SubcontractingOrderItem = frappe.qb.DocType("Subcontracting Order Item")
-
-	subcontracting_order_qty = (
-		frappe.qb.from_(SubcontractingOrderItem)
-		.join(SubcontractingOrder)
-		.on(SubcontractingOrderItem.parent == SubcontractingOrder.name)
-		.select(
-			Sum(
-				(SubcontractingOrderItem.qty - SubcontractingOrderItem.received_qty)
-				* SubcontractingOrderItem.conversion_factor
-			)
-		)
-		.where(
-			(SubcontractingOrderItem.item_code == item_code)
-			& (SubcontractingOrderItem.warehouse == warehouse)
-			& (SubcontractingOrderItem.qty > SubcontractingOrderItem.received_qty)
-			& (SubcontractingOrder.status.notin(["Closed", "Completed"]))
-			& (SubcontractingOrder.docstatus == 1)
-		)
-		.run()
-	)
-
-	return subcontracting_order_qty[0][0] if subcontracting_order_qty else 0
 
 
 def get_planned_qty(item_code, warehouse):

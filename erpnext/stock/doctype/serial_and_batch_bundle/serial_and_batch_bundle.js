@@ -190,7 +190,6 @@ frappe.ui.form.on("Serial and Batch Bundle", {
 							"Sales Invoice",
 							"Stock Entry",
 							"Stock Reconciliation",
-							"Subcontracting Receipt",
 						],
 					],
 				},

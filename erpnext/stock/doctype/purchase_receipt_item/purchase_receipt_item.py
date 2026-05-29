@@ -99,7 +99,7 @@ class PurchaseReceiptItem(Document):
 		stock_qty: DF.Float
 		stock_uom: DF.Link
 		stock_uom_rate: DF.Currency
-		subcontracting_receipt_item: DF.Data | None
+		
 		supplier_part_no: DF.Data | None
 		total_weight: DF.Float
 		uom: DF.Link

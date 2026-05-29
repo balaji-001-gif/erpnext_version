@@ -4,8 +4,8 @@
 
 import frappe
 from frappe.model.document import Document
-from frappe.query_builder import Case, Order
-from frappe.query_builder.functions import Coalesce, CombineDatetime, Sum
+from frappe.query_builder import Order
+from frappe.query_builder.functions import Sum
 from frappe.utils import flt
 
 
@@ -25,9 +25,6 @@ class Bin(Document):
 		planned_qty: DF.Float
 		projected_qty: DF.Float
 		reserved_qty: DF.Float
-		reserved_qty_for_production: DF.Float
-		reserved_qty_for_production_plan: DF.Float
-		reserved_qty_for_sub_contract: DF.Float
 		reserved_stock: DF.Float
 		stock_uom: DF.Link | None
 		stock_value: DF.Float
@@ -49,11 +46,6 @@ class Bin(Document):
 		self.indented_qty = get_indented_qty(self.item_code, self.warehouse)
 		self.ordered_qty = get_ordered_qty(self.item_code, self.warehouse)
 		self.reserved_qty = get_reserved_qty(self.item_code, self.warehouse)
-		# Manufacturing module removed - production reserved qty always 0
-		self.reserved_qty_for_production = 0.0
-
-		self.update_reserved_qty_for_sub_contracting(update_qty=False)
-		self.reserved_qty_for_production_plan = 0.0
 		self.set_projected_qty()
 		self.save()
 
@@ -69,141 +61,7 @@ class Bin(Document):
 			+ flt(self.indented_qty)
 			+ flt(self.planned_qty)
 			- flt(self.reserved_qty)
-			- flt(self.reserved_qty_for_production)
-			- flt(self.reserved_qty_for_sub_contract)
-			- flt(self.reserved_qty_for_production_plan)
 		)
-
-	def update_reserved_qty_for_production_plan(self, skip_project_qty_update=False, update_qty=True):
-		"""Manufacturing module removed - production plan qty always 0"""
-		if not self.reserved_qty_for_production_plan:
-			return
-
-		self.reserved_qty_for_production_plan = 0.0
-
-		if update_qty:
-			self.db_set(
-				"reserved_qty_for_production_plan",
-				0.0,
-				update_modified=True,
-			)
-
-		if not skip_project_qty_update:
-			self.set_projected_qty()
-			self.db_set("projected_qty", self.projected_qty, update_modified=True)
-
-	def update_reserved_qty_for_for_sub_assembly(self):
-		"""Manufacturing module removed - sub assembly qty always 0"""
-		if not self.reserved_qty_for_production_plan:
-			return
-
-		self.reserved_qty_for_production_plan = 0.0
-		self.set_projected_qty()
-
-		self.db_set(
-			{
-				"projected_qty": self.projected_qty,
-				"reserved_qty_for_production_plan": 0.0,
-			},
-			update_modified=True,
-		)
-
-	def update_reserved_qty_for_production(self):
-		"""Manufacturing module removed - production reserved qty always 0"""
-		self.reserved_qty_for_production = 0.0
-
-		self.db_set(
-			"reserved_qty_for_production", 0.0, update_modified=True
-		)
-
-		self.update_reserved_qty_for_production_plan(skip_project_qty_update=True)
-
-		self.set_projected_qty()
-		self.db_set("projected_qty", self.projected_qty, update_modified=True)
-
-	def update_reserved_qty_for_sub_contracting(
-		self, subcontract_doctype="Subcontracting Order", update_qty=True
-	):
-		# reserved qty
-
-		subcontract_order = frappe.qb.DocType(subcontract_doctype)
-		supplied_item = frappe.qb.DocType(
-			"Purchase Order Item Supplied"
-			if subcontract_doctype == "Purchase Order"
-			else "Subcontracting Order Supplied Item"
-		)
-
-		conditions = (
-			(supplied_item.rm_item_code == self.item_code)
-			& (subcontract_order.name == supplied_item.parent)
-			& (subcontract_order.per_received < 100)
-			& (supplied_item.reserve_warehouse == self.warehouse)
-			& (
-				(
-					(subcontract_order.is_old_subcontracting_flow == 1)
-					& (subcontract_order.status != "Closed")
-					& (subcontract_order.docstatus == 1)
-				)
-				if subcontract_doctype == "Purchase Order"
-				else (subcontract_order.docstatus == 1)
-			)
-		)
-
-		reserved_qty_for_sub_contract = (
-			frappe.qb.from_(subcontract_order)
-			.from_(supplied_item)
-			.select(Sum(Coalesce(supplied_item.required_qty, 0)))
-			.where(conditions)
-		).run()[0][0] or 0.0
-
-		se = frappe.qb.DocType("Stock Entry")
-		se_item = frappe.qb.DocType("Stock Entry Detail")
-
-		if frappe.db.field_exists("Stock Entry", "is_return"):
-			qty_field = Case().when(se.is_return == 1, se_item.transfer_qty * -1).else_(se_item.transfer_qty)
-		else:
-			qty_field = se_item.transfer_qty
-
-		conditions = (
-			(se.docstatus == 1)
-			& (se.purpose == "Send to Subcontractor")
-			& ((se_item.item_code == self.item_code) | (se_item.original_item == self.item_code))
-			& (se.name == se_item.parent)
-			& (subcontract_order.docstatus == 1)
-			& (subcontract_order.per_received < 100)
-			& (
-				(
-					(Coalesce(se.purchase_order, "") != "")
-					& (subcontract_order.name == se.purchase_order)
-					& (subcontract_order.is_old_subcontracting_flow == 1)
-					& (subcontract_order.status != "Closed")
-				)
-				if subcontract_doctype == "Purchase Order"
-				else (
-					(Coalesce(se.subcontracting_order, "") != "")
-					& (subcontract_order.name == se.subcontracting_order)
-				)
-			)
-		)
-
-		materials_transferred = (
-			frappe.qb.from_(se)
-			.from_(se_item)
-			.from_(subcontract_order)
-			.select(Sum(qty_field))
-			.where(conditions)
-		).run()[0][0] or 0.0
-
-		if reserved_qty_for_sub_contract > materials_transferred:
-			reserved_qty_for_sub_contract = reserved_qty_for_sub_contract - materials_transferred
-		else:
-			reserved_qty_for_sub_contract = 0
-
-		self.reserved_qty_for_sub_contract = reserved_qty_for_sub_contract
-		if update_qty:
-			self.db_set("reserved_qty_for_sub_contract", reserved_qty_for_sub_contract, update_modified=True)
-			self.set_projected_qty()
-			self.db_set("projected_qty", self.projected_qty, update_modified=True)
 
 	def update_reserved_stock(self):
 		"""Update `Reserved Stock` on change in Reserved Qty of Stock Reservation Entry"""
@@ -231,9 +89,6 @@ def get_bin_details(bin_name):
 			"reserved_qty",
 			"indented_qty",
 			"planned_qty",
-			"reserved_qty_for_production",
-			"reserved_qty_for_sub_contract",
-			"reserved_qty_for_production_plan",
 		],
 		as_dict=1,
 	)
@@ -262,9 +117,6 @@ def update_qty(bin_name, args):
 		+ flt(indented_qty)
 		+ flt(planned_qty)
 		- flt(reserved_qty)
-		- flt(bin_details.reserved_qty_for_production)
-		- flt(bin_details.reserved_qty_for_sub_contract)
-		- flt(bin_details.reserved_qty_for_production_plan)
 	)
 
 	frappe.db.set_value(

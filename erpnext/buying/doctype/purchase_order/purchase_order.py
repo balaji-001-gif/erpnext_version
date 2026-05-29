@@ -27,9 +27,7 @@ from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 from erpnext.stock.doctype.item.item import get_item_defaults, get_last_purchase_details
 from erpnext.stock.stock_balance import get_ordered_qty, update_bin_qty
 from erpnext.stock.utils import get_bin
-from erpnext.subcontracting.doctype.subcontracting_bom.subcontracting_bom import (
-	get_subcontracting_boms_for_finished_goods,
-)
+
 
 form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
 
@@ -102,8 +100,6 @@ class PurchaseOrder(BuyingController):
 		incoterm: DF.Link | None
 		inter_company_order_reference: DF.Link | None
 		is_internal_supplier: DF.Check
-		is_old_subcontracting_flow: DF.Check
-		is_subcontracted: DF.Check
 		items: DF.Table[PurchaseOrderItem]
 		language: DF.Data | None
 		letter_head: DF.Link | None
@@ -195,9 +191,6 @@ class PurchaseOrder(BuyingController):
 		self.set_has_unit_price_items()
 		self.flags.allow_zero_qty = self.has_unit_price_items
 
-		if self.is_subcontracted:
-			self.status_updater[0]["source_field"] = "fg_item_qty"
-
 	def validate(self):
 		super().validate()
 
@@ -219,11 +212,6 @@ class PurchaseOrder(BuyingController):
 		self.validate_minimum_order_qty()
 		validate_against_blanket_order(self)
 
-		if self.is_old_subcontracting_flow:
-			self.validate_bom_for_subcontracting_items()
-			self.create_raw_materials_supplied()
-
-		self.validate_fg_item_for_subcontracting()
 		self.set_received_qty_for_drop_ship_items()
 		validate_inter_company_party(
 			self.doctype, self.supplier, self.company, self.inter_company_order_reference
@@ -243,8 +231,6 @@ class PurchaseOrder(BuyingController):
 
 	def validate_with_previous_doc(self):
 		mri_compare_fields = [["project", "="], ["item_code", "="]]
-		if self.is_subcontracted:
-			mri_compare_fields = [["project", "="]]
 
 		super().validate_with_previous_doc(
 			{
@@ -369,31 +355,6 @@ class PurchaseOrder(BuyingController):
 				)
 
 	def validate_fg_item_for_subcontracting(self):
-		if self.is_subcontracted:
-			if not self.is_old_subcontracting_flow:
-				for item in self.items:
-					if not item.fg_item:
-						frappe.throw(
-							_("Row #{0}: Finished Good Item is not specified for service item {1}").format(
-								item.idx, item.item_code
-							)
-						)
-					else:
-						if not frappe.get_value("Item", item.fg_item, "is_sub_contracted_item"):
-							frappe.throw(
-								_("Row #{0}: Finished Good Item {1} must be a sub-contracted item").format(
-									item.idx, item.fg_item
-								)
-							)
-						elif not frappe.get_value("Item", item.fg_item, "default_bom"):
-							frappe.throw(
-								_("Row #{0}: Default BOM not found for FG Item {1}").format(
-									item.idx, item.fg_item
-								)
-							)
-					if not item.fg_item_qty:
-						frappe.throw(_("Row #{0}: Finished Good Item Qty can not be zero").format(item.idx))
-		else:
 			for item in self.items:
 				item.set("fg_item", None)
 				item.set("fg_item_qty", 0)
@@ -474,7 +435,6 @@ class PurchaseOrder(BuyingController):
 		self.update_requested_qty()
 		self.update_ordered_qty()
 		self.update_reserved_qty_for_subcontract()
-		self.update_subcontracting_order_status()
 		self.update_blanket_order()
 		self.notify_update()
 		clear_doctype_notifications(self)
@@ -486,9 +446,6 @@ class PurchaseOrder(BuyingController):
 			self.update_status_updater()
 
 		self.update_prevdoc_status()
-		if not self.is_subcontracted or self.is_old_subcontracting_flow:
-			self.update_requested_qty()
-
 		self.update_ordered_qty()
 		self.validate_budget()
 		self.update_reserved_qty_for_subcontract()
@@ -501,7 +458,6 @@ class PurchaseOrder(BuyingController):
 
 		update_linked_doc(self.doctype, self.name, self.inter_company_order_reference)
 
-		self.auto_create_subcontracting_order()
 
 	def on_cancel(self):
 		self.ignore_linked_doctypes = (
@@ -529,9 +485,6 @@ class PurchaseOrder(BuyingController):
 
 		# Must be called after updating ordered qty in Material Request
 		# bin uses Material Request Items to recalculate & update
-		if not self.is_subcontracted or self.is_old_subcontracting_flow:
-			self.update_requested_qty()
-
 		self.update_ordered_qty()
 
 		self.update_blanket_order()
@@ -593,11 +546,6 @@ class PurchaseOrder(BuyingController):
 				item.received_qty = item.qty
 
 	def update_reserved_qty_for_subcontract(self):
-		if self.is_old_subcontracting_flow:
-			for d in self.supplied_items:
-				if d.rm_item_code:
-					stock_bin = get_bin(d.rm_item_code, d.reserve_warehouse)
-					stock_bin.update_reserved_qty_for_sub_contracting(subcontract_doctype="Purchase Order")
 
 	def update_receiving_percentage(self):
 		total_qty, received_qty = 0.0, 0.0
@@ -610,9 +558,6 @@ class PurchaseOrder(BuyingController):
 			self.db_set("per_received", 0, update_modified=False)
 
 	def set_service_items_for_finished_goods(self):
-		if not self.is_subcontracted or self.is_old_subcontracting_flow:
-			return
-
 		finished_goods_without_service_item = {
 			d.fg_item for d in self.items if (not d.item_code and d.fg_item)
 		}
@@ -631,12 +576,6 @@ class PurchaseOrder(BuyingController):
 	def can_update_items(self) -> bool:
 		result = True
 
-		if self.is_subcontracted and not self.is_old_subcontracting_flow:
-			if frappe.db.exists(
-				"Subcontracting Order", {"purchase_order": self.name, "docstatus": ["!=", 2]}
-			):
-				result = False
-
 		return result
 
 	def update_ordered_qty_in_so_for_removed_items(self, removed_items):
@@ -654,21 +593,7 @@ class PurchaseOrder(BuyingController):
 				"Sales Order Item", item.get("sales_order_item"), "ordered_qty", prev_ordered_qty - item.qty
 			)
 
-	def auto_create_subcontracting_order(self):
-		if self.is_subcontracted and not self.is_old_subcontracting_flow:
-			if frappe.db.get_single_value("Buying Settings", "auto_create_subcontracting_order"):
-				make_subcontracting_order(self.name, save=True, notify=True)
 
-	def update_subcontracting_order_status(self):
-		from erpnext.subcontracting.doctype.subcontracting_order.subcontracting_order import (
-			update_subcontracting_order_status as update_sco_status,
-		)
-
-		if self.is_subcontracted and not self.is_old_subcontracting_flow:
-			sco = frappe.db.get_value("Subcontracting Order", {"purchase_order": self.name, "docstatus": 1})
-
-			if sco:
-				update_sco_status(sco, "Closed" if self.status == "Closed" else None)
 
 	def set_missing_values(self, for_validate=False):
 		tds_category = frappe.db.get_value("Supplier", self.supplier, "tax_withholding_category")
@@ -930,32 +855,6 @@ def make_inter_company_sales_order(source_name, target_doc=None):
 
 
 @frappe.whitelist()
-def make_subcontracting_order(source_name, target_doc=None, save=False, submit=False, notify=False):
-	if not is_po_fully_subcontracted(source_name):
-		target_doc = get_mapped_subcontracting_order(source_name, target_doc)
-
-		if (save or submit) and frappe.has_permission(target_doc.doctype, "create"):
-			target_doc.save()
-
-			if submit and frappe.has_permission(target_doc.doctype, "submit", target_doc):
-				try:
-					target_doc.submit()
-				except Exception as e:
-					target_doc.add_comment("Comment", _("Submit Action Failed") + "<br><br>" + str(e))
-
-			if notify:
-				frappe.msgprint(
-					_("Subcontracting Order {0} created.").format(
-						get_link_to_form(target_doc.doctype, target_doc.name)
-					),
-					indicator="green",
-					alert=True,
-				)
-
-		return target_doc
-	else:
-		frappe.throw(_("This PO has been fully subcontracted."))
-
 
 def is_po_fully_subcontracted(po_name):
 	table = frappe.qb.DocType("Purchase Order Item")
@@ -994,16 +893,14 @@ def get_mapped_subcontracting_order(source_name, target_doc=None):
 		source_name,
 		{
 			"Purchase Order": {
-				"doctype": "Subcontracting Order",
-				"field_map": {},
+								"field_map": {},
 				"field_no_map": ["total_qty", "total", "net_total"],
 				"validation": {
 					"docstatus": ["=", 1],
 				},
 			},
 			"Purchase Order Item": {
-				"doctype": "Subcontracting Order Service Item",
-				"field_map": {
+								"field_map": {
 					"name": "purchase_order_item",
 					"material_request": "material_request",
 					"material_request_item": "material_request_item",

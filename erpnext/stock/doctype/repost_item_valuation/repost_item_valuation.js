@@ -23,7 +23,7 @@ frappe.ui.form.on("Repost Item Valuation", {
 							"Sales Invoice",
 							"Stock Entry",
 							"Stock Reconciliation",
-							"Subcontracting Receipt",
+							"Purchase Receipt",
 						],
 					],
 				},

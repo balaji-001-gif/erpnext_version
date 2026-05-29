@@ -104,9 +104,9 @@ jinja = {
 # website
 webform_list_context = "erpnext.controllers.website_list_for_contact.get_webform_list_context"
 
-calendars = ["Task", "Work Order", "Sales Order", "Holiday List", "ToDo"]
+calendars = ["Task", "Sales Order", "Holiday List", "ToDo"]
 
-website_generators = ["BOM", "Sales Partner"]
+website_generators = ["Sales Partner"]
 
 website_context = {
 	"favicon": "/assets/erpnext/images/erpnext-favicon.svg",
@@ -190,7 +190,6 @@ website_route_rules = [
 		"to_route": "addresses",
 		"defaults": {"doctype": "Address", "parents": [{"label": "Addresses", "route": "addresses"}]},
 	},
-	{"from_route": "/boms", "to_route": "BOM"},
 	{"from_route": "/timesheets", "to_route": "Timesheet"},
 	{"from_route": "/material-requests", "to_route": "Material Request"},
 	{
@@ -320,8 +319,7 @@ period_closing_doctypes = [
 	"Landed Cost Voucher",
 	"Purchase Receipt",
 	"Stock Reconciliation",
-	"Subcontracting Receipt",
-]
+	]
 
 doc_events = {
 	"*": {
@@ -544,11 +542,7 @@ accounting_dimension_doctypes = [
 	"Purchase Order",
 	"Purchase Receipt",
 	"Sales Order",
-	"Subcontracting Order",
-	"Subcontracting Order Item",
-	"Subcontracting Receipt",
-	"Subcontracting Receipt Item",
-	"Account Closing Balance",
+					"Account Closing Balance",
 	"Supplier Quotation",
 	"Supplier Quotation Item",
 	"Payment Reconciliation",
@@ -609,12 +603,10 @@ global_search_doctypes = {
 		{"doctype": "Warehouse", "index": 3},
 		{"doctype": "Account", "index": 4},
 		{"doctype": "Employee", "index": 5},
-		{"doctype": "BOM", "index": 6},
-		{"doctype": "Sales Invoice", "index": 7},
-		{"doctype": "Sales Order", "index": 8},
-		{"doctype": "Quotation", "index": 9},
-		{"doctype": "Work Order", "index": 10},
-		{"doctype": "Purchase Order", "index": 11},
+		{"doctype": "Sales Invoice", "index": 6},
+		{"doctype": "Sales Order", "index": 7},
+		{"doctype": "Quotation", "index": 8},
+		{"doctype": "Purchase Order", "index": 9},
 		{"doctype": "Purchase Receipt", "index": 12},
 		{"doctype": "Purchase Invoice", "index": 13},
 		{"doctype": "Delivery Note", "index": 14},

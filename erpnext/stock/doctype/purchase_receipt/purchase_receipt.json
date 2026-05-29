@@ -1156,14 +1156,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "default": "0",
-   "fieldname": "is_old_subcontracting_flow",
-   "fieldtype": "Check",
-   "hidden": 1,
-   "label": "Is Old Subcontracting Flow",
-   "read_only": 1
-  },
-  {
    "fieldname": "address_and_contact_tab",
    "fieldtype": "Tab Break",
    "label": "Address & Contact"
@@ -1246,15 +1238,6 @@
    "fieldname": "named_place",
    "fieldtype": "Data",
    "label": "Named Place"
-  },
-  {
-   "depends_on": "subcontracting_receipt",
-   "fieldname": "subcontracting_receipt",
-   "fieldtype": "Link",
-   "label": "Subcontracting Receipt",
-   "options": "Subcontracting Receipt",
-   "read_only": 1,
-   "search_index": 1
   },
   {
    "fieldname": "tax_withholding_net_total",

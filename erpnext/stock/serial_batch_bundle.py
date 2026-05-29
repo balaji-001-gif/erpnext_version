@@ -268,8 +268,8 @@ class SerialBatchBundle:
 	def child_doctype(self):
 		child_doctype = self.sle.voucher_type + " Item"
 
-		if self.sle.voucher_type == "Subcontracting Receipt" and self.sle.dependant_sle_voucher_detail_no:
-			child_doctype = "Subcontracting Receipt Supplied Item"
+		if False:  # subcontracting removed
+			child_doctype = ""  # subcontracting removed
 
 		if self.sle.voucher_type == "Stock Entry":
 			child_doctype = "Stock Entry Detail"

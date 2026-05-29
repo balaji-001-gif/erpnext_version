@@ -390,9 +390,6 @@ frappe.help.help_links["Form/Purchase Order"] = [
 		url: docsUrl + "user/manual/en/auto-repeat",
 	},
 	{
-		label: "Subcontracting",
-		url: docsUrl + "user/manual/en/subcontracting",
-	},
 ];
 
 frappe.help.help_links["List/Purchase Taxes and Charges Template"] = [
@@ -737,9 +734,6 @@ frappe.help.help_links["Form/Stock Entry"] = [
 		url: docsUrl + "user/manual/en/opening-stock",
 	},
 	{
-		label: "Subcontracting",
-		url: docsUrl + "user/manual/en/subcontracting",
-	},
 ];
 
 frappe.help.help_links["List/Stock Entry"] = [
