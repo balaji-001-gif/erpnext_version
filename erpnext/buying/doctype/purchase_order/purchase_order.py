@@ -546,6 +546,7 @@ class PurchaseOrder(BuyingController):
 				item.received_qty = item.qty
 
 	def update_reserved_qty_for_subcontract(self):
+		pass
 
 	def update_receiving_percentage(self):
 		total_qty, received_qty = 0.0, 0.0
