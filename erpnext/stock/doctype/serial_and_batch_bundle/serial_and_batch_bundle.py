@@ -1345,7 +1345,6 @@ class SerialandBatchBundle(Document):
 			fields = ["name", "rejected_serial_and_batch_bundle", "serial_and_batch_bundle"]
 			or_filters["rejected_serial_and_batch_bundle"] = self.name
 
-		if (
 		vouchers = frappe.get_all(
 			self.child_table,
 			fields=fields,
