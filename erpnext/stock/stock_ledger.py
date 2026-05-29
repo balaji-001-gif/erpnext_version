@@ -1207,46 +1207,55 @@ class update_entries_after:
 	def get_incoming_outgoing_rate_from_transaction(self, sle):
 		rate = 0
 		# Material Transfer, Repack, Manufacturing
-	if sle.voucher_type == "Stock Entry":
-		self.recalculate_amounts_in_stock_entry(sle.voucher_no, sle.voucher_detail_no)
-		rate = frappe.db.get_value("Stock Entry Detail", sle.voucher_detail_no, "valuation_rate")
-	# Sales and Purchase Return
-	elif sle.voucher_type in (
-		"Purchase Receipt",
-		"Purchase Invoice",
-		"Delivery Note",
-		"Sales Invoice",
-	):
-			if frappe.get_cached_value(sle.voucher_type, sle.voucher_no, "is_return"):
-				from erpnext.controllers.sales_and_purchase_return import (
-					get_rate_for_return,  # don't move this import to top
-				)
-
-				if (
-					self.valuation_method == "Moving Average"
-					and not sle.get("serial_no")
-					and not sle.get("batch_no")
-					and not sle.get("serial_and_batch_bundle")
-				):
-					rate = get_incoming_rate(
-						{
-							"item_code": sle.item_code,
-							"warehouse": sle.warehouse,
-							"posting_date": sle.posting_date,
-							"posting_time": sle.posting_time,
-							"qty": sle.actual_qty,
-							"serial_no": sle.get("serial_no"),
-							"batch_no": sle.get("batch_no"),
-							"serial_and_batch_bundle": sle.get("serial_and_batch_bundle"),
-							"company": sle.company,
-							"voucher_type": sle.voucher_type,
-							"voucher_no": sle.voucher_no,
-							"allow_zero_valuation": self.allow_zero_rate,
-							"sle": sle.name,
-						}
+		if sle.voucher_type == "Stock Entry":
+			self.recalculate_amounts_in_stock_entry(sle.voucher_no, sle.voucher_detail_no)
+			rate = frappe.db.get_value("Stock Entry Detail", sle.voucher_detail_no, "valuation_rate")
+		# Sales and Purchase Return
+		elif sle.voucher_type in (
+			"Purchase Receipt",
+			"Purchase Invoice",
+			"Delivery Note",
+			"Sales Invoice",
+		):
+				if frappe.get_cached_value(sle.voucher_type, sle.voucher_no, "is_return"):
+					from erpnext.controllers.sales_and_purchase_return import (
+						get_rate_for_return,  # don't move this import to top
 					)
-
-					if not rate and sle.voucher_type in ["Delivery Note", "Sales Invoice"]:
+	
+					if (
+						self.valuation_method == "Moving Average"
+						and not sle.get("serial_no")
+						and not sle.get("batch_no")
+						and not sle.get("serial_and_batch_bundle")
+					):
+						rate = get_incoming_rate(
+							{
+								"item_code": sle.item_code,
+								"warehouse": sle.warehouse,
+								"posting_date": sle.posting_date,
+								"posting_time": sle.posting_time,
+								"qty": sle.actual_qty,
+								"serial_no": sle.get("serial_no"),
+								"batch_no": sle.get("batch_no"),
+								"serial_and_batch_bundle": sle.get("serial_and_batch_bundle"),
+								"company": sle.company,
+								"voucher_type": sle.voucher_type,
+								"voucher_no": sle.voucher_no,
+								"allow_zero_valuation": self.allow_zero_rate,
+								"sle": sle.name,
+							}
+						)
+	
+						if not rate and sle.voucher_type in ["Delivery Note", "Sales Invoice"]:
+							rate = get_rate_for_return(
+								sle.voucher_type,
+								sle.voucher_no,
+								sle.item_code,
+								voucher_detail_no=sle.voucher_detail_no,
+								sle=sle,
+							)
+	
+					else:
 						rate = get_rate_for_return(
 							sle.voucher_type,
 							sle.voucher_no,
@@ -1254,59 +1263,50 @@ class update_entries_after:
 							voucher_detail_no=sle.voucher_detail_no,
 							sle=sle,
 						)
-
-				else:
-					rate = get_rate_for_return(
-						sle.voucher_type,
-						sle.voucher_no,
-						sle.item_code,
-						voucher_detail_no=sle.voucher_detail_no,
-						sle=sle,
-					)
-
-				if (
-					sle.get("serial_and_batch_bundle")
-					and rate > 0
-					and sle.voucher_type in ["Delivery Note", "Sales Invoice"]
+	
+					if (
+						sle.get("serial_and_batch_bundle")
+						and rate > 0
+						and sle.voucher_type in ["Delivery Note", "Sales Invoice"]
+					):
+						frappe.db.set_value(
+							sle.voucher_type + " Item",
+							sle.voucher_detail_no,
+							"incoming_rate",
+							rate,
+						)
+				elif (
+					sle.voucher_type in ["Purchase Receipt", "Purchase Invoice"]
+					and sle.voucher_detail_no
+					and is_internal_transfer(sle)
 				):
-					frappe.db.set_value(
-						sle.voucher_type + " Item",
-						sle.voucher_detail_no,
-						"incoming_rate",
-						rate,
-					)
-			elif (
-				sle.voucher_type in ["Purchase Receipt", "Purchase Invoice"]
-				and sle.voucher_detail_no
-				and is_internal_transfer(sle)
-			):
-				rate = get_incoming_rate_for_inter_company_transfer(sle)
-			else:
-				if sle.voucher_type in ("Purchase Receipt", "Purchase Invoice"):
-					rate_field = "valuation_rate"
+					rate = get_incoming_rate_for_inter_company_transfer(sle)
 				else:
-					rate_field = "incoming_rate"
-
-				# check in item table
-				item_code, incoming_rate = frappe.db.get_value(
-					sle.voucher_type + " Item", sle.voucher_detail_no, ["item_code", rate_field]
-				)
-
-				if item_code == sle.item_code:
-					rate = incoming_rate
-				else:
-					if sle.voucher_type in ("Delivery Note", "Sales Invoice"):
-						ref_doctype = "Packed Item"
+					if sle.voucher_type in ("Purchase Receipt", "Purchase Invoice"):
+						rate_field = "valuation_rate"
 					else:
-						ref_doctype = "Purchase Receipt Item Supplied"
-
-					rate = frappe.db.get_value(
-						ref_doctype,
-						{"parent_detail_docname": sle.voucher_detail_no, "item_code": sle.item_code},
-						rate_field,
+						rate_field = "incoming_rate"
+	
+					# check in item table
+					item_code, incoming_rate = frappe.db.get_value(
+						sle.voucher_type + " Item", sle.voucher_detail_no, ["item_code", rate_field]
 					)
-
-			return rate
+	
+					if item_code == sle.item_code:
+						rate = incoming_rate
+					else:
+						if sle.voucher_type in ("Delivery Note", "Sales Invoice"):
+							ref_doctype = "Packed Item"
+						else:
+							ref_doctype = "Purchase Receipt Item Supplied"
+	
+						rate = frappe.db.get_value(
+							ref_doctype,
+							{"parent_detail_docname": sle.voucher_detail_no, "item_code": sle.item_code},
+							rate_field,
+						)
+	
+		return rate
 
 	def update_outgoing_rate_on_transaction(self, sle):
 		"""
