@@ -15,5 +15,4 @@ ERPNext Integrations
 Communication
 Telephony
 Bulk Transaction
-Subcontracting
 EDI
