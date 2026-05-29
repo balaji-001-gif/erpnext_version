@@ -328,8 +328,8 @@ def get_returned_qty_map_for_row(return_against, party, row_name, doctype):
 		f"sum(abs(`tab{child_doctype}`.received_qty)) as received_qty",
 	]
 
-		if doctype == "Purchase Receipt":
-			fields += [f"sum(abs(`tab{child_doctype}`.received_stock_qty)) as received_stock_qty"]
+	if doctype == "Purchase Receipt":
+		fields += [f"sum(abs(`tab{child_doctype}`.received_stock_qty)) as received_stock_qty"]
 
 	# Used retrun against and supplier and is_retrun because there is an index added for it
 	data = frappe.get_all(
@@ -443,12 +443,12 @@ def make_return_doc(doctype: str, source_name: str, target_doc=None, return_agai
 				source_parent.name, source_parent.supplier, source_doc.name, doctype
 			)
 
-				target_doc.received_qty = -1 * flt(
-					source_doc.received_qty - (returned_qty_map.get("received_qty") or 0)
-				)
-				target_doc.rejected_qty = -1 * flt(
-					source_doc.rejected_qty - (returned_qty_map.get("rejected_qty") or 0)
-				)
+			target_doc.received_qty = -1 * flt(
+				source_doc.received_qty - (returned_qty_map.get("received_qty") or 0)
+			)
+			target_doc.rejected_qty = -1 * flt(
+				source_doc.rejected_qty - (returned_qty_map.get("rejected_qty") or 0)
+			)
 
 			target_doc.qty = -1 * flt(source_doc.qty - (returned_qty_map.get("qty") or 0))
 
@@ -460,10 +460,10 @@ def make_return_doc(doctype: str, source_name: str, target_doc=None, return_agai
 					source_doc.received_stock_qty - (returned_qty_map.get("received_stock_qty") or 0)
 				)
 
-				target_doc.purchase_order = source_doc.purchase_order
-				target_doc.purchase_order_item = source_doc.purchase_order_item
-				target_doc.rejected_warehouse = source_doc.rejected_warehouse
-				target_doc.purchase_receipt_item = source_doc.name
+			target_doc.purchase_order = source_doc.purchase_order
+			target_doc.purchase_order_item = source_doc.purchase_order_item
+			target_doc.rejected_warehouse = source_doc.rejected_warehouse
+			target_doc.purchase_receipt_item = source_doc.name
 
 			if doctype == "Purchase Receipt" and return_against_rejected_qty:
 				target_doc.qty = -1 * flt(source_doc.rejected_qty - (returned_qty_map.get("qty") or 0))
