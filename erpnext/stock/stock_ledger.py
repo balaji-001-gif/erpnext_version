@@ -1306,7 +1306,7 @@ class update_entries_after:
 						rate_field,
 					)
 
-		return rate
+			return rate
 
 	def update_outgoing_rate_on_transaction(self, sle):
 		"""
