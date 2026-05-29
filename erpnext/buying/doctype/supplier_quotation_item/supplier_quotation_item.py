@@ -36,8 +36,6 @@ class SupplierQuotationItem(Document):
 		item_tax_rate: DF.Code | None
 		item_tax_template: DF.Link | None
 		lead_time_days: DF.Int
-		manufacturer: DF.Link | None
-		manufacturer_part_no: DF.Data | None
 		material_request: DF.Link | None
 		material_request_item: DF.Data | None
 		net_amount: DF.Currency

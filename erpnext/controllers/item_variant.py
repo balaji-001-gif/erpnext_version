@@ -25,7 +25,7 @@ class ItemTemplateCannotHaveStock(frappe.ValidationError):
 
 
 @frappe.whitelist()
-def get_variant(template, args=None, variant=None, manufacturer=None, manufacturer_part_no=None):
+def get_variant(template, args=None, variant=None):
 	"""
 	Validates Attributes and their Values, then looks for an exactly
 	matching Item Variant
@@ -33,11 +33,6 @@ def get_variant(template, args=None, variant=None, manufacturer=None, manufactur
 	:param item: Template Item
 	:param args: A dictionary with "Attribute" as key and "Attribute Value" as value
 	"""
-	item_template = frappe.get_doc("Item", template)
-
-	if item_template.variant_based_on == "Manufacturer" and manufacturer:
-		return make_variant_based_on_manufacturer(item_template, manufacturer, manufacturer_part_no)
-
 	if isinstance(args, str):
 		args = json.loads(args)
 
@@ -46,39 +41,6 @@ def get_variant(template, args=None, variant=None, manufacturer=None, manufactur
 		frappe.throw(_("Please specify at least one attribute in the Attributes table"))
 
 	return find_variant(template, args, variant)
-
-
-def make_variant_based_on_manufacturer(template, manufacturer, manufacturer_part_no):
-	"""Make and return a new variant based on manufacturer and
-	manufacturer part no"""
-	from frappe.model.naming import append_number_if_name_exists
-
-	variant = frappe.new_doc("Item")
-
-	copy_attributes_to_variant(template, variant)
-
-	variant_name = f"{template.name} - {manufacturer}"
-	if manufacturer_part_no:
-		variant_name += f" - {manufacturer_part_no}"
-
-	variant.item_code = append_number_if_name_exists("Item", variant_name)
-	variant.flags.ignore_mandatory = True
-	variant.save()
-
-	if not frappe.db.exists("Item Manufacturer", {"item_code": variant.name, "manufacturer": manufacturer}):
-		manufacturer_doc = frappe.new_doc("Item Manufacturer")
-		manufacturer_doc.update(
-			{
-				"item_code": variant.name,
-				"manufacturer": manufacturer,
-				"manufacturer_part_no": manufacturer_part_no,
-			}
-		)
-
-		manufacturer_doc.flags.ignore_mandatory = True
-		manufacturer_doc.save(ignore_permissions=True)
-
-	return variant
 
 
 def validate_item_variant_attributes(item, args=None):
@@ -343,10 +305,6 @@ def copy_attributes_to_variant(item, variant):
 		"valuation_rate",
 	]
 
-	if item.variant_based_on == "Manufacturer":
-		# don't copy manufacturer values if based on part no
-		exclude_fields += ["manufacturer", "manufacturer_part_no"]
-
 	allow_fields = [d.field_name for d in frappe.get_all("Variant Field", fields=["field_name"])]
 	if "variant_based_on" not in allow_fields:
 		allow_fields.append("variant_based_on")
@@ -416,16 +374,12 @@ def make_variant_item_code(template_item_code, template_item_name, variant):
 
 @frappe.whitelist()
 def create_variant_doc_for_quick_entry(template, args):
-	variant_based_on = frappe.db.get_value("Item", template, "variant_based_on")
 	args = json.loads(args)
-	if variant_based_on == "Manufacturer":
-		variant = get_variant(template, **args)
+	existing_variant = get_variant(template, args)
+	if existing_variant:
+		return existing_variant
 	else:
-		existing_variant = get_variant(template, args)
-		if existing_variant:
-			return existing_variant
-		else:
-			variant = create_variant(template, args=args)
-			variant.name = variant.item_code
-			validate_item_variant_attributes(variant, args)
+		variant = create_variant(template, args=args)
+		variant.name = variant.item_code
+		validate_item_variant_attributes(variant, args)
 	return variant.as_dict()

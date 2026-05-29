@@ -763,13 +763,6 @@ frappe.help.help_links["Form/Packing Slip"] = [
 	},
 ];
 
-frappe.help.help_links["Form/Quality Inspection"] = [
-	{
-		label: "Quality Inspection",
-		url: docsUrl + "user/manual/en/quality-inspection",
-	},
-];
-
 frappe.help.help_links["Form/Landed Cost Voucher"] = [
 	{
 		label: "Landed Cost Voucher",

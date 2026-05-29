@@ -81,7 +81,6 @@
   "warehouse_and_reference",
   "warehouse",
   "target_warehouse",
-  "quality_inspection",
   "pick_serial_and_batch",
   "serial_and_batch_bundle",
   "use_serial_batch_fields",
@@ -601,13 +600,6 @@
    "no_copy": 1,
    "options": "Warehouse",
    "print_hide": 1
-  },
-  {
-   "depends_on": "eval:!doc.__islocal",
-   "fieldname": "quality_inspection",
-   "fieldtype": "Link",
-   "label": "Quality Inspection",
-   "options": "Quality Inspection"
   },
   {
    "depends_on": "eval: doc.use_serial_batch_fields === 1 && parent.update_stock === 1",

@@ -274,13 +274,6 @@ def item_query(doctype, txt, searchfield, start, page_len, filters, as_dict=Fals
 
 @frappe.whitelist()
 @frappe.validate_and_sanitize_search_inputs
-
-def bom(doctype, txt, searchfield, start, page_len, filters):
-	# Manufacturing module removed - BOM search unavailable
-	return []
-
-@frappe.whitelist()
-@frappe.validate_and_sanitize_search_inputs
 def get_project_name(doctype, txt, searchfield, start, page_len, filters):
 	proj = qb.DocType("Project")
 	qb_filter_and_conditions = []
@@ -789,25 +782,6 @@ def get_batch_numbers(doctype, txt, searchfield, start, page_len, filters):
 		query += " and item = {item}".format(item=frappe.db.escape(filters.get("item")))
 
 	return frappe.db.sql(query, filters)
-
-
-@frappe.whitelist()
-@frappe.validate_and_sanitize_search_inputs
-def item_manufacturer_query(doctype, txt, searchfield, start, page_len, filters):
-	item_filters = [
-		["manufacturer", "like", "%" + txt + "%"],
-		["item_code", "=", filters.get("item_code")],
-	]
-
-	item_manufacturers = frappe.get_all(
-		"Item Manufacturer",
-		fields=["manufacturer", "manufacturer_part_no"],
-		filters=item_filters,
-		limit_start=start,
-		limit_page_length=page_len,
-		as_list=1,
-	)
-	return item_manufacturers
 
 
 @frappe.whitelist()

@@ -107,7 +107,6 @@ class StockEntry(StockController):
 		fg_completed_qty: DF.Float
 		from_bom: DF.Check
 		from_warehouse: DF.Link | None
-		inspection_required: DF.Check
 		is_opening: DF.Literal["No", "Yes"]
 		is_return: DF.Check
 		items: DF.Table[StockEntryDetail]
@@ -207,7 +206,6 @@ class StockEntry(StockController):
 		self.validate_warehouse()
 		self.validate_with_material_request()
 		self.validate_batch()
-		self.validate_inspection()
 		self.validate_fg_completed_qty()
 		self.validate_difference_account()
 		self.set_job_card_data()
@@ -396,8 +394,6 @@ class StockEntry(StockController):
 		self.repost_future_sle_and_gle()
 		self.update_cost_in_project()
 		self.update_transferred_qty()
-		self.update_quality_inspection()
-
 		if self.purpose == "Material Transfer" and self.add_to_transit:
 			self.set_material_request_transfer_status("In Transit")
 		if self.purpose == "Material Transfer" and self.outgoing_stock_entry:
@@ -424,7 +420,6 @@ class StockEntry(StockController):
 		self.repost_future_sle_and_gle()
 		self.update_cost_in_project()
 		self.update_transferred_qty()
-		self.update_quality_inspection()
 		self.delete_auto_created_batches()
 		self.delete_linked_stock_entry()
 
@@ -2861,21 +2856,6 @@ class StockEntry(StockController):
 			}
 
 			self._update_percent_field_in_targets(args, update_modified=True)
-
-	def update_quality_inspection(self):
-		if self.inspection_required:
-			reference_type = reference_name = ""
-			if self.docstatus == 1:
-				reference_name = self.name
-				reference_type = "Stock Entry"
-
-			for d in self.items:
-				if d.quality_inspection:
-					frappe.db.set_value(
-						"Quality Inspection",
-						d.quality_inspection,
-						{"reference_type": reference_type, "reference_name": reference_name},
-					)
 
 	def set_material_request_transfer_status(self, status):
 		material_requests = []

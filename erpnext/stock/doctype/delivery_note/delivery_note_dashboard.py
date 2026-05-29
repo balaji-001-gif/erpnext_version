@@ -6,8 +6,7 @@ def get_data():
 		"fieldname": "delivery_note",
 		"non_standard_fieldnames": {
 			"Stock Entry": "delivery_note_no",
-			"Quality Inspection": "reference_name",
-			"Auto Repeat": "reference_document",
+		"Auto Repeat": "reference_document",
 			"Purchase Receipt": "inter_company_reference",
 		},
 		"internal_links": {
@@ -20,7 +19,7 @@ def get_data():
 		},
 		"transactions": [
 			{"label": _("Related"), "items": ["Sales Invoice", "Packing Slip", "Delivery Trip"]},
-			{"label": _("Reference"), "items": ["Sales Order", "Shipment", "Quality Inspection"]},
+			{"label": _("Reference"), "items": ["Sales Order", "Shipment"]},
 			{"label": _("Returns"), "items": ["Stock Entry"]},
 			{"label": _("Subscription"), "items": ["Auto Repeat"]},
 			{

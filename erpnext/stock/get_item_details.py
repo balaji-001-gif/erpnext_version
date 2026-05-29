@@ -21,7 +21,6 @@ from erpnext.setup.doctype.brand.brand import get_brand_defaults
 from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 from erpnext.setup.utils import get_exchange_rate
 from erpnext.stock.doctype.item.item import get_item_defaults, get_uom_conv_factor
-from erpnext.stock.doctype.item_manufacturer.item_manufacturer import get_item_manufacturer_part_no
 from erpnext.stock.doctype.price_list.price_list import get_price_list_details
 
 sales_doctypes = ["Quotation", "Sales Order", "Delivery Note", "Sales Invoice", "POS Invoice"]
@@ -520,26 +519,6 @@ def get_basic_details(args, item, overwrite_warehouse=True):
 
 	for fieldname in ("item_name", "item_group", "brand", "stock_uom"):
 		out[fieldname] = item.get(fieldname)
-
-	if args.get("manufacturer"):
-		part_no = get_item_manufacturer_part_no(args.get("item_code"), args.get("manufacturer"))
-		if part_no:
-			out["manufacturer_part_no"] = part_no
-		else:
-			out["manufacturer_part_no"] = None
-			out["manufacturer"] = None
-	else:
-		data = frappe.get_value(
-			"Item", item.name, ["default_item_manufacturer", "default_manufacturer_part_no"], as_dict=1
-		)
-
-		if data:
-			out.update(
-				{
-					"manufacturer": data.default_item_manufacturer,
-					"manufacturer_part_no": data.default_manufacturer_part_no,
-				}
-			)
 
 	child_doctype = args.doctype + " Item"
 	meta = frappe.get_meta(child_doctype)

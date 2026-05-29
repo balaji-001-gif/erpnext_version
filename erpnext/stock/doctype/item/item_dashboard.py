@@ -9,9 +9,7 @@ def get_data():
 		),
 		"fieldname": "item_code",
 		"non_standard_fieldnames": {
-			"Work Order": "production_item",
 			"Product Bundle": "new_item_code",
-			"BOM": "item",
 			"Batch": "item",
 		},
 		"transactions": [
@@ -29,7 +27,7 @@ def get_data():
 					"Purchase Invoice",
 				],
 			},
-			{"label": _("Manufacture"), "items": ["Production Plan", "Work Order", "Item Manufacturer"]},
+
 			{"label": _("Traceability"), "items": ["Serial No", "Batch"]},
 			{"label": _("Stock Movement"), "items": ["Stock Entry", "Stock Reconciliation"]},
 		],

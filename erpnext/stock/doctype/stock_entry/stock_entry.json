@@ -27,7 +27,6 @@
   "posting_time",
   "column_break_eaoa",
   "set_posting_time",
-  "inspection_required",
   "apply_putaway_rule",
   "bom_info_section",
   "from_bom",
@@ -236,12 +235,6 @@
    "fieldtype": "Check",
    "label": "Edit Posting Date and Time",
    "print_hide": 1
-  },
-  {
-   "default": "0",
-   "fieldname": "inspection_required",
-   "fieldtype": "Check",
-   "label": "Inspection Required"
   },
   {
    "default": "0",

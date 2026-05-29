@@ -86,8 +86,6 @@ class Item(Document):
 		customer_items: DF.Table[ItemCustomerDetail]
 		customs_tariff_number: DF.Link | None
 		default_bom: DF.Link | None
-		default_item_manufacturer: DF.Link | None
-		default_manufacturer_part_no: DF.Data | None
 		default_material_request_type: DF.Literal[
 			"Purchase", "Material Transfer", "Material Issue", "Manufacture", "Customer Provided"
 		]
@@ -104,8 +102,6 @@ class Item(Document):
 		has_variants: DF.Check
 		image: DF.AttachImage | None
 		include_item_in_manufacturing: DF.Check
-		inspection_required_before_delivery: DF.Check
-		inspection_required_before_purchase: DF.Check
 		is_customer_provided_item: DF.Check
 		is_fixed_asset: DF.Check
 		is_grouped_asset: DF.Check
@@ -128,7 +124,6 @@ class Item(Document):
 		over_billing_allowance: DF.Float
 		over_delivery_receipt_allowance: DF.Float
 		purchase_uom: DF.Link | None
-		quality_inspection_template: DF.Link | None
 		reorder_levels: DF.Table[ItemReorder]
 		retain_sample: DF.Check
 		safety_stock: DF.Float
@@ -144,7 +139,7 @@ class Item(Document):
 		uoms: DF.Table[UOMConversionDetail]
 		valuation_method: DF.Literal["", "FIFO", "Moving Average", "LIFO"]
 		valuation_rate: DF.Currency
-		variant_based_on: DF.Literal["Item Attribute", "Manufacturer"]
+		variant_based_on: DF.Literal["Item Attribute"]
 		variant_of: DF.Link | None
 		warranty_period: DF.Data | None
 		weight_per_unit: DF.Float

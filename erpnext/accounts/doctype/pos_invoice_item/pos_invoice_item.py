@@ -68,7 +68,6 @@ class POSInvoiceItem(Document):
 		pricing_rules: DF.SmallText | None
 		project: DF.Link | None
 		qty: DF.Float
-		quality_inspection: DF.Link | None
 		rate: DF.Currency
 		rate_with_margin: DF.Currency
 		sales_order: DF.Link | None

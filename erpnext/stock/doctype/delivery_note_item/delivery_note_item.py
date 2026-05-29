@@ -70,7 +70,6 @@ class DeliveryNoteItem(Document):
 		purchase_order: DF.Link | None
 		purchase_order_item: DF.Data | None
 		qty: DF.Float
-		quality_inspection: DF.Link | None
 		rate: DF.Currency
 		rate_with_margin: DF.Currency
 		received_qty: DF.Float

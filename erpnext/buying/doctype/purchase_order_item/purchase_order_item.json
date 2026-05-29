@@ -90,10 +90,6 @@
         "expense_account",
         "column_break_fyqr",
         "wip_composite_asset",
-        "manufacture_details",
-        "manufacturer",
-        "manufacturer_part_no",
-        "column_break_14",
         "bom",
         "include_exploded_items",
         "item_weight_details",
@@ -708,27 +704,6 @@
         {
             "fieldname": "dimension_col_break",
             "fieldtype": "Column Break"
-        },
-        {
-            "collapsible": 1,
-            "fieldname": "manufacture_details",
-            "fieldtype": "Section Break",
-            "label": "Manufacture"
-        },
-        {
-            "fieldname": "manufacturer",
-            "fieldtype": "Link",
-            "label": "Manufacturer",
-            "options": "Manufacturer"
-        },
-        {
-            "fieldname": "column_break_14",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "manufacturer_part_no",
-            "fieldtype": "Data",
-            "label": "Manufacturer Part Number"
         },
         {
             "default": "0",

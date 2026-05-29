@@ -42,10 +42,6 @@
   "expense_account",
   "column_break_glru",
   "wip_composite_asset",
-  "manufacture_details",
-  "manufacturer",
-  "manufacturer_part_no",
-  "col_break_mfg",
   "bom_no",
   "accounting_dimensions_section",
   "project",
@@ -390,29 +386,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "collapsible": 1,
-   "depends_on": "eval:in_list([\"Manufacture\", \"Purchase\"], parent.material_request_type)",
-   "fieldname": "manufacture_details",
-   "fieldtype": "Section Break",
-   "label": "Manufacture"
-  },
-  {
-   "fieldname": "manufacturer",
-   "fieldtype": "Link",
-   "label": "Manufacturer",
-   "options": "Manufacturer"
-  },
-  {
-   "fieldname": "column_break_12",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "manufacturer_part_no",
-   "fieldtype": "Data",
-   "label": "Manufacturer Part Number",
-   "read_only": 1
-  },
-  {
    "fieldname": "rate_and_amount_section_break",
    "fieldtype": "Section Break"
   },
@@ -439,10 +412,6 @@
   {
    "fieldname": "section_break_46",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "col_break_mfg",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "qty_info_sec_break",

@@ -11,8 +11,7 @@ def get_data():
 			"Auto Repeat": "reference_document",
 			"Purchase Receipt": "return_against",
 			"Stock Reservation Entry": "from_voucher_no",
-			"Quality Inspection": "reference_name",
-		},
+			},
 		"internal_links": {
 			"Material Request": ["items", "material_request"],
 			"Purchase Order": ["items", "purchase_order"],
@@ -28,7 +27,7 @@ def get_data():
 			},
 			{
 				"label": _("Reference"),
-				"items": ["Material Request", "Purchase Order", "Quality Inspection", "Project"],
+				"items": ["Material Request", "Purchase Order", "Project"],
 			},
 			{"label": _("Returns"), "items": ["Purchase Receipt"]},
 			{"label": _("Subscription"), "items": ["Auto Repeat"]},

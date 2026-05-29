@@ -53,8 +53,6 @@ class PurchaseOrderItem(Document):
 		item_tax_rate: DF.Code | None
 		item_tax_template: DF.Link | None
 		last_purchase_rate: DF.Currency
-		manufacturer: DF.Link | None
-		manufacturer_part_no: DF.Data | None
 		margin_rate_or_amount: DF.Float
 		margin_type: DF.Literal["", "Percentage", "Amount"]
 		material_request: DF.Link | None

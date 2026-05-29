@@ -88,7 +88,6 @@
   "asset_location",
   "asset_category",
   "schedule_date",
-  "quality_inspection",
   "material_request_item",
   "purchase_order_item",
   "purchase_invoice_item",
@@ -115,10 +114,6 @@
   "total_weight",
   "column_break_41",
   "weight_uom",
-  "manufacture_details",
-  "manufacturer",
-  "column_break_16",
-  "manufacturer_part_no",
   "accounting_details_section",
   "expense_account",
   "item_tax_rate",
@@ -521,17 +516,6 @@
    "width": "100px"
   },
   {
-   "depends_on": "eval:!doc.__islocal",
-   "fieldname": "quality_inspection",
-   "fieldtype": "Link",
-   "label": "Quality Inspection",
-   "no_copy": 1,
-   "oldfieldname": "qa_no",
-   "oldfieldtype": "Link",
-   "options": "Quality Inspection",
-   "print_hide": 1
-  },
-  {
    "fieldname": "column_break_40",
    "fieldtype": "Column Break"
   },
@@ -793,27 +777,6 @@
   {
    "fieldname": "dimension_col_break",
    "fieldtype": "Column Break"
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "manufacture_details",
-   "fieldtype": "Section Break",
-   "label": "Manufacture"
-  },
-  {
-   "fieldname": "manufacturer",
-   "fieldtype": "Link",
-   "label": "Manufacturer",
-   "options": "Manufacturer"
-  },
-  {
-   "fieldname": "column_break_16",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "manufacturer_part_no",
-   "fieldtype": "Data",
-   "label": "Manufacturer Part Number"
   },
   {
    "depends_on": "is_fixed_asset",

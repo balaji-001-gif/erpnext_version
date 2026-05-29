@@ -173,14 +173,6 @@ frappe.ui.form.on("Item", {
 					},
 					__("Create")
 				);
-			} else {
-				frm.add_custom_button(
-					__("Variant"),
-					function () {
-						erpnext.item.show_modal_for_manufacturers(frm);
-					},
-					__("Create")
-				);
 			}
 
 			// frm.page.set_inner_btn_group_as_primary(__('Create'));
@@ -522,42 +514,9 @@ $.extend(erpnext.item, {
 		}
 	},
 
-	show_modal_for_manufacturers: function (frm) {
-		var dialog = new frappe.ui.Dialog({
-			fields: [
-				{
-					fieldtype: "Link",
-					fieldname: "manufacturer",
-					options: "Manufacturer",
-					label: "Manufacturer",
-					reqd: 1,
-				},
-				{
-					fieldtype: "Data",
-					label: "Manufacturer Part Number",
-					fieldname: "manufacturer_part_no",
-				},
-			],
-		});
-
-		dialog.set_primary_action(__("Create"), function () {
-			var data = dialog.get_values();
-			if (!data) return;
-
-			// call the server to make the variant
-			data.template = frm.doc.name;
-			frappe.call({
-				method: "erpnext.controllers.item_variant.get_variant",
-				args: data,
-				callback: function (r) {
-					var doclist = frappe.model.sync(r.message);
-					dialog.hide();
-					frappe.set_route("Form", doclist[0].doctype, doclist[0].name);
-				},
-			});
-		});
-
-		dialog.show();
+	show_modal_for_manufacturers: function () {
+		// Manufacturer module removed
+		frappe.msgprint(__("Manufacturer variant creation is not available (module removed)."));
 	},
 
 	show_multiple_variants_dialog: function (frm) {

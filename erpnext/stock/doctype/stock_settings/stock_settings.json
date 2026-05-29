@@ -61,13 +61,6 @@
   "auto_reserve_stock_for_sales_order_on_purchase",
   "serial_and_batch_reservation_section",
   "auto_reserve_serial_and_batch",
-  "quality_tab",
-  "quality_inspection_settings_section",
-  "action_if_quality_inspection_is_not_submitted",
-  "column_break_23",
-  "action_if_quality_inspection_is_rejected",
-  "section_break_uiau",
-  "allow_to_make_quality_inspection_after_purchase_or_delivery",
   "stock_planning_tab",
   "auto_material_request",
   "auto_indent",
@@ -132,13 +125,6 @@
    "fieldname": "over_delivery_receipt_allowance",
    "fieldtype": "Float",
    "label": "Over Delivery/Receipt Allowance (%)"
-  },
-  {
-   "default": "Stop",
-   "fieldname": "action_if_quality_inspection_is_not_submitted",
-   "fieldtype": "Select",
-   "label": "Action If Quality Inspection Is Not Submitted",
-   "options": "Stop\nWarn"
   },
   {
    "default": "1",
@@ -267,18 +253,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "quality_inspection_settings_section",
-   "fieldtype": "Section Break",
-   "label": "Quality Inspection Settings"
-  },
-  {
-   "default": "Stop",
-   "fieldname": "action_if_quality_inspection_is_rejected",
-   "fieldtype": "Select",
-   "label": "Action If Quality Inspection Is Rejected",
-   "options": "Stop\nWarn"
-  },
-  {
    "description": "The percentage you are allowed to transfer more against the quantity ordered. For example, if you have ordered 100 units, and your Allowance is 10%, then you are allowed transfer 110 units.",
    "fieldname": "mr_qty_allowance",
    "fieldtype": "Float",
@@ -315,10 +289,6 @@
    "fieldname": "serial_and_batch_item_settings_tab",
    "fieldtype": "Tab Break",
    "label": "Serial & Batch Item"
-  },
-  {
-   "fieldname": "column_break_23",
-   "fieldtype": "Column Break"
   },
   {
    "fieldname": "price_list_defaults_section",
@@ -483,21 +453,6 @@
    "fieldname": "allow_uom_with_conversion_rate_defined_in_item",
    "fieldtype": "Check",
    "label": "Allow UOM with Conversion Rate Defined in Item"
-  },
-  {
-   "fieldname": "quality_tab",
-   "fieldtype": "Tab Break",
-   "label": "Quality"
-  },
-  {
-   "fieldname": "section_break_uiau",
-   "fieldtype": "Section Break"
-  },
-  {
-   "default": "0",
-   "fieldname": "allow_to_make_quality_inspection_after_purchase_or_delivery",
-   "fieldtype": "Check",
-   "label": "Allow to Make Quality Inspection after Purchase / Delivery"
   },
   {
    "default": "Rate",

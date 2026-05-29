@@ -69,7 +69,6 @@
   "use_serial_batch_fields",
   "col_br_wh",
   "from_warehouse",
-  "quality_inspection",
   "rejected_warehouse",
   "rejected_serial_and_batch_bundle",
   "section_break_rqbe",
@@ -77,10 +76,6 @@
   "rejected_serial_no",
   "column_break_vbbb",
   "batch_no",
-  "manufacture_details",
-  "manufacturer",
-  "column_break_13",
-  "manufacturer_part_no",
   "accounting",
   "expense_account",
   "wip_composite_asset",
@@ -439,15 +434,6 @@
    "options": "Warehouse"
   },
   {
-   "depends_on": "eval:!doc.__islocal",
-   "fieldname": "quality_inspection",
-   "fieldtype": "Link",
-   "label": "Quality Inspection",
-   "no_copy": 1,
-   "options": "Quality Inspection",
-   "print_hide": 1
-  },
-  {
    "depends_on": "eval:!doc.is_fixed_asset && doc.use_serial_batch_fields === 1 && parent.update_stock === 1",
    "fieldname": "batch_no",
    "fieldtype": "Link",
@@ -767,27 +753,6 @@
   {
    "fieldname": "dimension_col_break",
    "fieldtype": "Column Break"
-  },
-  {
-   "collapsible": 1,
-   "fieldname": "manufacture_details",
-   "fieldtype": "Section Break",
-   "label": "Manufacture"
-  },
-  {
-   "fieldname": "manufacturer",
-   "fieldtype": "Link",
-   "label": "Manufacturer",
-   "options": "Manufacturer"
-  },
-  {
-   "fieldname": "column_break_13",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "manufacturer_part_no",
-   "fieldtype": "Data",
-   "label": "Manufacturer Part Number"
   },
   {
    "depends_on": "is_fixed_asset",

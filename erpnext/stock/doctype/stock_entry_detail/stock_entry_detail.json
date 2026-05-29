@@ -19,7 +19,6 @@
   "col_break2",
   "is_finished_item",
   "is_scrap_item",
-  "quality_inspection",
   "subcontracted_item",
   "section_break_8",
   "description",
@@ -314,14 +313,6 @@
    "oldfieldname": "batch_no",
    "oldfieldtype": "Link",
    "options": "Batch"
-  },
-  {
-   "depends_on": "eval:parent.inspection_required && doc.t_warehouse",
-   "fieldname": "quality_inspection",
-   "fieldtype": "Link",
-   "label": "Quality Inspection",
-   "no_copy": 1,
-   "options": "Quality Inspection"
   },
   {
    "fieldname": "accounting",

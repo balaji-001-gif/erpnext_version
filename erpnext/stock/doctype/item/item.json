@@ -105,17 +105,12 @@
   "item_tax_section_break",
   "taxes",
   "quality_tab",
-  "inspection_required_before_purchase",
-  "quality_inspection_template",
-  "inspection_required_before_delivery",
   "manufacturing",
   "include_item_in_manufacturing",
   "is_sub_contracted_item",
   "default_bom",
   "column_break_74",
   "customer_code",
-  "default_item_manufacturer",
-  "default_manufacturer_part_no",
   "total_projected_qty"
  ],
  "fields": [
@@ -488,7 +483,7 @@
    "fieldname": "variant_based_on",
    "fieldtype": "Select",
    "label": "Variant Based On",
-   "options": "Item Attribute\nManufacturer"
+   "options": "Item Attribute"
   },
   {
    "depends_on": "eval:(doc.has_variants || doc.variant_of) && doc.variant_based_on==='Item Attribute'",
@@ -707,27 +702,6 @@
    "options": "Item Tax"
   },
   {
-   "default": "0",
-   "fieldname": "inspection_required_before_purchase",
-   "fieldtype": "Check",
-   "label": "Inspection Required before Purchase",
-   "oldfieldname": "inspection_required",
-   "oldfieldtype": "Select"
-  },
-  {
-   "default": "0",
-   "fieldname": "inspection_required_before_delivery",
-   "fieldtype": "Check",
-   "label": "Inspection Required before Delivery"
-  },
-  {
-   "fieldname": "quality_inspection_template",
-   "fieldtype": "Link",
-   "label": "Quality Inspection Template",
-   "options": "Quality Inspection Template",
-   "print_hide": 1
-  },
-  {
    "fieldname": "column_break_74",
    "fieldtype": "Column Break"
   },
@@ -759,19 +733,6 @@
    "fieldname": "auto_create_assets",
    "fieldtype": "Check",
    "label": "Auto Create Assets on Purchase"
-  },
-  {
-   "fieldname": "default_item_manufacturer",
-   "fieldtype": "Link",
-   "label": "Default Item Manufacturer",
-   "options": "Manufacturer",
-   "read_only": 1
-  },
-  {
-   "fieldname": "default_manufacturer_part_no",
-   "fieldtype": "Data",
-   "label": "Default Manufacturer Part No",
-   "read_only": 1
   },
   {
    "default": "1",

@@ -28,7 +28,6 @@ let do_not_include_fields = [
 	"sales_uom",
 	"deferred_revenue_account",
 	"deferred_expense_account",
-	"quality_inspection_template",
 	"route",
 	"slideshow",
 	"website_image_alt",

@@ -69,7 +69,6 @@
   "warehouse_and_reference",
   "warehouse",
   "target_warehouse",
-  "quality_inspection",
   "col_break4",
   "allow_zero_valuation_rate",
   "against_sales_order",
@@ -504,15 +503,6 @@
    "label": "Target Warehouse",
    "no_copy": 1,
    "options": "Warehouse",
-   "print_hide": 1
-  },
-  {
-   "depends_on": "eval:!doc.__islocal",
-   "fieldname": "quality_inspection",
-   "fieldtype": "Link",
-   "label": "Quality Inspection",
-   "no_copy": 1,
-   "options": "Quality Inspection",
    "print_hide": 1
   },
   {

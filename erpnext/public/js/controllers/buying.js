@@ -114,14 +114,6 @@ erpnext.buying = {
 				});
 
 
-				this.frm.set_query("manufacturer", "items", function(doc, cdt, cdn) {
-					const row = locals[cdt][cdn];
-					return {
-						query: "erpnext.controllers.queries.item_manufacturer_query",
-						filters:{ 'item_code': row.item_code }
-					}
-				});
-
 				if(this.frm.fields_dict["items"].grid.get_field('item_code')) {
 					this.frm.set_query("item_tax_template", "items", function(doc, cdt, cdn) {
 						return me.set_query_for_item_tax_template(doc, cdt, cdn)
@@ -367,49 +359,6 @@ erpnext.buying = {
 							}
 						}
 					})
-				}
-			}
-
-			manufacturer(doc, cdt, cdn) {
-				const row = locals[cdt][cdn];
-
-				if(row.manufacturer) {
-					frappe.call({
-						method: "erpnext.stock.doctype.item_manufacturer.item_manufacturer.get_item_manufacturer_part_no",
-						args: {
-							'item_code': row.item_code,
-							'manufacturer': row.manufacturer
-						},
-						callback: function(r) {
-							if (r.message) {
-								frappe.model.set_value(cdt, cdn, 'manufacturer_part_no', r.message);
-							}
-						}
-					});
-				}
-			}
-
-			manufacturer_part_no(doc, cdt, cdn) {
-				const row = locals[cdt][cdn];
-
-				if (row.manufacturer_part_no) {
-					frappe.model.get_value('Item Manufacturer',
-						{
-							'item_code': row.item_code,
-							'manufacturer': row.manufacturer,
-							'manufacturer_part_no': row.manufacturer_part_no
-						},
-						'name',
-						function(data) {
-							if (!data) {
-								let msg = {
-									message: __("Manufacturer Part Number <b>{0}</b> is invalid", [row.manufacturer_part_no]),
-									title: __("Invalid Part Number")
-								}
-								frappe.throw(msg);
-							}
-						}
-					);
 				}
 			}
 

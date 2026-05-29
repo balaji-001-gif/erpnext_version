@@ -47,7 +47,6 @@ class StockEntryDetail(Document):
 		project: DF.Link | None
 		putaway_rule: DF.Link | None
 		qty: DF.Float
-		quality_inspection: DF.Link | None
 		reference_purchase_receipt: DF.Link | None
 		retain_sample: DF.Check
 		s_warehouse: DF.Link | None
