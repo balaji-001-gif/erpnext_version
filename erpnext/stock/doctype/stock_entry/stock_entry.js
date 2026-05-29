@@ -236,10 +236,7 @@ frappe.ui.form.on("Stock Entry", {
 			return;
 		}
 
-		let available_qty = await frappe.xcall(
-			"__manufacturing_removed__",
-			{ stock_entry_name: frm.doc.source_stock_entry }
-		);
+		let available_qty = 0;
 
 		// triggers get_items() via its onchange
 		await frm.set_value("fg_completed_qty", available_qty);
@@ -342,58 +339,7 @@ frappe.ui.form.on("Stock Entry", {
 				);
 			}
 
-			if (frm.doc.purpose === "Manufacture") {
-				frm.add_custom_button(
-					__("Disassemble"),
-					async function () {
-						let available_qty = await frappe.xcall(
-							"__manufacturing_removed__",
-							{ stock_entry_name: frm.doc.name }
-						);
-						frappe.prompt(
-							{
-								fieldtype: "Float",
-								label: __("Qty to Disassemble"),
-								fieldname: "qty",
-								default: available_qty,
-								description: __("Max: {0}", [available_qty]),
-							},
-							async (data) => {
-								if (frm.doc.work_order) {
-									let stock_entry = await frappe.xcall(
-										"__manufacturing_removed__",
-										{
-											work_order_id: frm.doc.work_order,
-											purpose: "Disassemble",
-											qty: data.qty,
-											source_stock_entry: frm.doc.name,
-										}
-									);
-									if (stock_entry) {
-										frappe.model.sync(stock_entry);
-										frappe.set_route("Form", stock_entry.doctype, stock_entry.name);
-									}
-								} else {
-									let se = frappe.model.get_new_doc("Stock Entry");
-									se.company = frm.doc.company;
-									se.stock_entry_type = "Disassemble";
-									se.purpose = "Disassemble";
-									se.source_stock_entry = frm.doc.name;
-									se.from_bom = frm.doc.from_bom;
-									se.bom_no = frm.doc.bom_no;
-									se.fg_completed_qty = data.qty;
-									frm._via_source_stock_entry = true;
-
-									frappe.set_route("Form", "Stock Entry", se.name);
-								}
-							},
-							__("Disassemble"),
-							__("Create")
-						);
-					},
-					__("Create")
-				);
-			}
+	
 		}
 
 		if (frm.doc.docstatus === 0) {
@@ -596,17 +542,8 @@ frappe.ui.form.on("Stock Entry", {
 	cost_center(frm, cdt, cdn) {
 		erpnext.utils.copy_value_in_all_rows(frm.doc, cdt, cdn, "items", "cost_center");
 	},
-	validate_purpose_consumption: function (frm) {
-		frappe
-			.call({
-				method: "__manufacturing_removed__",
-			})
-			.then((r) => {
-				if (cint(r.message) == 0 && frm.doc.purpose == "Material Consumption for Manufacture") {
-					frm.set_value("purpose", "Manufacture");
-					frappe.throw(__("Material Consumption is not set in Manufacturing Settings."));
-				}
-			});
+	validate_purpose_consumption: function () {
+		// Manufacturing removed - validation not needed
 	},
 
 	make_retention_stock_entry: function (frm) {
@@ -715,109 +652,13 @@ frappe.ui.form.on("Stock Entry", {
 		}
 	},
 
-	show_bom_custom_button: function (frm) {
-		if (
-			frm.doc.docstatus === 0 &&
-			["Material Issue", "Material Receipt", "Material Transfer", "Send to Subcontractor"].includes(
-				frm.doc.purpose
-			)
-		) {
-			frm.add_custom_button(
-				__("Bill of Materials"),
-				function () {
-					frm.events.get_items_from_bom(frm);
-				},
-				__("Get Items From")
-			);
-		}
+	show_bom_custom_button: function () {
+		// Manufacturing removed - BOM functionality not available
 	},
 
-	get_items_from_bom: function (frm) {
-		let filters = function () {
-			return { filters: { docstatus: 1 } };
-		};
-
-		let fields = [
-			{
-				fieldname: "bom",
-				fieldtype: "Link",
-				label: __("BOM"),
-				options: "BOM",
-				reqd: 1,
-				get_query: () => {
-					return { filters: { docstatus: 1, is_active: 1 } };
-				},
-			},
-			{
-				fieldname: "source_warehouse",
-				fieldtype: "Link",
-				label: __("Source Warehouse"),
-				options: "Warehouse",
-			},
-			{
-				fieldname: "target_warehouse",
-				fieldtype: "Link",
-				label: __("Target Warehouse"),
-				options: "Warehouse",
-			},
-			{ fieldname: "qty", fieldtype: "Float", label: __("Quantity"), reqd: 1, default: 1 },
-			{
-				fieldname: "fetch_exploded",
-				fieldtype: "Check",
-				label: __("Fetch exploded BOM (including sub-assemblies)"),
-				default: 1,
-			},
-			{ fieldname: "fetch", label: __("Get Items from BOM"), fieldtype: "Button" },
-		];
-
-		// Exclude field 'Target Warehouse' in case of Material Issue
-		if (frm.doc.purpose == "Material Issue") {
-			fields.splice(2, 1);
-		}
-		// Exclude field 'Source Warehouse' in case of Material Receipt
-		else if (frm.doc.purpose == "Material Receipt") {
-			fields.splice(1, 1);
-		}
-
-		let d = new frappe.ui.Dialog({
-			title: __("Get Items from BOM"),
-			fields: fields,
-		});
-		d.get_input("fetch").on("click", function () {
-			let values = d.get_values();
-			if (!values) return;
-			values["company"] = frm.doc.company;
-			if (!frm.doc.company) frappe.throw(__("Company field is required"));
-			frappe.call({
-				method: "__manufacturing_removed__",
-				args: values,
-				callback: function (r) {
-					if (!r.message) {
-						frappe.throw(__("BOM does not contain any stock item"));
-					} else {
-						erpnext.utils.remove_empty_first_row(frm, "items");
-						$.each(r.message, function (i, item) {
-							let d = frappe.model.add_child(cur_frm.doc, "Stock Entry Detail", "items");
-							d.item_code = item.item_code;
-							d.item_name = item.item_name;
-							d.item_group = item.item_group;
-							d.s_warehouse = values.source_warehouse;
-							d.t_warehouse = values.target_warehouse;
-							d.uom = item.stock_uom;
-							d.stock_uom = item.stock_uom;
-							d.conversion_factor = item.conversion_factor ? item.conversion_factor : 1;
-							d.qty = item.qty;
-							d.expense_account = item.expense_account;
-							d.project = item.project;
-							frm.events.set_basic_rate(frm, d.doctype, d.name);
-						});
-					}
-					d.hide();
-					refresh_field("items");
-				},
-			});
-		});
-		d.show();
+	get_items_from_bom: function () {
+		// Manufacturing removed - BOM functionality not available
+		frappe.msgprint(__("BOM features are not available (manufacturing module removed)."));
 	},
 
 	calculate_basic_amount: function (frm, item) {

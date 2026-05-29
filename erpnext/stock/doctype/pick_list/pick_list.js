@@ -40,14 +40,7 @@ frappe.ui.form.on("Pick List", {
 		frm.events.set_warehouse_query(frm, "warehouse", "locations");
 		frm.events.set_warehouse_query(frm, "parent_warehouse");
 
-		frm.set_query("work_order", () => {
-			return {
-				query: "erpnext.stock.doctype.pick_list.pick_list.get_pending_work_orders",
-				filters: {
-					company: frm.doc.company,
-				},
-			};
-		});
+		// Manufacturing removed - work_order query disabled
 
 		frm.set_query("material_request", () => {
 			return {
@@ -207,36 +200,10 @@ frappe.ui.form.on("Pick List", {
 		}
 	},
 	work_order: (frm) => {
-		frappe.db
-			.get_value("Work Order", frm.doc.work_order, ["qty", "material_transferred_for_manufacturing"])
-			.then((data) => {
-				let qty_data = data.message;
-				let max = qty_data.qty - qty_data.material_transferred_for_manufacturing;
-				frappe.prompt(
-					{
-						fieldtype: "Float",
-						label: __("Qty of Finished Goods Item"),
-						fieldname: "qty",
-						description: __("Max: {0}", [max]),
-						default: max,
-					},
-					(data) => {
-						frm.set_value("for_qty", data.qty);
-						if (data.qty > max) {
-							frappe.msgprint(__("Quantity must not be more than {0}", [max]));
-							return;
-						}
-						frm.clear_table("locations");
-						erpnext.utils.map_current_doc({
-							method: "__manufacturing_removed__",
-							target: frm,
-							source_name: frm.doc.work_order,
-						});
-					},
-					__("Select Quantity"),
-					__("Get Items")
-				);
-			});
+		// Manufacturing removed - work orders not available
+		if (frm.doc.work_order) {
+			frappe.msgprint(__("Work Orders are not available (manufacturing module removed)."));
+		}
 	},
 	material_request: (frm) => {
 		erpnext.utils.map_current_doc({
