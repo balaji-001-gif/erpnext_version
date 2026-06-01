@@ -17,7 +17,7 @@
    "fieldtype": "Select",
    "in_list_view": 1,
    "label": "Purpose",
-   "options": "\nMaterial Issue\nMaterial Receipt\nMaterial Transfer\nMaterial Transfer for Manufacture\nMaterial Consumption for Manufacture\nManufacture\nRepack\nSend to Subcontractor\nDisassemble",
+   "options": "\nMaterial Issue\nMaterial Receipt\nMaterial Transfer\nRepack",
    "reqd": 1,
    "set_only_once": 1
   },
