@@ -24,7 +24,7 @@ def before_tests():
 				"company_name": "Wind Power LLC",
 				"timezone": "America/New_York",
 				"company_abbr": "WP",
-				"industry": "Manufacturing",
+				"industry": "Retail",
 				"country": "United States",
 				"fy_start_date": f"{current_year}-01-01",
 				"fy_end_date": f"{current_year}-12-31",

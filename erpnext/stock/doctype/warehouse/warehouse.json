@@ -311,10 +311,6 @@
    "read": 1,
    "report": 1,
    "role": "Accounts User"
-  },
-  {
-   "read": 1,
-   "role": "Manufacturing User"
   }
  ],
  "row_format": "Dynamic",

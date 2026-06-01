@@ -834,47 +834,6 @@ frappe.help.help_links["Form/Sales Person"] = [
 	},
 ];
 
-//Manufacturing
-
-frappe.help.help_links["Form/BOM"] = [
-	{
-		label: "Bill of Material",
-		url: docsUrl + "user/manual/en/bill-of-materials",
-	},
-	{
-		label: "Nested BOM Structure",
-		url: docsUrl + "user/manual/en/managing-multi-level-bom",
-	},
-];
-
-frappe.help.help_links["Form/Work Order"] = [
-	{
-		label: "Work Order",
-		url: docsUrl + "user/manual/en/work-order",
-	},
-];
-
-frappe.help.help_links["Form/Workstation"] = [
-	{
-		label: "Workstation",
-		url: docsUrl + "user/manual/en/workstation",
-	},
-];
-
-frappe.help.help_links["Form/Operation"] = [
-	{
-		label: "Operation",
-		url: docsUrl + "user/manual/en/operation",
-	},
-];
-
-frappe.help.help_links["Form/BOM Update Tool"] = [
-	{
-		label: "BOM Update Tool",
-		url: docsUrl + "user/manual/en/bom-update-tool",
-	},
-];
-
 //Customize
 
 frappe.help.help_links["Form/Customize Form"] = [

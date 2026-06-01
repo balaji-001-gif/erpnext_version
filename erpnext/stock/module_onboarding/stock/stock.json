@@ -1,13 +1,7 @@
 {
  "allow_roles": [
   {
-   "role": "Manufacturing Manager"
-  },
-  {
    "role": "Stock Manager"
-  },
-  {
-   "role": "Manufacturing User"
   },
   {
    "role": "Stock User"

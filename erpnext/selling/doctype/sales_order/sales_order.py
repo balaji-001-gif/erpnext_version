@@ -22,10 +22,6 @@ from erpnext.accounts.doctype.sales_invoice.sales_invoice import (
 )
 from erpnext.accounts.party import get_party_account
 from erpnext.controllers.selling_controller import SellingController
-# Manufacturing module removed
-def validate_against_blanket_order(*args, **kwargs): return None
-# Manufacturing module removed
-def get_items_for_material_requests(*args, **kwargs): return []
 from erpnext.selling.doctype.customer.customer import check_credit_limit
 from erpnext.setup.doctype.item_group.item_group import get_item_group_defaults
 from erpnext.stock.doctype.item.item import get_item_defaults
@@ -35,6 +31,10 @@ from erpnext.stock.doctype.stock_reservation_entry.stock_reservation_entry impor
 )
 from erpnext.stock.get_item_details import get_bin_details, get_default_bom, get_price_list_rate
 from erpnext.stock.stock_balance import get_reserved_qty, update_bin_qty
+
+
+# Manufacturing module removed
+def validate_against_blanket_order(*args, **kwargs): return None
 
 form_grid_templates = {"items": "templates/form_grid/item_grid.html"}
 
@@ -1645,105 +1645,11 @@ def is_product_bundle(item_code):
 
 
 @frappe.whitelist()
-def make_work_orders(items, sales_order, company, project=None):
-	"""Make Work Orders against the given Sales Order for the given `items`"""
-	items = json.loads(items).get("items")
-	out = []
-
-	for i in items:
-		if not i.get("bom"):
-			frappe.throw(_("Please select BOM against item {0}").format(i.get("item_code")))
-		if not i.get("pending_qty"):
-			frappe.throw(_("Please select Qty against item {0}").format(i.get("item_code")))
-
-		work_order = frappe.get_doc(
-			dict(
-				doctype="Work Order",
-				production_item=i["item_code"],
-				bom_no=i.get("bom"),
-				qty=i["pending_qty"],
-				company=company,
-				sales_order=sales_order,
-				sales_order_item=i["sales_order_item"],
-				project=project,
-				fg_warehouse=i["warehouse"],
-				description=i["description"],
-			)
-		).insert()
-		work_order.set_work_order_operations()
-		work_order.flags.ignore_mandatory = True
-		work_order.save()
-		out.append(work_order)
-
-	return [p.name for p in out]
-
-
-@frappe.whitelist()
 def update_status(status, name):
 	frappe.has_permission("Sales Order", "submit", name, throw=True)
 
 	so = frappe.get_doc("Sales Order", name)
 	so.update_status(status)
-
-
-@frappe.whitelist()
-def make_raw_material_request(items, company, sales_order, project=None):
-	if not frappe.has_permission("Sales Order", "write"):
-		frappe.throw(_("Not permitted"), frappe.PermissionError)
-
-	if isinstance(items, str):
-		items = frappe._dict(json.loads(items))
-
-	for item in items.get("items"):
-		item["include_exploded_items"] = items.get("include_exploded_items")
-		item["ignore_existing_ordered_qty"] = items.get("ignore_existing_ordered_qty")
-		item["include_raw_materials_from_sales_order"] = items.get("include_raw_materials_from_sales_order")
-
-	items.update({"company": company, "sales_order": sales_order})
-
-	item_wh = {}
-	for item in items.get("items"):
-		if item.get("warehouse"):
-			item_wh[item.get("item_code")] = item.get("warehouse")
-
-	raw_materials = get_items_for_material_requests(items)
-	if not raw_materials:
-		frappe.msgprint(_("Material Request not created, as quantity for Raw Materials already available."))
-		return
-
-	material_request = frappe.new_doc("Material Request")
-	material_request.update(
-		dict(
-			doctype="Material Request",
-			transaction_date=nowdate(),
-			company=company,
-			material_request_type="Purchase",
-		)
-	)
-	for item in raw_materials:
-		item_doc = frappe.get_cached_doc("Item", item.get("item_code"))
-
-		schedule_date = add_days(nowdate(), cint(item_doc.lead_time_days))
-		row = material_request.append(
-			"items",
-			{
-				"item_code": item.get("item_code"),
-				"qty": item.get("quantity"),
-				"schedule_date": schedule_date,
-				"warehouse": item_wh.get(item.get("main_bom_item")) or item.get("warehouse"),
-				"sales_order": sales_order,
-				"project": project,
-			},
-		)
-
-		if not (strip_html(item.get("description")) and strip_html(item_doc.description)):
-			row.description = item_doc.item_name or item.get("item_code")
-
-	material_request.insert()
-	material_request.flags.ignore_permissions = 1
-	material_request.run_method("set_missing_values")
-	material_request.submit()
-	return material_request
 
 
 @frappe.whitelist()
@@ -1834,80 +1740,6 @@ def create_pick_list(source_name, target_doc=None):
 		doc.set_item_locations()
 
 	return doc
-
-
-def update_produced_qty_in_so_item(sales_order, sales_order_item):
-	# for multiple work orders against same sales order item
-	linked_wo_with_so_item = frappe.db.get_all(
-		"Work Order",
-		["produced_qty"],
-		{"sales_order_item": sales_order_item, "sales_order": sales_order, "docstatus": 1},
-	)
-
-	total_produced_qty = 0
-	for wo in linked_wo_with_so_item:
-		total_produced_qty += flt(wo.get("produced_qty"))
-
-	if not total_produced_qty and frappe.flags.in_patch:
-		return
-
-	frappe.db.set_value("Sales Order Item", sales_order_item, "produced_qty", total_produced_qty)
-
-
-@frappe.whitelist()
-def get_work_order_items(sales_order, for_raw_material_request=0):
-	"""Returns items with BOM that already do not have a linked work order"""
-	if sales_order:
-		so = frappe.get_doc("Sales Order", sales_order)
-
-		wo = qb.DocType("Work Order")
-
-		items = []
-		item_codes = [i.item_code for i in so.items]
-		product_bundle_parents = [
-			pb.new_item_code
-			for pb in frappe.get_all(
-				"Product Bundle", {"new_item_code": ["in", item_codes], "disabled": 0}, ["new_item_code"]
-			)
-		]
-
-		for table in [so.items, so.packed_items]:
-			for i in table:
-				bom = get_default_bom(i.item_code)
-				stock_qty = i.qty if i.doctype == "Packed Item" else i.stock_qty
-
-				if not for_raw_material_request:
-					total_work_order_qty = flt(
-						qb.from_(wo)
-						.select(Sum(wo.qty - wo.process_loss_qty))
-						.where(
-							(wo.production_item == i.item_code)
-							& (wo.sales_order == so.name)
-							& (wo.sales_order_item == i.name)
-							& (wo.docstatus.lt(2))
-							& (wo.status != "Closed")
-						)
-						.run()[0][0]
-					)
-					pending_qty = stock_qty - total_work_order_qty
-				else:
-					pending_qty = stock_qty
-
-				if pending_qty and i.item_code not in product_bundle_parents:
-					items.append(
-						dict(
-							name=i.name,
-							item_code=i.item_code,
-							description=i.description,
-							bom=bom or "",
-							warehouse=i.warehouse,
-							pending_qty=pending_qty,
-							required_qty=pending_qty if for_raw_material_request else 0,
-							sales_order_item=i.name,
-						)
-					)
-
-		return items
 
 
 @frappe.whitelist()

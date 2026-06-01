@@ -353,11 +353,6 @@ DEFAULT_ROLE_PROFILES = {
 		"Stock Manager",
 		"Item Manager",
 	],
-	"Manufacturing": [
-		"Stock User",
-		"Manufacturing User",
-		"Manufacturing Manager",
-	],
 	"Accounts": [
 		"Accounts User",
 		"Accounts Manager",

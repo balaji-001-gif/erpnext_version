@@ -268,8 +268,7 @@ class SerialBatchBundle:
 	def child_doctype(self):
 		child_doctype = self.sle.voucher_type + " Item"
 
-		if False:  # subcontracting removed
-			child_doctype = ""  # subcontracting removed
+
 
 		if self.sle.voucher_type == "Stock Entry":
 			child_doctype = "Stock Entry Detail"
@@ -977,18 +976,15 @@ def get_batch_nos(serial_and_batch_bundle):
 	return {d.batch_no: d for d in entries}
 
 
-def get_empty_batches_based_work_order(work_order, item_code):
-	# Manufacturing module removed
+def get_empty_batches_based_work_order(work_order, item_code):			
 	return []
 
 
-def get_batches_from_work_order(work_order, item_code):
-	# Manufacturing module removed
+def get_batches_from_work_order(work_order, item_code):			
 	return []
 
 
-def get_batches_from_stock_entries(work_order, item_code):
-	# Manufacturing module removed
+def get_batches_from_stock_entries(work_order, item_code):			
 	return []
 
 

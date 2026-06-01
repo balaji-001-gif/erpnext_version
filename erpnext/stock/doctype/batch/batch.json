@@ -28,11 +28,7 @@
   "reference_doctype",
   "reference_name",
   "section_break_7",
-  "description",
-  "manufacturing_section",
-  "qty_to_produce",
-  "column_break_23",
-  "produced_qty"
+  "description"
  ],
  "fields": [
   {
@@ -169,27 +165,7 @@
    "options": "UOM",
    "read_only": 1
   },
-  {
-   "fieldname": "manufacturing_section",
-   "fieldtype": "Section Break",
-   "label": "Manufacturing"
-  },
-  {
-   "fieldname": "qty_to_produce",
-   "fieldtype": "Float",
-   "label": "Qty To Produce",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_23",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "produced_qty",
-   "fieldtype": "Float",
-   "label": "Produced Qty",
-   "read_only": 1
-  },
+
   {
    "fieldname": "column_break_24",
    "fieldtype": "Column Break"

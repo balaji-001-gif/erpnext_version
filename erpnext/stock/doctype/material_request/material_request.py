@@ -17,8 +17,6 @@ from frappe.utils import cint, cstr, flt, get_link_to_form, getdate, new_line_se
 
 from erpnext.buying.utils import check_on_hold_or_closed_status, validate_for_items
 from erpnext.controllers.buying_controller import BuyingController
-# Manufacturing module removed
-def get_item_details(*args, **kwargs): return frappe._dict()
 from erpnext.stock.doctype.item.item import get_item_defaults
 from erpnext.stock.stock_balance import get_indented_qty, update_bin_qty
 
@@ -771,72 +769,6 @@ def make_stock_entry(source_name, target_doc=None):
 	)
 
 	return doclist
-
-
-@frappe.whitelist()
-def raise_work_orders(material_request):
-	mr = frappe.get_doc("Material Request", material_request)
-	errors = []
-	work_orders = []
-	default_wip_warehouse = frappe.db.get_single_value("Manufacturing Settings", "default_wip_warehouse")
-
-	for d in mr.items:
-		if (d.stock_qty - d.ordered_qty) > 0:
-			if frappe.db.exists("BOM", {"item": d.item_code, "is_default": 1}):
-				wo_order = frappe.new_doc("Work Order")
-				wo_order.update(
-					{
-						"production_item": d.item_code,
-						"qty": d.stock_qty - d.ordered_qty,
-						"fg_warehouse": d.warehouse,
-						"wip_warehouse": default_wip_warehouse,
-						"description": d.description,
-						"stock_uom": d.stock_uom,
-						"expected_delivery_date": d.schedule_date,
-						"sales_order": d.sales_order,
-						"sales_order_item": d.get("sales_order_item"),
-						"bom_no": get_item_details(d.item_code).bom_no,
-						"material_request": mr.name,
-						"material_request_item": d.name,
-						"planned_start_date": mr.transaction_date,
-						"company": mr.company,
-						"project": d.project,
-					}
-				)
-
-				wo_order.get_items_and_operations_from_bom()
-				wo_order.flags.ignore_validate = True
-				wo_order.flags.ignore_mandatory = True
-				wo_order.save()
-
-				work_orders.append(wo_order.name)
-			else:
-				errors.append(
-					_("Row {0}: Bill of Materials not found for the Item {1}").format(
-						d.idx, get_link_to_form("Item", d.item_code)
-					)
-				)
-
-	if work_orders:
-		work_orders_list = [get_link_to_form("Work Order", d) for d in work_orders]
-
-		if len(work_orders) > 1:
-			msgprint(
-				_("The following {0} were created: {1}").format(
-					frappe.bold(_("Work Orders")), "<br>" + ", ".join(work_orders_list)
-				)
-			)
-		else:
-			msgprint(
-				_("The {0} {1} created sucessfully").format(frappe.bold(_("Work Order")), work_orders_list[0])
-			)
-
-	if errors:
-		frappe.throw(
-			_("Work Order cannot be created for following reason: <br> {0}").format(new_line_sep(errors))
-		)
-
-	return work_orders
 
 
 @frappe.whitelist()

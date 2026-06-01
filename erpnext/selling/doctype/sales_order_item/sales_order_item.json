@@ -83,8 +83,6 @@
   "actual_qty",
   "column_break_jpky",
   "company_total_stock",
-  "manufacturing_section_section",
-  "bom_no",
   "planning_section",
   "projected_qty",
   "ordered_qty",
@@ -793,18 +791,6 @@
    "fieldname": "against_blanket_order",
    "fieldtype": "Check",
    "label": "Against Blanket Order"
-  },
-  {
-   "fieldname": "bom_no",
-   "fieldtype": "Data",
-   "label": "BOM No",
-   "no_copy": 1,
-   "print_hide": 1
-  },
-  {
-   "fieldname": "manufacturing_section_section",
-   "fieldtype": "Section Break",
-   "label": "Manufacturing Section"
   },
   {
    "depends_on": "eval: doc.uom != doc.stock_uom",

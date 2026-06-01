@@ -312,10 +312,7 @@ frappe.ui.form.on("Material Request", {
 		});
 	},
 
-	get_items_from_bom: function () {
-		// Manufacturing removed - BOM functionality not available
-		frappe.msgprint(__("BOM features are not available (manufacturing module removed)."));
-	},
+
 
 	make_purchase_order: function (frm) {
 		frappe.prompt(
@@ -414,11 +411,6 @@ frappe.ui.form.on("Material Request", {
 			method: "erpnext.stock.doctype.material_request.material_request.create_pick_list",
 			frm: frm,
 		});
-	},
-
-	raise_work_orders: function () {
-		// Manufacturing removed - work orders not available
-		frappe.msgprint(__("Work Orders are not available (manufacturing module removed)."));
 	},
 	material_request_type: function (frm) {
 		frm.toggle_reqd("customer", frm.doc.material_request_type == "Customer Provided");

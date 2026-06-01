@@ -37,16 +37,10 @@
    "role": "Delivery User"
   },
   {
-   "role": "Manufacturing User"
-  },
-  {
    "role": "Purchase User"
   },
   {
    "role": "Stock Manager"
-  },
-  {
-   "role": "Manufacturing Manager"
   },
   {
    "role": "Maintenance User"

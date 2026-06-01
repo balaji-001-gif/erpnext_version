@@ -120,10 +120,6 @@
    "role": "Purchase Master Manager",
    "share": 1,
    "write": 1
-  },
-  {
-   "read": 1,
-   "role": "Manufacturing User"
   }
  ],
  "search_fields": "currency",
