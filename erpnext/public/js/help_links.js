@@ -389,7 +389,6 @@ frappe.help.help_links["Form/Purchase Order"] = [
 		label: "Recurring Purchase Order",
 		url: docsUrl + "user/manual/en/auto-repeat",
 	},
-	{
 ];
 
 frappe.help.help_links["List/Purchase Taxes and Charges Template"] = [
@@ -733,7 +732,6 @@ frappe.help.help_links["Form/Stock Entry"] = [
 		label: "Opening Stock",
 		url: docsUrl + "user/manual/en/opening-stock",
 	},
-	{
 ];
 
 frappe.help.help_links["List/Stock Entry"] = [
