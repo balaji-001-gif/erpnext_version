@@ -243,17 +243,6 @@
    "dependencies": "",
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Lead Source",
-   "link_count": 0,
-   "link_to": "Lead Source",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 0,
    "label": "Customer Group",
    "link_count": 0,
    "link_to": "Customer Group",
@@ -290,17 +279,6 @@
    "label": "Territory",
    "link_count": 0,
    "link_to": "Territory",
-   "link_type": "DocType",
-   "onboard": 0,
-   "type": "Link"
-  },
-  {
-   "dependencies": "",
-   "hidden": 0,
-   "is_query_report": 0,
-   "label": "Campaign",
-   "link_count": 0,
-   "link_to": "Campaign",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"

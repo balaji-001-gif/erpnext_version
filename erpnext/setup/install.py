@@ -280,7 +280,7 @@ def add_app_name():
 
 
 def hide_workspaces():
-	for ws in ["Integration", "Manufacturing", "CRM", "Projects", "Settings"]:
+	for ws in ["Integration", "Manufacturing", "Settings"]:
 		frappe.db.set_value("Workspace", ws, "public", 0)
 
 

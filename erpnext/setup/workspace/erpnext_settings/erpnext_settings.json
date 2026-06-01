@@ -399,26 +399,6 @@
     {
      "hidden": 0,
      "is_query_report": 0,
-     "label": "CRM Settings",
-     "link_count": 0,
-     "link_to": "CRM Settings",
-     "link_type": "DocType",
-     "onboard": 0,
-     "type": "Link"
-    },
-    {
-     "hidden": 0,
-     "is_query_report": 0,
-     "label": "Projects Settings",
-     "link_count": 0,
-     "link_to": "Projects Settings",
-     "link_type": "DocType",
-     "onboard": 0,
-     "type": "Link"
-    },
-    {
-     "hidden": 0,
-     "is_query_report": 0,
      "label": "Support Settings",
      "link_count": 0,
      "link_to": "Support Settings",
