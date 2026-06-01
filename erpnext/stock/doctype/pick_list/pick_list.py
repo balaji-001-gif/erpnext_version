@@ -1573,10 +1573,11 @@ def update_stock_entry_based_on_work_order(pick_list, stock_entry):
 	work_order = frappe.get_doc("Work Order", pick_list.get("work_order"))
 
 	stock_entry.work_order = work_order.name
-	stock_entry.company = work_order.company		stock_entry.from_bom = 1
-		stock_entry.bom_no = work_order.bom_no
-		stock_entry.use_multi_level_bom = work_order.use_multi_level_bom
-		stock_entry.fg_completed_qty = pick_list.for_qty
+	stock_entry.company = work_order.company
+	stock_entry.from_bom = 1
+	stock_entry.bom_no = work_order.bom_no
+	stock_entry.use_multi_level_bom = work_order.use_multi_level_bom
+	stock_entry.fg_completed_qty = pick_list.for_qty
 
 	is_wip_warehouse_group = frappe.db.get_value("Warehouse", work_order.wip_warehouse, "is_group")
 	if not (is_wip_warehouse_group and work_order.skip_transfer):
