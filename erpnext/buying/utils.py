@@ -91,7 +91,7 @@ def validate_item_and_get_basic_data(row) -> dict:
 	item = frappe.db.get_values(
 		"Item",
 		filters={"name": row.item_code},
-		fieldname=["is_stock_item", "is_sub_contracted_item", "end_of_life", "disabled"],
+		fieldname=["is_stock_item", "end_of_life", "disabled"],
 		as_dict=1,
 	)
 	if not item:
