@@ -90,19 +90,11 @@ class SellingController(StockController):
 		self.set_company_contact_person()
 
 	def set_missing_lead_customer_details(self, for_validate=False):
-		customer, lead = None, None
+		customer = None
 		if getattr(self, "customer", None):
 			customer = self.customer
-		elif self.doctype == "Opportunity" and self.party_name:
-			if self.opportunity_from == "Customer":
-				customer = self.party_name
-			else:
-				lead = self.party_name
-		elif self.doctype == "Quotation" and self.party_name:
-			if self.quotation_to == "Customer":
-				customer = self.party_name
-			elif self.quotation_to == "Lead":
-				lead = self.party_name
+		elif self.doctype == "Quotation" and self.party_name and self.quotation_to == "Customer":
+			customer = self.party_name
 
 		if customer:
 			from erpnext.accounts.party import _get_party_details
@@ -121,18 +113,6 @@ class SellingController(StockController):
 			if not self.meta.get_field("sales_team"):
 				party_details.pop("sales_team")
 			self.update_if_missing(party_details)
-
-		elif lead:
-			from erpnext.crm.doctype.lead.lead import get_lead_details
-
-			self.update_if_missing(
-				get_lead_details(
-					lead,
-					posting_date=self.get("transaction_date") or self.get("posting_date"),
-					company=self.company,
-					doctype=self.doctype,
-				)
-			)
 
 		if self.get("taxes_and_charges") and not self.get("taxes") and not for_validate:
 			taxes = get_taxes_and_charges("Sales Taxes and Charges Template", self.taxes_and_charges)

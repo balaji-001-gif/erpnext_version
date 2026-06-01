@@ -1,12 +1,8 @@
 data = {
 	"desktop_icons": [
-		"Project",
-		"Timesheet",
 		"Customer",
 		"Sales Order",
 		"Sales Invoice",
-		"CRM",
-		"Task",
 		"Expense Claim",
 		"Employee",
 		"HR",

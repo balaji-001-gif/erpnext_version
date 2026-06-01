@@ -21,11 +21,8 @@ def get_level(site_info):
 		"Issue": 5,
 		"Item": 5,
 		"Journal Entry": 3,
-		"Lead": 3,
 		"Material Request": 5,
-		"Opportunity": 5,
 		"Payment Entry": 2,
-		"Project": 5,
 		"Purchase Order": 2,
 		"Purchase Invoice": 5,
 		"Purchase Receipt": 5,
@@ -34,7 +31,6 @@ def get_level(site_info):
 		"Sales Invoice": 2,
 		"Stock Entry": 3,
 		"Supplier": 5,
-		"Task": 5,
 		"User": 5,
 	}
 
@@ -71,14 +67,6 @@ def get_help_messages():
 
 	message_settings = [
 		frappe._dict(
-			doctype="Lead",
-			title=_("Create Leads"),
-			description=_("Leads help you get business, add all your contacts and more as your leads"),
-			action=_("Create Lead"),
-			route="List/Lead",		domain=("Retail", "Services", "Distribution"),
-			target=3,
-	),
-		frappe._dict(
 			doctype="Quotation",
 			title=_("Create customer quotes"),
 			description=_("Quotations are proposals, bids you have sent to your customers"),
@@ -112,17 +100,7 @@ def get_help_messages():
 			route="List/User",		domain=("Retail", "Services", "Distribution"),
 			target=3,
 	),
-		frappe._dict(
-			doctype="Timesheet",
-			title=_("Add Timesheets"),
-			description=_(
-				"Timesheets help keep track of time, cost and billing for activites done by your team"
-			),
-			action=_("Create Timesheet"),
-			route="List/Timesheet",
-			domain=("Services",),
-			target=5,
-		),
+
 		frappe._dict(
 			doctype="Employee",
 			title=_("Create Employee Records"),

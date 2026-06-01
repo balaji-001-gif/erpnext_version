@@ -40,7 +40,6 @@ from erpnext.assets.doctype.asset.depreciation import (
 from erpnext.assets.doctype.asset_activity.asset_activity import add_asset_activity
 from erpnext.controllers.accounts_controller import validate_account_head
 from erpnext.controllers.selling_controller import SellingController
-from erpnext.projects.doctype.timesheet.timesheet import get_projectwise_timesheet_data
 from erpnext.setup.doctype.company.company import update_company_current_month_sales
 from erpnext.stock.doctype.delivery_note.delivery_note import update_billed_amount_based_on_so
 from erpnext.stock.doctype.serial_no.serial_no import get_serial_nos
@@ -1162,26 +1161,12 @@ class SalesInvoice(SellingController):
 
 	@frappe.whitelist()
 	def is_auto_fetch_timesheet_enabled(self):
-		return frappe.db.get_single_value("Projects Settings", "fetch_timesheet_in_sales_invoice")
+		return False
 
 	@frappe.whitelist()
 	def add_timesheet_data(self):
 		self.set("timesheets", [])
-		if self.project:
-			for data in get_projectwise_timesheet_data(self.project):
-				self.append(
-					"timesheets",
-					{
-						"time_sheet": data.time_sheet,
-						"billing_hours": data.billing_hours,
-						"billing_amount": data.billing_amount,
-						"timesheet_detail": data.name,
-						"activity_type": data.activity_type,
-						"description": data.description,
-					},
-				)
-
-			self.calculate_billing_amount_for_timesheet()
+		self.calculate_billing_amount_for_timesheet()
 
 	def calculate_billing_amount_for_timesheet(self):
 		def timesheet_sum(field):

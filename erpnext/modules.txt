@@ -1,7 +1,5 @@
 Accounts
-CRM
 Buying
-Projects
 Selling
 Setup
 Stock

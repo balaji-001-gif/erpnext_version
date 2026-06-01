@@ -28,7 +28,6 @@ class Quotation(SellingController):
 		from erpnext.accounts.doctype.sales_taxes_and_charges.sales_taxes_and_charges import (
 			SalesTaxesandCharges,
 		)
-		from erpnext.crm.doctype.competitor_detail.competitor_detail import CompetitorDetail
 		from erpnext.selling.doctype.quotation_item.quotation_item import QuotationItem
 		from erpnext.setup.doctype.quotation_lost_reason_detail.quotation_lost_reason_detail import (
 			QuotationLostReasonDetail,
@@ -53,7 +52,7 @@ class Quotation(SellingController):
 		company_address: DF.Link | None
 		company_address_display: DF.SmallText | None
 		company_contact_person: DF.Link | None
-		competitors: DF.TableMultiSelect[CompetitorDetail]
+		competitors: DF.TableMultiSelect[None]
 		contact_display: DF.SmallText | None
 		contact_email: DF.Data | None
 		contact_mobile: DF.SmallText | None
@@ -221,37 +220,9 @@ class Quotation(SellingController):
 	def is_partially_ordered(self):
 		return self.get_ordered_status() == "Partially Ordered"
 
-	def update_lead(self):
-		if self.quotation_to == "Lead" and self.party_name:
-			frappe.get_doc("Lead", self.party_name).set_status(update=True)
-
 	def set_customer_name(self):
 		if self.party_name and self.quotation_to == "Customer":
 			self.customer_name = frappe.db.get_value("Customer", self.party_name, "customer_name")
-		elif self.party_name and self.quotation_to == "Lead":
-			lead_name, company_name = frappe.db.get_value(
-				"Lead", self.party_name, ["lead_name", "company_name"]
-			)
-			self.customer_name = company_name or lead_name
-		elif self.party_name and self.quotation_to == "Prospect":
-			self.customer_name = self.party_name
-		elif self.party_name and self.quotation_to == "CRM Deal":
-			self.customer_name = frappe.db.get_value("CRM Deal", self.party_name, "organization")
-
-	def update_opportunity(self, status):
-		for opportunity in set(d.prevdoc_docname for d in self.get("items")):
-			if opportunity:
-				self.update_opportunity_status(status, opportunity)
-
-		if self.opportunity:
-			self.update_opportunity_status(status)
-
-	def update_opportunity_status(self, status, opportunity=None):
-		if not opportunity:
-			opportunity = self.opportunity
-
-		opp = frappe.get_doc("Opportunity", opportunity)
-		opp.set_status(status=status, update=True)
 
 	@frappe.whitelist()
 	def declare_enquiry_lost(self, lost_reasons_list, competitors, detailed_reason=None):
@@ -276,8 +247,6 @@ class Quotation(SellingController):
 			for competitor in competitors:
 				self.append("competitors", competitor)
 
-			self.update_opportunity("Lost")
-			self.update_lead()
 			self.save()
 
 		else:
@@ -289,19 +258,13 @@ class Quotation(SellingController):
 			self.doctype, self.company, self.base_grand_total, self
 		)
 
-		# update enquiry status
-		self.update_opportunity("Quotation")
-		self.update_lead()
 
 	def on_cancel(self):
 		if self.lost_reasons:
 			self.lost_reasons = []
 		super().on_cancel()
 
-		# update enquiry status
 		self.set_status(update=True)
-		self.update_opportunity("Open")
-		self.update_lead()
 
 	def print_other_charges(self, docname):
 		print_lst = []
@@ -553,74 +516,14 @@ def _make_customer(source_name, ignore_permissions=False):
 	quotation = frappe.db.get_value(
 		"Quotation",
 		source_name,
-		["order_type", "quotation_to", "party_name", "customer_name"],
+		["quotation_to", "party_name"],
 		as_dict=1,
 	)
 
 	if quotation.quotation_to == "Customer":
 		return frappe.get_doc("Customer", quotation.party_name)
-	elif quotation.quotation_to == "CRM Deal":
-		customer_name = frappe.get_value("Customer", {"crm_deal": quotation.party_name})
-		if customer_name:
-			return frappe.get_doc("Customer", customer_name)
-
-	# Check if a Customer already exists for the Lead or Prospect.
-	existing_customer = None
-	if quotation.quotation_to == "Lead":
-		existing_customer = frappe.db.get_value("Customer", {"lead_name": quotation.party_name})
-	elif quotation.quotation_to == "Prospect":
-		existing_customer = frappe.db.get_value("Customer", {"prospect_name": quotation.party_name})
-
-	if existing_customer:
-		return frappe.get_doc("Customer", existing_customer)
-
-	# If no Customer exists, create a new Customer or Prospect.
-	if quotation.quotation_to == "Lead":
-		return create_customer_from_lead(quotation.party_name, ignore_permissions=ignore_permissions)
-	elif quotation.quotation_to == "Prospect":
-		return create_customer_from_prospect(quotation.party_name, ignore_permissions=ignore_permissions)
 
 	return None
-
-
-def create_customer_from_lead(lead_name, ignore_permissions=False):
-	from erpnext.crm.doctype.lead.lead import _make_customer
-
-	customer = _make_customer(lead_name, ignore_permissions=ignore_permissions)
-	customer.flags.ignore_permissions = ignore_permissions
-
-	try:
-		customer.insert()
-		return customer
-	except frappe.MandatoryError as e:
-		handle_mandatory_error(e, customer, lead_name)
-
-
-def create_customer_from_prospect(prospect_name, ignore_permissions=False):
-	from erpnext.crm.doctype.prospect.prospect import make_customer as make_customer_from_prospect
-
-	customer = make_customer_from_prospect(prospect_name)
-	customer.flags.ignore_permissions = ignore_permissions
-
-	try:
-		customer.insert()
-		return customer
-	except frappe.MandatoryError as e:
-		handle_mandatory_error(e, customer, prospect_name)
-
-
-def handle_mandatory_error(e, customer, lead_name):
-	from frappe.utils import get_link_to_form
-
-	mandatory_fields = e.args[0].split(":")[1].split(",")
-	mandatory_fields = [_(customer.meta.get_label(field.strip())) for field in mandatory_fields]
-
-	frappe.local.message_log = []
-	message = _("Could not auto create Customer due to the following missing mandatory field(s):") + "<br>"
-	message += "<br><ul><li>" + "</li><li>".join(mandatory_fields) + "</li></ul>"
-	message += _("Please create Customer from Lead {0}.").format(get_link_to_form("Lead", lead_name))
-
-	frappe.throw(message, title=_("Mandatory Missing"))
 
 
 @frappe.whitelist()

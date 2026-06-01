@@ -8,8 +8,7 @@ from frappe.contacts.doctype.contact.contact import get_contact_with_phone_numbe
 from frappe.core.doctype.dynamic_link.dynamic_link import deduplicate_dynamic_links
 from frappe.model.document import Document
 
-from erpnext.crm.doctype.lead.lead import get_lead_with_phone_number
-from erpnext.crm.doctype.utils import get_scheduled_employees_for_popup, strip_number
+import re
 
 END_CALL_STATUSES = ["No Answer", "Completed", "Busy", "Failed"]
 ONGOING_CALL_STATUSES = ["Ringing", "In Progress"]
@@ -50,13 +49,10 @@ class CallLog(Document):
 	def before_insert(self):
 		"""Add lead(third party person) links to the document."""
 		lead_number = self.get("from") if self.is_incoming_call() else self.get("to")
-		lead_number = strip_number(lead_number)
+		lead_number = _strip_number(lead_number)
 
-		if contact := get_contact_with_phone_number(strip_number(lead_number)):
+		if contact := get_contact_with_phone_number(_strip_number(lead_number)):
 			self.add_link(link_type="Contact", link_name=contact)
-
-		if lead := get_lead_with_phone_number(lead_number):
-			self.add_link(link_type="Lead", link_name=lead)
 
 		# Add Employee Name
 		if self.is_incoming_call():
@@ -97,26 +93,10 @@ class CallLog(Document):
 		if not self.is_incoming_call():
 			return
 
-		scheduled_employees = get_scheduled_employees_for_popup(self.medium)
 		employees = get_employees_with_number(self.to)
 		employee_emails = [employee.get("user_id") for employee in employees]
 
-		# check if employees with matched number are scheduled to receive popup
-		emails = set(scheduled_employees).intersection(employee_emails)
-
-		if frappe.conf.developer_mode:
-			self.add_comment(
-				text=f"""
-					Scheduled Employees: {scheduled_employees}
-					Matching Employee: {employee_emails}
-					Show Popup To: {emails}
-				"""
-			)
-
-		if employee_emails and not emails:
-			self.add_comment(text=_("No employee was scheduled for call popup"))
-
-		for email in emails:
+		for email in employee_emails:
 			frappe.publish_realtime("show_call_popup", self, user=email)
 
 	def update_received_by(self):
@@ -133,8 +113,15 @@ def add_call_summary_and_call_type(call_log, summary, call_type):
 	doc.add_comment("Comment", frappe.bold(_("Call Summary")) + "<br><br>" + summary)
 
 
+def _strip_number(number):
+	"""Strip non-numeric characters from phone number."""
+	if not number:
+		return number
+	return re.sub(r"[^0-9;\-\+]+", "", number).strip()
+
+
 def get_employees_with_number(number):
-	number = strip_number(number)
+	number = _strip_number(number)
 	if not number:
 		return []
 
@@ -165,7 +152,7 @@ def link_existing_conversations(doc, state):
 		numbers = [d.phone for d in doc.phone_nos]
 
 		for number in numbers:
-			number = strip_number(number)
+			number = _strip_number(number)
 			if not number:
 				continue
 			logs = frappe.db.sql_list(

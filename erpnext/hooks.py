@@ -104,7 +104,7 @@ jinja = {
 # website
 webform_list_context = "erpnext.controllers.website_list_for_contact.get_webform_list_context"
 
-calendars = ["Task", "Sales Order", "Holiday List", "ToDo"]
+calendars = ["Sales Order", "Holiday List", "ToDo"]
 
 website_generators = ["Sales Partner"]
 
@@ -190,7 +190,6 @@ website_route_rules = [
 		"to_route": "addresses",
 		"defaults": {"doctype": "Address", "parents": [{"label": "Addresses", "route": "addresses"}]},
 	},
-	{"from_route": "/timesheets", "to_route": "Timesheet"},
 	{"from_route": "/material-requests", "to_route": "Material Request"},
 	{
 		"from_route": "/material-requests/<path:name>",
@@ -200,12 +199,9 @@ website_route_rules = [
 			"parents": [{"label": "Material Request", "route": "material-requests"}],
 		},
 	},
-	{"from_route": "/project", "to_route": "Project"},
-	{"from_route": "/tasks", "to_route": "Task"},
 ]
 
 standard_portal_menu_items = [
-	{"title": "Projects", "route": "/project", "reference_doctype": "Project", "role": "Customer"},
 	{
 		"title": "Request for Quotations",
 		"route": "/rfq",
@@ -256,12 +252,6 @@ standard_portal_menu_items = [
 	},
 	{"title": "Issues", "route": "/issues", "reference_doctype": "Issue", "role": "Customer"},
 	{"title": "Addresses", "route": "/addresses", "reference_doctype": "Address", "role": "Customer"},
-	{
-		"title": "Timesheets",
-		"route": "/timesheets",
-		"reference_doctype": "Timesheet",
-		"role": "Customer",
-	},
 	{"title": "Newsletter", "route": "/newsletters", "reference_doctype": "Newsletter"},
 	{
 		"title": "Material Request",
@@ -294,8 +284,6 @@ has_website_permission = {
 	"Material Request": "erpnext.controllers.website_list_for_contact.has_website_permission",
 	"Delivery Note": "erpnext.controllers.website_list_for_contact.has_website_permission",
 	"Issue": "erpnext.support.doctype.issue.issue.has_website_permission",
-	"Timesheet": "erpnext.controllers.website_list_for_contact.has_website_permission",
-	"Project": "erpnext.controllers.website_list_for_contact.has_website_permission",
 }
 
 before_tests = "erpnext.setup.utils.before_tests"
@@ -345,13 +333,7 @@ doc_events = {
 			"erpnext.support.doctype.service_level_agreement.service_level_agreement.on_communication_update",
 			"erpnext.support.doctype.issue.issue.set_first_response_time",
 		],
-		"after_insert": [
-			"erpnext.crm.utils.link_communications_with_prospect",
-			"erpnext.crm.utils.update_modified_timestamp",
-		],
-	},
-	"Event": {
-		"after_insert": "erpnext.crm.utils.link_events_with_prospect",
+		"after_insert": [],
 	},
 	"Sales Invoice": {
 		"on_submit": [
@@ -383,10 +365,7 @@ doc_events = {
 	"Contact": {
 		"on_trash": "erpnext.support.doctype.issue.issue.update_issue",
 		"after_insert": "erpnext.telephony.doctype.call_log.call_log.link_existing_conversations",
-		"validate": ["erpnext.crm.utils.update_lead_phone_numbers"],
-	},
-	"Email Unsubscribe": {
-		"after_insert": "erpnext.crm.doctype.email_campaign.email_campaign.unsubscribe_recipient"
+		"validate": [],
 	},
 	"Integration Request": {
 		"validate": "erpnext.accounts.doctype.payment_request.payment_request.validate_payment"
@@ -417,15 +396,11 @@ scheduler_events = {
 		# Daily but offset by 45 minutes
 		"45 0 * * *": [],
 	},
-	"hourly": [
-		"erpnext.projects.doctype.project.project.hourly_reminder",
-	],
+	"hourly": [],
 	"hourly_long": [],
 	"hourly_maintenance": [
 		"erpnext.stock.doctype.repost_item_valuation.repost_item_valuation.repost_entries",
 		"erpnext.utilities.bulk_transaction.retry",
-		"erpnext.projects.doctype.project.project.collect_project_status",
-		"erpnext.projects.doctype.project.project.project_status_update_reminder",
 		"erpnext.erpnext_integrations.doctype.plaid_settings.plaid_settings.automatic_synchronization",
 		"erpnext.utilities.doctype.video.video.update_youtube_data",
 	],
@@ -433,21 +408,14 @@ scheduler_events = {
 	"daily_long": [],
 	"daily_maintenance": [
 		"erpnext.support.doctype.issue.issue.auto_close_tickets",
-		"erpnext.crm.doctype.opportunity.opportunity.auto_close_opportunity",
 		"erpnext.controllers.accounts_controller.update_invoice_status",
 		"erpnext.accounts.doctype.fiscal_year.fiscal_year.auto_create_fiscal_year",
-		"erpnext.projects.doctype.task.task.set_tasks_as_overdue",
 		"erpnext.stock.doctype.serial_no.serial_no.update_maintenance_status",
 		"erpnext.buying.doctype.supplier_scorecard.supplier_scorecard.refresh_scorecards",
 		"erpnext.setup.doctype.company.company.cache_companies_monthly_sales_history",
 		"erpnext.assets.doctype.asset.asset.update_maintenance_status",
 		"erpnext.assets.doctype.asset.asset.make_post_gl_entry",
-		"erpnext.crm.doctype.contract.contract.update_status_for_contracts",
-		"erpnext.projects.doctype.project.project.update_project_sales_billing",
-		"erpnext.projects.doctype.project.project.send_project_status_email_to_users",
 		"erpnext.support.doctype.service_level_agreement.service_level_agreement.check_agreement_status",
-		"erpnext.crm.doctype.email_campaign.email_campaign.send_email_to_leads_or_contacts",
-		"erpnext.crm.doctype.email_campaign.email_campaign.set_email_campaign_status",
 		"erpnext.selling.doctype.quotation.quotation.set_expired_status",
 		"erpnext.buying.doctype.supplier_quotation.supplier_quotation.set_expired_status",
 		"erpnext.accounts.doctype.process_statement_of_accounts.process_statement_of_accounts.send_auto_email",
@@ -457,7 +425,6 @@ scheduler_events = {
 		"erpnext.stock.reorder_item.reorder_item",
 		"erpnext.accounts.doctype.process_subscription.process_subscription.create_subscription_process",
 		"erpnext.setup.doctype.email_digest.email_digest.send",
-		"erpnext.crm.utils.open_leads_opportunities_based_on_todays_event",
 		"erpnext.assets.doctype.asset.depreciation.post_depreciation_entries",
 	],
 	"weekly": [
@@ -581,18 +548,7 @@ regional_overrides = {
 		"erpnext.controllers.accounts_controller.validate_regional": "erpnext.regional.italy.utils.sales_invoice_validate",
 	},
 }
-user_privacy_documents = [
-	{
-		"doctype": "Lead",
-		"match_field": "email_id",
-		"personal_fields": ["phone", "mobile_no", "fax", "website", "lead_name"],
-	},
-	{
-		"doctype": "Opportunity",
-		"match_field": "contact_email",
-		"personal_fields": ["contact_mobile", "contact_display", "customer_name"],
-	},
-]
+user_privacy_documents = []
 
 # ERPNext doctypes for Global Search
 global_search_doctypes = {
@@ -615,15 +571,10 @@ global_search_doctypes = {
 		{"doctype": "Delivery Trip", "index": 17},
 		{"doctype": "Pick List", "index": 18},
 		{"doctype": "Payment Entry", "index": 22},
-		{"doctype": "Lead", "index": 23},
-		{"doctype": "Opportunity", "index": 24},
 		{"doctype": "Item Price", "index": 25},
 		{"doctype": "Purchase Taxes and Charges Template", "index": 26},
 		{"doctype": "Sales Taxes and Charges", "index": 27},
 		{"doctype": "Asset", "index": 28},
-		{"doctype": "Project", "index": 29},
-		{"doctype": "Task", "index": 30},
-		{"doctype": "Timesheet", "index": 31},
 		{"doctype": "Issue", "index": 32},
 		{"doctype": "Serial No", "index": 33},
 		{"doctype": "Batch", "index": 34},

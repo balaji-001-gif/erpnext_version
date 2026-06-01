@@ -23,7 +23,6 @@ def get_data():
 				"items": ["Sales Invoice", "Pick List", "Delivery Note", "Maintenance Visit"],
 			},
 			{"label": _("Purchasing"), "items": ["Material Request", "Purchase Order"]},
-			{"label": _("Projects"), "items": ["Project"]},
 			{"label": _("Reference"), "items": ["Quotation", "Auto Repeat", "Stock Reservation Entry"]},
 			{"label": _("Payment"), "items": ["Payment Entry", "Payment Request", "Journal Entry"]},
 		],

@@ -2374,7 +2374,7 @@ class AccountsController(TransactionBase):
 
 	def get_party(self):
 		party_type = None
-		if self.doctype in ("Opportunity", "Quotation", "Sales Order", "Delivery Note", "Sales Invoice"):
+		if self.doctype in ("Quotation", "Sales Order", "Delivery Note", "Sales Invoice"):
 			party_type = "Customer"
 
 		elif self.doctype in (

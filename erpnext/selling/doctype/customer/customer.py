@@ -139,7 +139,7 @@ class Customer(TransactionBase):
 		return self.customer_name
 
 	def after_insert(self):
-		"""If customer created from Lead, update customer id in quotations, opportunities"""
+		"""If customer created from Lead, update customer id in quotations"""
 		self.update_lead_status()
 
 	def validate(self):
@@ -248,7 +248,7 @@ class Customer(TransactionBase):
 			add_role_for_portal_user(portal_user, "Customer")
 
 	def update_customer_groups(self):
-		ignore_doctypes = ["Lead", "Opportunity", "POS Profile", "Tax Rule", "Pricing Rule"]
+		ignore_doctypes = ["POS Profile", "Tax Rule", "Pricing Rule"]
 		if frappe.flags.customer_group_changed:
 			update_linked_doctypes(
 				"Customer", self.name, "Customer Group", self.customer_group, ignore_doctypes
@@ -273,28 +273,18 @@ class Customer(TransactionBase):
 			self.db_set("primary_address", address_display)
 
 	def update_lead_status(self):
-		"""If Customer created from Lead, update lead status to "Converted"
-		update Customer link in Quotation, Opportunity"""
+		"""If Customer created from Lead, update lead status to "Converted"""
 		if self.lead_name:
 			frappe.db.set_value("Lead", self.lead_name, "status", "Converted")
 
 	def link_address_and_contact(self):
-		linked_documents = {
-			"Lead": self.lead_name,
-			"Opportunity": self.opportunity_name,
-			"Prospect": self.prospect_name,
-		}
-		for doctype, docname in linked_documents.items():
-			# assign lead, opportunity and prospect address and contact to customer (if already not set)
-			if not docname:
-				continue
-
+		if self.lead_name:
 			linked_contacts_and_addresses = frappe.get_all(
 				"Dynamic Link",
 				filters=[
 					["parenttype", "in", ["Contact", "Address"]],
-					["link_doctype", "=", doctype],
-					["link_name", "=", docname],
+					["link_doctype", "=", "Lead"],
+					["link_name", "=", self.lead_name],
 				],
 				fields=["parent as name", "parenttype as doctype"],
 			)
@@ -306,15 +296,9 @@ class Customer(TransactionBase):
 					linked_doc.save(ignore_permissions=self.flags.ignore_permissions)
 
 	def copy_communication(self):
-		if not self.lead_name or not frappe.db.get_single_value(
-			"CRM Settings", "carry_forward_communication_and_comments"
-		):
+		if not self.lead_name:
 			return
-
-		from erpnext.crm.utils import copy_comments, link_communications
-
-		copy_comments("Lead", self.lead_name, self)
-		link_communications("Lead", self.lead_name, self)
+		# CRM module removed — lead communication carry-forward logic omitted
 
 	def validate_name_with_customer_group(self):
 		if frappe.db.exists("Customer Group", self.name):

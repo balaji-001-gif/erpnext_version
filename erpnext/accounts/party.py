@@ -198,9 +198,7 @@ def set_address_details(
 	ignore_permissions=False,
 ):
 	# party_billing
-	party_billing_field = (
-		"customer_address" if party_type in ["Lead", "Prospect"] else party_type.lower() + "_address"
-	)
+	party_billing_field = party_type.lower() + "_address"
 
 	party_details[party_billing_field] = party_address or get_default_address(party_type, party.name)
 	if doctype:
@@ -733,10 +731,10 @@ def set_taxes(
 	else:
 		args.update(get_party_details(party, party_type))
 
-	if party_type in ("Customer", "Lead", "Prospect", "CRM Deal"):
+	if party_type in ("Customer", "Lead", "Prospect"):
 		args.update({"tax_type": "Sales"})
 
-		if party_type in ["Lead", "Prospect", "CRM Deal"]:
+		if party_type in ["Lead", "Prospect"]:
 			args["customer"] = None
 			del args[frappe.scrub(party_type)]
 	else:

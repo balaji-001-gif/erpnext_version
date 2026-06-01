@@ -4,14 +4,6 @@ doctype_rule_map = {
 	"Item": {"points": 5, "for_doc_event": "New"},
 	"Customer": {"points": 5, "for_doc_event": "New"},
 	"Supplier": {"points": 5, "for_doc_event": "New"},
-	"Lead": {"points": 2, "for_doc_event": "New"},
-	"Opportunity": {
-		"points": 10,
-		"for_doc_event": "Custom",
-		"condition": 'doc.status=="Converted"',
-		"rule_name": _("On Converting Opportunity"),
-		"user_field": "converted_by",
-	},
 	"Sales Order": {
 		"points": 10,
 		"for_doc_event": "Submit",
@@ -23,12 +15,6 @@ doctype_rule_map = {
 		"for_doc_event": "Submit",
 		"rule_name": _("On Purchase Order Submission"),
 		"user_field": "modified_by",
-	},
-	"Task": {
-		"points": 5,
-		"condition": 'doc.status == "Completed"',
-		"rule_name": _("On Task Completion"),
-		"user_field": "completed_by",
 	},
 }
 

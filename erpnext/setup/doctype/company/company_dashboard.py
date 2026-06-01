@@ -22,6 +22,5 @@ def get_data():
 			{"label": _("Pre Sales"), "items": ["Quotation"]},
 			{"label": _("Orders"), "items": ["Sales Order", "Delivery Note", "Sales Invoice"]},
 			{"label": _("Support"), "items": ["Issue"]},
-			{"label": _("Projects"), "items": ["Project"]},
 		],
 	}
