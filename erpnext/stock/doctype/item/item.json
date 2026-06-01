@@ -869,7 +869,7 @@
  ],
  "quick_entry": 1,
  "row_format": "Dynamic",
- "search_fields": "item_name,description,item_group,customer_code",
+ "search_fields": "item_name,description,item_group",
  "show_name_in_global_search": 1,
  "show_preview_popup": 1,
  "sort_field": "modified",
