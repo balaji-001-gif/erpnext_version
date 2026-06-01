@@ -145,7 +145,6 @@ class StockEntry(StockController):
 		self.validate_uom_is_integer("uom", "qty")
 		self.validate_uom_is_integer("stock_uom", "transfer_qty")
 		self.validate_warehouse_of_sabb()
-		self.validate_purchase_order()
 		self.validate_company_in_accounting_dimension()
 
 		self.validate_warehouse()
