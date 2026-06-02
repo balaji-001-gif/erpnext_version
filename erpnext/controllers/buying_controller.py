@@ -246,7 +246,15 @@ class BuyingController(StockController):
 					_("Row #{0}: Accepted Warehouse and Supplier Warehouse cannot be same").format(item.idx)
 				)
 
-
+	def validate_rejected_warehouse(self):
+		"""Validate that items with rejected qty have a rejected warehouse set."""
+		for item in self.get("items"):
+			if flt(item.get("rejected_qty")) and not item.get("rejected_warehouse"):
+				frappe.throw(
+					_("Row #{0}: Rejected Warehouse is mandatory for Item {1} as it has rejected quantity").format(
+						item.idx, item.item_code
+					)
+				)
 
 	def set_supplier_address(self):
 		address_dict = {
