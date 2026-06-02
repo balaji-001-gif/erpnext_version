@@ -354,16 +354,7 @@ class SalesOrder(SellingController):
 		self.validate_sales_mntc_quotation()
 
 	def validate_proj_cust(self):
-		if self.project and self.customer_name:
-			res = frappe.db.sql(
-				"""select name from `tabProject` where name = %s
-				and (customer = %s or ifnull(customer,'')='')""",
-				(self.project, self.customer),
-			)
-			if not res:
-				frappe.throw(
-					_("Customer {0} does not belong to project {1}").format(self.customer, self.project)
-				)
+		pass
 
 	def validate_warehouse(self):
 		super().validate_warehouse()
@@ -472,13 +463,7 @@ class SalesOrder(SellingController):
 			update_coupon_code_count(self.coupon_code, "cancelled")
 
 	def update_project(self):
-		if frappe.db.get_single_value("Selling Settings", "sales_update_frequency") != "Each Transaction":
-			return
-
-		if self.project:
-			project = frappe.get_doc("Project", self.project)
-			project.update_sales_amount()
-			project.db_update()
+		pass
 
 	def check_credit_limit(self):
 		# if bypass credit limit check is set to true (1) at sales order level,

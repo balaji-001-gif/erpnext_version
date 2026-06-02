@@ -87,7 +87,7 @@ class Item(Document):
 		customs_tariff_number: DF.Link | None
 		default_bom: DF.Link | None
 		default_material_request_type: DF.Literal[
-			"Purchase", "Material Transfer", "Material Issue", "Manufacture", "Customer Provided"
+			"Purchase", "Material Transfer", "Material Issue", "Customer Provided"
 		]
 		delivered_by_supplier: DF.Check
 		description: DF.TextEditor | None
