@@ -355,10 +355,13 @@ class PurchaseOrder(BuyingController):
 					)
 				)
 
+	def validate_for_subcontracting(self):
+		pass
+
 	def validate_fg_item_for_subcontracting(self):
-			for item in self.items:
-				item.set("fg_item", None)
-				item.set("fg_item_qty", 0)
+		for item in self.items:
+			item.set("fg_item", None)
+			item.set("fg_item_qty", 0)
 
 	def get_schedule_dates(self):
 		for d in self.get("items"):
