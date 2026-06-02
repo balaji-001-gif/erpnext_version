@@ -10,7 +10,9 @@ erpnext.buying = {
 				super.setup();
 				this.toggle_enable_for_stock_uom("allow_to_edit_stock_uom_qty_for_purchase");
 				this.frm.email_field = "contact_email";
-				this.frm.add_fetch("project", "cost_center", "cost_center");
+				if (frappe.meta.has_field(this.frm.doc.doctype, "project")) {
+					this.frm.add_fetch("project", "cost_center", "cost_center");
+				}
 			}
 
 			onload(doc, cdt, cdn) {
@@ -25,15 +27,17 @@ erpnext.buying = {
 					};
 				});
 
-				const get_project_filters = () => ({
-					query: "erpnext.controllers.queries.get_project_name",
-					filters: {
-						company: this.frm.doc.company,
-					},
-				});
+				if (frappe.meta.has_field(this.frm.doc.doctype, "project")) {
+					const get_project_filters = () => ({
+						query: "erpnext.controllers.queries.get_project_name",
+						filters: {
+							company: this.frm.doc.company,
+						},
+					});
 
-				this.frm.set_query("project", get_project_filters);
-				this.frm.set_query("project", "items", get_project_filters);
+					this.frm.set_query("project", get_project_filters);
+					this.frm.set_query("project", "items", get_project_filters);
+				}
 
 				if (this.frm.doc.__islocal
 					&& frappe.meta.has_field(this.frm.doc.doctype, "disable_rounded_total")) {
