@@ -34,7 +34,6 @@ def get_data(filters):
 			bin.ordered_qty,
 			bin.planned_qty,
 			bin.reserved_qty,
-			bin.reserved_qty_for_production,
 			bin.projected_qty,
 			wh.company,
 			item.item_name,
@@ -119,13 +118,7 @@ def get_columns():
 			"width": 120,
 			"convertible": "qty",
 		},
-		{
-			"label": _("Reserved Quantity for Production"),
-			"fieldname": "reserved_qty_for_production",
-			"fieldtype": "Float",
-			"width": 120,
-			"convertible": "qty",
-		},
+
 		{
 			"label": _("Projected Quantity"),
 			"fieldname": "projected_qty",

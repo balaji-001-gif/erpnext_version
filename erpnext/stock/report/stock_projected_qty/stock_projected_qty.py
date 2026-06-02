@@ -80,9 +80,6 @@ def execute(filters=None):
 				bin.indented_qty,
 				bin.ordered_qty,
 				bin.reserved_qty,
-				bin.reserved_qty_for_production,
-				bin.reserved_qty_for_production_plan,
-				bin.reserved_qty_for_sub_contract,
 				reserved_qty_for_pos,
 				bin.projected_qty,
 				re_order_level,
@@ -172,27 +169,7 @@ def get_columns():
 			"width": 100,
 			"convertible": "qty",
 		},
-		{
-			"label": _("Reserved for Production"),
-			"fieldname": "reserved_qty_for_production",
-			"fieldtype": "Float",
-			"width": 100,
-			"convertible": "qty",
-		},
-		{
-			"label": _("Reserved for Production Plan"),
-			"fieldname": "reserved_qty_for_production_plan",
-			"fieldtype": "Float",
-			"width": 100,
-			"convertible": "qty",
-		},
-		{
-			"label": _("Reserved for Sub Contracting"),
-			"fieldname": "reserved_qty_for_sub_contract",
-			"fieldtype": "Float",
-			"width": 100,
-			"convertible": "qty",
-		},
+
 		{
 			"label": _("Reserved for POS Transactions"),
 			"fieldname": "reserved_qty_for_pos",
@@ -240,12 +217,8 @@ def get_bin_list(filters):
 			bin.warehouse,
 			bin.actual_qty,
 			bin.planned_qty,
-			bin.indented_qty,
-			bin.ordered_qty,
+			bin.indented_qty,			bin.ordered_qty,
 			bin.reserved_qty,
-			bin.reserved_qty_for_production,
-			bin.reserved_qty_for_sub_contract,
-			bin.reserved_qty_for_production_plan,
 			bin.projected_qty,
 		)
 		.orderby(bin.item_code, bin.warehouse)
