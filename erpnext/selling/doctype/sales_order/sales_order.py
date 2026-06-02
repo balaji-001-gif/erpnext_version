@@ -1042,7 +1042,7 @@ def make_delivery_note(source_name, target_doc=None, kwargs=None):
 
 		if item:
 			target.cost_center = (
-				or item.get("buying_cost_center")
+				item.get("buying_cost_center")
 				or item_group.get("buying_cost_center")
 			)
 
@@ -1176,7 +1176,6 @@ def make_sales_invoice(source_name, target_doc=None, ignore_permissions=False, a
 			else (source.qty if is_unit_price_row(source) else source.qty - source.returned_qty)
 		)
 
-		if source_parent.project:
 		if target.item_code:
 			item = get_item_defaults(target.item_code, source_parent.company)
 			item_group = get_item_group_defaults(target.item_code, source_parent.company)
