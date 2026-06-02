@@ -159,7 +159,6 @@
   "customer_group",
   "territory",
   "source",
-  "campaign",
   "column_break5",
   "excise_page",
   "instructions",
@@ -959,15 +958,6 @@
    "label": "Additional Info",
    "oldfieldtype": "Section Break",
    "options": "fa fa-file-text",
-   "print_hide": 1
-  },
-  {
-   "fieldname": "campaign",
-   "fieldtype": "Link",
-   "label": "Campaign",
-   "oldfieldname": "campaign",
-   "oldfieldtype": "Link",
-   "options": "Campaign",
    "print_hide": 1
   },
   {

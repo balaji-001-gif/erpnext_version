@@ -196,10 +196,6 @@ erpnext.sales_common = {
 				this.apply_pricing_rule();
 			}
 
-			campaign() {
-				this.apply_pricing_rule();
-			}
-
 			selling_price_list() {
 				this.apply_price_list();
 				this.set_dynamic_labels();

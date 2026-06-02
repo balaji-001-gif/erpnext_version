@@ -812,8 +812,6 @@ frappe.help.help_links["Form/Newsletter"] = [
 	{ label: "Newsletter", url: docsUrl + "user/manual/en/newsletter" },
 ];
 
-frappe.help.help_links["Form/Campaign"] = [{ label: "Campaign", url: docsUrl + "user/manual/en/campaign" }];
-
 frappe.help.help_links["Tree/Sales Person"] = [
 	{
 		label: "Sales Person",

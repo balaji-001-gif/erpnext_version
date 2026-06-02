@@ -36,7 +36,6 @@
   "customer_group",
   "territory",
   "sales_partner",
-  "campaign",
   "supplier",
   "supplier_group",
   "section_break_19",
@@ -249,7 +248,7 @@
    "fieldname": "applicable_for",
    "fieldtype": "Select",
    "label": "Applicable For",
-   "options": "\nCustomer\nCustomer Group\nTerritory\nSales Partner\nCampaign\nSupplier\nSupplier Group"
+   "options": "\nCustomer\nCustomer Group\nTerritory\nSales Partner\nSupplier\nSupplier Group"
   },
   {
    "depends_on": "eval:doc.applicable_for==\"Customer\"",
@@ -278,13 +277,6 @@
    "fieldtype": "Link",
    "label": "Sales Partner",
    "options": "Sales Partner"
-  },
-  {
-   "depends_on": "eval:doc.applicable_for==\"Campaign\"",
-   "fieldname": "campaign",
-   "fieldtype": "Link",
-   "label": "Campaign",
-   "options": "Campaign"
   },
   {
    "depends_on": "eval:doc.applicable_for==\"Supplier\"",

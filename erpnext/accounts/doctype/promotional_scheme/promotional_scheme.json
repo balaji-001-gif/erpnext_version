@@ -32,7 +32,6 @@
   "customer_group",
   "territory",
   "sales_partner",
-  "campaign",
   "supplier",
   "supplier_group",
   "period_settings_section",
@@ -169,7 +168,7 @@
    "fieldname": "applicable_for",
    "fieldtype": "Select",
    "label": "Applicable For",
-   "options": "\nCustomer\nCustomer Group\nTerritory\nSales Partner\nCampaign\nSupplier\nSupplier Group"
+   "options": "\nCustomer\nCustomer Group\nTerritory\nSales Partner\nSupplier\nSupplier Group"
   },
   {
    "depends_on": "eval:doc.applicable_for=='Customer'",
@@ -198,13 +197,6 @@
    "fieldtype": "Table MultiSelect",
    "label": "Sales Partner",
    "options": "Sales Partner Item"
-  },
-  {
-   "depends_on": "eval:doc.applicable_for==\"Campaign\"",
-   "fieldname": "campaign",
-   "fieldtype": "Table MultiSelect",
-   "label": "Campaign",
-   "options": "Campaign Item"
   },
   {
    "depends_on": "eval:doc.applicable_for=='Supplier'",

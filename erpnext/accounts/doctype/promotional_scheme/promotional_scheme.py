@@ -25,7 +25,6 @@ pricing_rule_fields = [
 	"customer_group",
 	"territory",
 	"sales_partner",
-	"campaign",
 	"supplier",
 	"supplier_group",
 	"company",
@@ -83,7 +82,6 @@ class PromotionalScheme(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		from erpnext.accounts.doctype.campaign_item.campaign_item import CampaignItem
 		from erpnext.accounts.doctype.customer_group_item.customer_group_item import CustomerGroupItem
 		from erpnext.accounts.doctype.customer_item.customer_item import CustomerItem
 		from erpnext.accounts.doctype.pricing_rule_brand.pricing_rule_brand import PricingRuleBrand
@@ -110,7 +108,6 @@ class PromotionalScheme(Document):
 			"Customer Group",
 			"Territory",
 			"Sales Partner",
-			"Campaign",
 			"Supplier",
 			"Supplier Group",
 		]
@@ -118,7 +115,6 @@ class PromotionalScheme(Document):
 		apply_rule_on_other: DF.Literal["", "Item Code", "Item Group", "Brand"]
 		brands: DF.Table[PricingRuleBrand]
 		buying: DF.Check
-		campaign: DF.TableMultiSelect[CampaignItem]
 		company: DF.Link
 		currency: DF.Link | None
 		customer: DF.TableMultiSelect[CustomerItem]

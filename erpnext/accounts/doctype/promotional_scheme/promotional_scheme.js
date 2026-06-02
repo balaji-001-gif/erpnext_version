@@ -39,7 +39,6 @@ frappe.ui.form.on("Promotional Scheme", {
 				"Customer Group",
 				"Territory",
 				"Sales Partner",
-				"Campaign",
 			]);
 		}
 		if (frm.doc.buying) {

@@ -34,7 +34,6 @@ class POSProfile(Document):
 		applicable_for_users: DF.Table[POSProfileUser]
 		apply_discount_on: DF.Literal["Grand Total", "Net Total"]
 		auto_add_item_to_cart: DF.Check
-		campaign: DF.Link | None
 		company: DF.Link
 		company_address: DF.Link | None
 		cost_center: DF.Link | None

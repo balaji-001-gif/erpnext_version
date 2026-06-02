@@ -231,7 +231,7 @@ def _get_tree_conditions(args, parenttype, table, allow_blank=True):
 
 
 def get_other_conditions(conditions, values, args):
-	for field in ["company", "customer", "supplier", "campaign", "sales_partner"]:
+	for field in ["company", "customer", "supplier", "sales_partner"]:
 		if args.get(field):
 			conditions += f" and ifnull(`tabPricing Rule`.{field}, '') in (%({field})s, '')"
 			values[field] = args.get(field)

@@ -128,7 +128,6 @@
   "customer_group",
   "territory",
   "column_break_108",
-  "campaign",
   "source",
   "column_break4",
   "opportunity",
@@ -857,15 +856,6 @@
    "fieldname": "update_auto_repeat_reference",
    "fieldtype": "Button",
    "label": "Update Auto Repeat Reference"
-  },
-  {
-   "fieldname": "campaign",
-   "fieldtype": "Link",
-   "label": "Campaign",
-   "oldfieldname": "campaign",
-   "oldfieldtype": "Link",
-   "options": "Campaign",
-   "print_hide": 1
   },
   {
    "fieldname": "source",

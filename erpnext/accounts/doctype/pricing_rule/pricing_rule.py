@@ -38,7 +38,6 @@ class PricingRule(Document):
 			"Customer Group",
 			"Territory",
 			"Sales Partner",
-			"Campaign",
 			"Supplier",
 			"Supplier Group",
 		]
@@ -50,7 +49,6 @@ class PricingRule(Document):
 		apply_rule_on_other: DF.Literal["", "Item Code", "Item Group", "Brand"]
 		brands: DF.Table[PricingRuleBrand]
 		buying: DF.Check
-		campaign: DF.Link | None
 		company: DF.Link | None
 		condition: DF.Code | None
 		coupon_code_based: DF.Check
@@ -208,7 +206,6 @@ class PricingRule(Document):
 			"Customer Group",
 			"Territory",
 			"Sales Partner",
-			"Campaign",
 		]:
 			throw(
 				_("Selling must be checked, if Applicable For is selected as {0}").format(self.applicable_for)
@@ -335,7 +332,7 @@ def apply_pricing_rule(args, doc=None):
 	        "plc_conversion_rate": "something",
 	        "company": "something",
 	        "transaction_date": "something",
-	        "campaign": "something",
+
 	        "sales_partner": "something",
 	        "ignore_pricing_rule": "something"
 	}

@@ -12,7 +12,6 @@
   "disabled",
   "column_break_9",
   "warehouse",
-  "campaign",
   "company_address",
   "section_break_15",
   "applicable_for_users",
@@ -89,12 +88,6 @@
    "fieldname": "country",
    "fieldtype": "Read Only",
    "label": "Country"
-  },
-  {
-   "fieldname": "campaign",
-   "fieldtype": "Link",
-   "label": "Campaign",
-   "options": "Campaign"
   },
   {
    "fieldname": "company_address",

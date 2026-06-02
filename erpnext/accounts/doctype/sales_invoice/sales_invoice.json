@@ -206,7 +206,6 @@
   "more_information",
   "status",
   "inter_company_invoice_reference",
-  "campaign",
   "represents_company",
   "source",
   "customer_group",
@@ -1618,17 +1617,6 @@
    "hide_seconds": 1,
    "label": "Customer Group",
    "options": "Customer Group",
-   "print_hide": 1
-  },
-  {
-   "fieldname": "campaign",
-   "fieldtype": "Link",
-   "hide_days": 1,
-   "hide_seconds": 1,
-   "label": "Campaign",
-   "oldfieldname": "campaign",
-   "oldfieldtype": "Link",
-   "options": "Campaign",
    "print_hide": 1
   },
   {

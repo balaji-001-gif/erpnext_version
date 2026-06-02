@@ -156,7 +156,6 @@
   "more_information",
   "inter_company_invoice_reference",
   "customer_group",
-  "campaign",
   "is_discounted",
   "col_break23",
   "status",
@@ -1297,15 +1296,6 @@
    "hidden": 1,
    "label": "Customer Group",
    "options": "Customer Group",
-   "print_hide": 1
-  },
-  {
-   "fieldname": "campaign",
-   "fieldtype": "Link",
-   "label": "Campaign",
-   "oldfieldname": "campaign",
-   "oldfieldtype": "Link",
-   "options": "Campaign",
    "print_hide": 1
   },
   {
