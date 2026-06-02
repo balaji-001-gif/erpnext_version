@@ -222,7 +222,7 @@ class Quotation(SellingController):
 			self.customer_name = frappe.db.get_value("Customer", self.party_name, "customer_name")
 
 	@frappe.whitelist()
-	def declare_enquiry_lost(self, lost_reasons_list, competitors, detailed_reason=None):
+	def declare_enquiry_lost(self, lost_reasons_list, detailed_reason=None):
 		if not (self.is_fully_ordered() or self.is_partially_ordered()):
 			get_lost_reasons = frappe.get_list("Quotation Lost Reason", fields=["name"])
 			lost_reasons_lst = [reason.get("name") for reason in get_lost_reasons]
@@ -240,9 +240,6 @@ class Quotation(SellingController):
 							frappe.bold(reason.get("lost_reason"))
 						)
 					)
-
-			for competitor in competitors:
-				self.append("competitors", competitor)
 
 			self.save()
 

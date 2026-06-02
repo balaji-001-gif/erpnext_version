@@ -590,12 +590,7 @@ erpnext.pre_sales = {
 									: "Quotation Lost Reason Detail",
 							reqd: 1,
 						},
-						{
-							fieldtype: "Table MultiSelect",
-							label: __("Competitors"),
-							fieldname: "competitors",
-							options: "Competitor Detail",
-						},
+
 						{
 							fieldtype: "Small Text",
 							label: __("Detailed Reason"),
@@ -610,7 +605,6 @@ erpnext.pre_sales = {
 							method: "declare_enquiry_lost",
 							args: {
 								lost_reasons_list: values.lost_reason,
-								competitors: values.competitors ? values.competitors : [],
 								detailed_reason: values.detailed_reason,
 							},
 							callback: function (r) {

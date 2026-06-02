@@ -53,14 +53,11 @@ def get_columns(group_by: Literal["Lost Reason", "Competitor"]):
 	]
 
 
-def get_data(company: str, from_date: str, to_date: str, group_by: Literal["Lost Reason", "Competitor"]):
-	"""Return quotation value grouped by lost reason or competitor"""
+def get_data(company: str, from_date: str, to_date: str, group_by: Literal["Lost Reason"]):
+	"""Return quotation value grouped by lost reason"""
 	if group_by == "Lost Reason":
 		fieldname = "lost_reason"
 		dimension = frappe.qb.DocType("Quotation Lost Reason Detail")
-	elif group_by == "Competitor":
-		fieldname = "competitor"
-		dimension = frappe.qb.DocType("Competitor Detail")
 	else:
 		frappe.throw(_("Invalid Group By"))
 
