@@ -262,7 +262,6 @@ class TransactionDeletionRecord(Document):
 					).run()
 
 				customer = qb.DocType("Customer")
-				qb.update(customer).set(customer.lead_name, None).where(customer.lead_name.isin(leads)).run()
 
 			self.db_set("delete_leads_and_addresses", 1)
 		self.enqueue_task(task="Reset Company Values")
@@ -466,7 +465,6 @@ def get_doctypes_to_be_ignored():
 		"Sales Taxes and Charges Template",
 		"Purchase Taxes and Charges Template",
 		"POS Profile",
-		"BOM",
 		"Company",
 		"Bank Account",
 		"Item Tax Template",

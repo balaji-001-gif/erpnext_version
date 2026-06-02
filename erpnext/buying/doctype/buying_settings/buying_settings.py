@@ -24,7 +24,7 @@ class BuyingSettings(Document):
 		auto_create_purchase_receipt: DF.Check
 		
 		backflush_raw_materials_of_subcontract_based_on: DF.Literal[
-			"BOM", "Material Transferred for Subcontract"
+			"Material Transferred for Subcontract"
 		]
 		bill_for_rejected_quantity_in_purchase_invoice: DF.Check
 		blanket_order_allowance: DF.Float

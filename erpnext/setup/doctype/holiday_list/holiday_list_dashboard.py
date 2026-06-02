@@ -6,7 +6,7 @@ def get_data():
 		},
 		"transactions": [
 			{
-				"items": ["Company", "Employee", "Workstation"],
+				"items": ["Company", "Employee"],
 			},
 			{"items": ["Service Level Agreement"]},
 		],

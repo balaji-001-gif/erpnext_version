@@ -211,13 +211,12 @@ def set_address_details(
 	)
 
 	# party_shipping
-	if party_type in ["Customer", "Lead"]:
+	if party_type == "Customer":
 		party_shipping_field = "shipping_address_name"
 		party_shipping_display = "shipping_address"
 		default_shipping = shipping_address
 
-	else:
-		# Supplier
+	elif party_type == "Supplier":
 		party_shipping_field = "dispatch_address"
 		party_shipping_display = "dispatch_address_display"
 		default_shipping = dispatch_address
@@ -731,12 +730,8 @@ def set_taxes(
 	else:
 		args.update(get_party_details(party, party_type))
 
-	if party_type in ("Customer", "Lead", "Prospect"):
+	if party_type == "Customer":
 		args.update({"tax_type": "Sales"})
-
-		if party_type in ["Lead", "Prospect"]:
-			args["customer"] = None
-			del args[frappe.scrub(party_type)]
 	else:
 		args.update({"tax_type": "Purchase"})
 

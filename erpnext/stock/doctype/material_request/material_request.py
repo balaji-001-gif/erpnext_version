@@ -42,7 +42,7 @@ class MaterialRequest(BuyingController):
 		job_card: DF.Link | None
 		letter_head: DF.Link | None
 		material_request_type: DF.Literal[
-			"Purchase", "Material Transfer", "Material Issue", "Manufacture", "Customer Provided"
+			"Purchase", "Material Transfer", "Material Issue", "Customer Provided"
 		]
 		naming_series: DF.Literal["MAT-MR-.YYYY.-"]
 		per_ordered: DF.Percent
@@ -71,7 +71,6 @@ class MaterialRequest(BuyingController):
 		title: DF.Data | None
 		transaction_date: DF.Date
 		transfer_status: DF.Literal["", "Not Started", "In Transit", "Completed"]
-		work_order: DF.Link | None
 	# end: auto-generated types
 
 	def __init__(self, *args, **kwargs):
@@ -258,9 +257,7 @@ class MaterialRequest(BuyingController):
 		if self.material_request_type in ("Material Issue", "Material Transfer", "Customer Provided"):
 			doctype = frappe.qb.DocType("Stock Entry Detail")
 			qty_field = doctype.transfer_qty
-		elif self.material_request_type == "Manufacture":
-			doctype = frappe.qb.DocType("Work Order")
-			qty_field = doctype.qty
+
 
 		if doctype and qty_field:
 			query = (
@@ -274,8 +271,7 @@ class MaterialRequest(BuyingController):
 				.groupby(doctype.material_request_item)
 			)
 
-			if self.material_request_type == "Manufacture":
-				query = query.where(doctype.status != "Closed")
+
 
 			mr_items_ordered_qty = frappe._dict(query.run())
 
@@ -317,8 +313,7 @@ class MaterialRequest(BuyingController):
 							).format(d.ordered_qty, d.parent, d.qty, d.item_code)
 						)
 
-				elif self.material_request_type == "Manufacture":
-					d.ordered_qty = flt(mr_items_ordered_qty.get(d.name))
+
 
 				frappe.db.set_value(d.doctype, d.name, "ordered_qty", d.ordered_qty)
 
@@ -507,9 +502,7 @@ def make_request_for_quotation(source_name, target_doc=None):
 				"doctype": "Request for Quotation Item",
 				"field_map": [
 					["name", "material_request_item"],
-					["parent", "material_request"],
-					["project", "project_name"],
-				],
+					["parent", "material_request"],			],
 			},
 		},
 		target_doc,

@@ -14,7 +14,6 @@ class SalesInvoiceTimesheet(Document):
 	if TYPE_CHECKING:
 		from frappe.types import DF
 
-		activity_type: DF.Link | None
 		billing_amount: DF.Currency
 		billing_hours: DF.Float
 		description: DF.SmallText | None

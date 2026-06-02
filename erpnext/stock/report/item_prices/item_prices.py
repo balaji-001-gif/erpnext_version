@@ -57,7 +57,6 @@ def get_columns(filters):
 		_("Valuation Rate") + ":Currency:80",
 		_("Sales Price List") + "::180",
 		_("Purchase Price List") + "::180",
-		_("BOM Rate") + ":Currency:90",
 	]
 
 	return columns
@@ -171,25 +170,6 @@ def get_last_purchase_rate():
 		item_last_purchase_rate_map[d.item_code] = d.base_rate
 
 	return item_last_purchase_rate_map
-
-
-def get_item_bom_rate():
-	"""Get BOM rate of an item from BOM"""
-
-	item_bom_map = {}
-
-	bom = frappe.qb.DocType("BOM")
-	bom_data = (
-		frappe.qb.from_(bom)
-		.select(bom.item, (bom.total_cost / bom.quantity).as_("bom_rate"))
-		.where((bom.is_active == 1) & (bom.is_default == 1))
-	).run(as_dict=True)
-
-	for d in bom_data:
-		item_bom_map.setdefault(d.item, flt(d.bom_rate))
-
-	return item_bom_map
-
 
 def get_valuation_rate():
 	"""Get an average valuation rate of an item from all warehouses"""

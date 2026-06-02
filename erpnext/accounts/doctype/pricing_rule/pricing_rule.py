@@ -682,7 +682,7 @@ def remove_pricing_rules(item_list):
 def set_transaction_type(pricing_ctx: frappe._dict) -> None:
 	if pricing_ctx.transaction_type in ["buying", "selling"]:
 		return
-	if pricing_ctx.doctype in ("Opportunity", "Quotation", "Sales Order", "Delivery Note", "Sales Invoice"):
+	if pricing_ctx.doctype in ("Quotation", "Sales Order", "Delivery Note", "Sales Invoice"):
 		pricing_ctx.transaction_type = "selling"
 	elif pricing_ctx.doctype in (
 		"Material Request",

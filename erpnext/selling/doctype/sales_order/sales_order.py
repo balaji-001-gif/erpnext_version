@@ -401,12 +401,7 @@ class SalesOrder(SellingController):
 			self.validate_rate_with_reference_doc([["Quotation", "prevdoc_docname", "quotation_item"]])
 
 	def update_enquiry_status(self, prevdoc, flag):
-		enq = frappe.db.sql(
-			"select t2.prevdoc_docname from `tabQuotation` t1, `tabQuotation Item` t2 where t2.parent = t1.name and t1.name=%s",
-			prevdoc,
-		)
-		if enq:
-			frappe.db.sql("update `tabOpportunity` set status = %s where name=%s", (flag, enq[0][0]))
+		pass
 
 	def update_prevdoc_status(self, flag=None):
 		for quotation in set(d.prevdoc_docname for d in self.get("items")):
@@ -416,7 +411,7 @@ class SalesOrder(SellingController):
 					frappe.throw(_("Quotation {0} is cancelled").format(quotation))
 
 				doc.set_status(update=True)
-				doc.update_opportunity("Converted" if flag == "submit" else "Quotation")
+
 
 	def validate_drop_ship(self):
 		for d in self.get("items"):
@@ -706,12 +701,7 @@ class SalesOrder(SellingController):
 								"Item {0} has no Serial No. Only serilialized items can have delivery based on Serial No"
 							).format(item.item_code)
 						)
-					if not frappe.db.exists("BOM", {"item": item.item_code, "is_active": 1}):
-						frappe.throw(
-							_(
-								"No active BOM found for item {0}. Delivery by Serial No cannot be ensured"
-							).format(item.item_code)
-						)
+
 				reserved_items.append(item.item_code)
 			else:
 				normal_items.append(item.item_code)

@@ -13,7 +13,7 @@ def get_data():
 			"Batch": "item",
 		},
 		"transactions": [
-			{"label": _("Groups"), "items": ["BOM", "Product Bundle", "Item Alternative"]},
+			{"label": _("Groups"), "items": ["Product Bundle", "Item Alternative"]},
 			{"label": _("Pricing"), "items": ["Item Price", "Pricing Rule"]},
 			{"label": _("Sell"), "items": ["Quotation", "Sales Order", "Delivery Note", "Sales Invoice"]},
 			{

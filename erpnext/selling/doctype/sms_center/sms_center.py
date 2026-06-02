@@ -31,7 +31,6 @@ class SMSCenter(Document):
 			"All Customer Contact",
 			"All Supplier Contact",
 			"All Sales Partner Contact",
-			"All Lead (Open)",
 			"All Employee (Active)",
 			"All Sales Person",
 		]
@@ -54,9 +53,6 @@ class SMSCenter(Document):
 			"All Sales Partner Contact",
 		]:
 			query = self.get_contact_query_for_all_contacts()
-
-		elif self.send_to == "All Lead (Open)":
-			query = self.get_contact_query_for_all_open_leads()
 
 		elif self.send_to == "All Employee (Active)":
 			query = self.get_contact_query_for_all_active_employee()
@@ -108,15 +104,6 @@ class SMSCenter(Document):
 				if self.sales_partner
 				else query.where(fn.IfNull(DynamicLink.link_name, "") != "")
 			)
-		return query
-
-	def get_contact_query_for_all_open_leads(self):
-		Lead = frappe.qb.DocType("Lead")
-		query = (
-			frappe.qb.from_(Lead)
-			.select(Lead.lead_name, Lead.mobile)
-			.where((fn.IfNull(Lead.mobile_no, "") != "") & (Lead.docstatus != 2) & (Lead.status == "Open"))
-		)
 		return query
 
 	def get_contact_query_for_all_active_employee(self):

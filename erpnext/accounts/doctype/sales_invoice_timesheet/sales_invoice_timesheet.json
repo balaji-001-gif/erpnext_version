@@ -5,7 +5,6 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "activity_type",
   "description",
   "section_break_3",
   "from_time",
@@ -53,14 +52,6 @@
    "hidden": 1,
    "label": "Timesheet Detail",
    "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "fieldname": "activity_type",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Activity Type",
-   "options": "Activity Type",
    "read_only": 1
   },
   {
