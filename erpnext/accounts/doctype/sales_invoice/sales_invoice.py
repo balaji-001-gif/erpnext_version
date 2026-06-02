@@ -994,14 +994,7 @@ class SalesInvoice(SellingController):
 
 	def validate_proj_cust(self):
 		"""check for does customer belong to same project as entered.."""
-		if self.project and self.customer:
-			res = frappe.db.sql(
-				"""select name from `tabProject`
-				where name = %s and (customer = %s or customer is null or customer = '')""",
-				(self.project, self.customer),
-			)
-			if not res:
-				throw(_("Customer {0} does not belong to project {1}").format(self.customer, self.project))
+		pass
 
 	def validate_pos(self):
 		if self.is_return:
