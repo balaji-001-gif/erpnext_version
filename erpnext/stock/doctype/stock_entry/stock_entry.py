@@ -278,22 +278,7 @@ class StockEntry(StockController):
 				)
 
 	def update_cost_in_project(self):
-		if self.project:
-			amount = frappe.db.sql(
-				""" select ifnull(sum(sed.amount), 0)
-				from
-					`tabStock Entry` se, `tabStock Entry Detail` sed
-				where
-					se.docstatus = 1 and se.project = %s and sed.parent = se.name
-					and (sed.t_warehouse is null or sed.t_warehouse = '')""",
-				self.project,
-				as_list=1,
-			)
-
-			amount = amount[0][0] if amount else 0
-			project = frappe.get_doc("Project", self.project)
-			project.total_consumed_material_cost = amount
-			project.save()
+		pass
 
 	def validate_item(self):
 		stock_items = self.get_stock_items()
@@ -313,7 +298,6 @@ class StockEntry(StockController):
 					{
 						"item_code": item.item_code,
 						"company": self.company,
-						"project": self.project,
 						"uom": item.uom,
 						"s_warehouse": item.s_warehouse,
 						"is_finished_item": item.is_finished_item,
