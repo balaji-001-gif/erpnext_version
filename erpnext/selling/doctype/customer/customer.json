@@ -19,9 +19,6 @@
   "column_break0",
   "territory",
   "gender",
-  "lead_name",
-  "opportunity_name",
-  "prospect_name",
   "account_manager",
   "image",
   "defaults_tab",
@@ -145,17 +142,6 @@
    "fieldtype": "Link",
    "label": "Default Company Bank Account",
    "options": "Bank Account"
-  },
-  {
-   "fieldname": "lead_name",
-   "fieldtype": "Link",
-   "label": "From Lead",
-   "no_copy": 1,
-   "oldfieldname": "lead_name",
-   "oldfieldtype": "Link",
-   "options": "Lead",
-   "print_hide": 1,
-   "report_hide": 1
   },
   {
    "fieldname": "image",
@@ -478,14 +464,6 @@
    "options": "Tax Withholding Category"
   },
   {
-   "fieldname": "opportunity_name",
-   "fieldtype": "Link",
-   "label": "From Opportunity",
-   "no_copy": 1,
-   "options": "Opportunity",
-   "print_hide": 1
-  },
-  {
    "fieldname": "contact_and_address_tab",
    "fieldtype": "Tab Break",
    "label": "Address & Contact"
@@ -576,14 +554,6 @@
   {
    "fieldname": "column_break_nwor",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "prospect_name",
-   "fieldtype": "Link",
-   "label": "From Prospect",
-   "no_copy": 1,
-   "options": "Prospect",
-   "print_hide": 1
   },
   {
    "fetch_from": "customer_primary_contact.first_name",

@@ -158,7 +158,6 @@
   "inter_company_reference",
   "customer_group",
   "territory",
-  "source",
   "column_break5",
   "excise_page",
   "instructions",
@@ -958,15 +957,6 @@
    "label": "Additional Info",
    "oldfieldtype": "Section Break",
    "options": "fa fa-file-text",
-   "print_hide": 1
-  },
-  {
-   "fieldname": "source",
-   "fieldtype": "Link",
-   "label": "Source",
-   "oldfieldname": "source",
-   "oldfieldtype": "Select",
-   "options": "Lead Source",
    "print_hide": 1
   },
   {

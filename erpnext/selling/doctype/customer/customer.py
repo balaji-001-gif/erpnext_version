@@ -73,17 +73,14 @@ class Customer(TransactionBase):
 		is_internal_customer: DF.Check
 		language: DF.Link | None
 		last_name: DF.ReadOnly | None
-		lead_name: DF.Link | None
 		loyalty_program: DF.Link | None
 		loyalty_program_tier: DF.Data | None
 		market_segment: DF.Link | None
 		mobile_no: DF.ReadOnly | None
 		naming_series: DF.Literal["CUST-.YYYY.-"]
-		opportunity_name: DF.Link | None
 		payment_terms: DF.Link | None
 		portal_users: DF.Table[PortalUser]
 		primary_address: DF.Text | None
-		prospect_name: DF.Link | None
 		represents_company: DF.Link | None
 		sales_team: DF.Table[SalesTeam]
 		salutation: DF.Link | None
@@ -138,13 +135,8 @@ class Customer(TransactionBase):
 
 		return self.customer_name
 
-	def after_insert(self):
-		"""If customer created from Lead, update customer id in quotations"""
-		self.update_lead_status()
-
 	def validate(self):
 		self.flags.is_new_doc = self.is_new()
-		self.flags.old_lead = self.lead_name
 		self.validate_customer_group()
 		validate_party_accounts(self)
 		self.validate_credit_limit_on_change()
@@ -234,12 +226,8 @@ class Customer(TransactionBase):
 		self.create_primary_contact()
 		self.create_primary_address()
 
-		if self.flags.old_lead != self.lead_name:
-			self.update_lead_status()
-
 		if self.flags.is_new_doc:
-			self.link_address_and_contact()
-			self.copy_communication()
+			frappe.flags.customer_group_changed = True
 
 		self.update_customer_groups()
 
@@ -255,7 +243,7 @@ class Customer(TransactionBase):
 			)
 
 	def create_primary_contact(self):
-		if not self.customer_primary_contact and not self.lead_name:
+		if not self.customer_primary_contact:
 			if self.mobile_no or self.email_id or self.first_name or self.last_name:
 				contact = make_contact(self)
 				self.db_set("customer_primary_contact", contact.name)
@@ -273,32 +261,7 @@ class Customer(TransactionBase):
 			self.db_set("primary_address", address_display)
 
 	def update_lead_status(self):
-		"""If Customer created from Lead, update lead status to "Converted"""
-		if self.lead_name:
-			frappe.db.set_value("Lead", self.lead_name, "status", "Converted")
-
-	def link_address_and_contact(self):
-		if self.lead_name:
-			linked_contacts_and_addresses = frappe.get_all(
-				"Dynamic Link",
-				filters=[
-					["parenttype", "in", ["Contact", "Address"]],
-					["link_doctype", "=", "Lead"],
-					["link_name", "=", self.lead_name],
-				],
-				fields=["parent as name", "parenttype as doctype"],
-			)
-
-			for row in linked_contacts_and_addresses:
-				linked_doc = frappe.get_doc(row.doctype, row.name)
-				if not linked_doc.has_link("Customer", self.name):
-					linked_doc.append("links", dict(link_doctype="Customer", link_name=self.name))
-					linked_doc.save(ignore_permissions=self.flags.ignore_permissions)
-
-	def copy_communication(self):
-		if not self.lead_name:
-			return
-		# CRM module removed — lead communication carry-forward logic omitted
+		pass
 
 	def validate_name_with_customer_group(self):
 		if frappe.db.exists("Customer Group", self.name):
@@ -354,9 +317,8 @@ class Customer(TransactionBase):
 			if flt(limit.credit_limit) < outstanding_amt:
 				frappe.throw(
 					_(
-						"""New credit limit is less than current outstanding amount for the customer. Credit limit has to be atleast {0}"""
-					).format(outstanding_amt)
-				)
+						"""New credit limit is less than current outstanding amount for the customer. Credit limit has to be atleast {0}"""						).format(outstanding_amt)
+					)
 
 	def on_trash(self):
 		if self.customer_primary_contact:
@@ -365,8 +327,6 @@ class Customer(TransactionBase):
 			self.db_set("customer_primary_address", None)
 
 		delete_contact_and_address("Customer", self.name)
-		if self.lead_name:
-			frappe.db.sql("update `tabLead` set status='Interested' where name=%s", self.lead_name)
 
 	def before_rename(self, olddn, newdn, merge=False):
 		if merge:
@@ -437,30 +397,6 @@ def make_quotation(source_name, target_doc=None):
 		target_doc.selling_price_list = price_list
 	if currency:
 		target_doc.currency = currency
-
-	return target_doc
-
-
-@frappe.whitelist()
-def make_opportunity(source_name, target_doc=None):
-	def set_missing_values(source, target):
-		_set_missing_values(source, target)
-
-	target_doc = get_mapped_doc(
-		"Customer",
-		source_name,
-		{
-			"Customer": {
-				"doctype": "Opportunity",
-				"field_map": {
-					"name": "party_name",
-					"doctype": "opportunity_from",
-				},
-			}
-		},
-		target_doc,
-		set_missing_values,
-	)
 
 	return target_doc
 

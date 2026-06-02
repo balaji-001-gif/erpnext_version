@@ -162,7 +162,6 @@
   "ignore_default_payment_terms_template",
   "represents_company",
   "column_break_152",
-  "source",
   "inter_company_order_reference",
   "party_account_currency",
   "connections_tab"
@@ -1152,17 +1151,6 @@
    "options": "Currency",
    "print_hide": 1,
    "read_only": 1
-  },
-  {
-   "fieldname": "source",
-   "fieldtype": "Link",
-   "hide_days": 1,
-   "hide_seconds": 1,
-   "label": "Source",
-   "oldfieldname": "source",
-   "oldfieldtype": "Select",
-   "options": "Lead Source",
-   "print_hide": 1
   },
   {
    "collapsible": 1,

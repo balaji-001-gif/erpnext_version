@@ -45,7 +45,6 @@
   "resolution_time",
   "user_resolution_time",
   "additional_info",
-  "lead",
   "contact",
   "email_account",
   "column_break_16",
@@ -193,12 +192,6 @@
    "label": "Reference",
    "options": "fa fa-pushpin",
    "read_only": 1
-  },
-  {
-   "fieldname": "lead",
-   "fieldtype": "Link",
-   "label": "Lead",
-   "options": "Lead"
   },
   {
    "fieldname": "contact",

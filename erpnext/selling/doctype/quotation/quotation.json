@@ -128,9 +128,7 @@
   "customer_group",
   "territory",
   "column_break_108",
-  "source",
   "column_break4",
-  "opportunity",
   "supplier_quotation",
   "enq_det",
   "connections_tab"
@@ -858,15 +856,6 @@
    "label": "Update Auto Repeat Reference"
   },
   {
-   "fieldname": "source",
-   "fieldtype": "Link",
-   "label": "Source",
-   "oldfieldname": "source",
-   "oldfieldtype": "Select",
-   "options": "Lead Source",
-   "print_hide": 1
-  },
-  {
    "allow_on_submit": 1,
    "depends_on": "eval:doc.status=='Lost'",
    "fieldname": "order_lost_reason",
@@ -913,14 +902,6 @@
    "fieldtype": "Link",
    "label": "Supplier Quotation",
    "options": "Supplier Quotation"
-  },
-  {
-   "fieldname": "opportunity",
-   "fieldtype": "Link",
-   "label": "Opportunity",
-   "options": "Opportunity",
-   "print_hide": 1,
-   "read_only": 1
   },
   {
    "allow_on_submit": 1,

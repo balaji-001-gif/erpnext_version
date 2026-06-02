@@ -40,7 +40,6 @@ class Issue(Document):
 		first_response_time: DF.Duration | None
 		issue_split_from: DF.Link | None
 		issue_type: DF.Link | None
-		lead: DF.Link | None
 		naming_series: DF.Literal["ISS-.YYYY.-"]
 		on_hold_since: DF.Datetime | None
 		opening_date: DF.Date | None
@@ -82,9 +81,6 @@ class Issue(Document):
 
 		email_id = email.utils.parseaddr(email_id)[1]
 		if email_id:
-			if not self.lead:
-				self.lead = frappe.db.get_value("Lead", {"email_id": email_id})
-
 			if not self.contact and not self.customer:
 				self.contact = frappe.db.get_value("Contact", {"email_id": email_id})
 
@@ -93,7 +89,7 @@ class Issue(Document):
 					self.customer = contact.get_link_for("Customer")
 
 			if not self.company:
-				self.company = frappe.db.get_value("Lead", self.lead, "company") or frappe.db.get_default(
+				self.company = frappe.db.get_single_value("Global Defaults", "default_company") or frappe.db.get_default(
 					"Company"
 				)
 

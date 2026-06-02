@@ -150,7 +150,6 @@ class SalesOrder(SellingController):
 		shipping_address_name: DF.Link | None
 		shipping_rule: DF.Link | None
 		skip_delivery_note: DF.Check
-		source: DF.Link | None
 		status: DF.Literal[
 			"",
 			"Draft",

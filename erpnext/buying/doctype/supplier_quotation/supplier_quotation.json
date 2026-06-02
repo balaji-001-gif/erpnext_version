@@ -114,7 +114,6 @@
   "update_auto_repeat_reference",
   "more_info",
   "column_break_57",
-  "opportunity",
   "connections_tab"
  ],
  "fields": [
@@ -778,15 +777,6 @@
   {
    "fieldname": "column_break_57",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "opportunity",
-   "fieldtype": "Link",
-   "label": "Opportunity",
-   "no_copy": 1,
-   "options": "Opportunity",
-   "print_hide": 1,
-   "read_only": 1
   },
   {
    "fieldname": "valid_till",

@@ -42,8 +42,7 @@
   "printing_settings",
   "select_print_heading",
   "letter_head",
-  "more_info",
-  "opportunity"
+  "more_info"
  ],
  "fields": [
   {
@@ -213,14 +212,6 @@
    "oldfieldtype": "Section Break",
    "options": "fa fa-file-text",
    "print_hide": 1
-  },
-  {
-   "fieldname": "opportunity",
-   "fieldtype": "Link",
-   "label": "Opportunity",
-   "options": "Opportunity",
-   "print_hide": 1,
-   "read_only": 1
   },
   {
    "fieldname": "status",

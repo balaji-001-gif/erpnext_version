@@ -51,7 +51,6 @@ class RequestforQuotation(BuyingController):
 		mfs_html: DF.Code | None
 		named_place: DF.Data | None
 		naming_series: DF.Literal["PUR-RFQ-.YYYY.-"]
-		opportunity: DF.Link | None
 		schedule_date: DF.Date | None
 		select_print_heading: DF.Link | None
 		send_attached_files: DF.Check
