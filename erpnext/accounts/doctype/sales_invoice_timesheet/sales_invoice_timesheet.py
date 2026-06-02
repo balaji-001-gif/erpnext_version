@@ -22,8 +22,6 @@ class SalesInvoiceTimesheet(Document):
 		parentfield: DF.Data
 		parenttype: DF.Data
 		project_name: DF.Data | None
-		time_sheet: DF.Link | None
-		timesheet_detail: DF.Data | None
 		to_time: DF.Datetime | None
 	# end: auto-generated types
 

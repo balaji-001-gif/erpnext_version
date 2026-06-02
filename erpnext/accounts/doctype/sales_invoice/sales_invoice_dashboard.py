@@ -13,27 +13,26 @@ def get_data():
 			"Auto Repeat": "reference_document",
 			"Purchase Invoice": "inter_company_invoice_reference",
 		},
-		"internal_links": {
-			"Sales Order": ["items", "sales_order"],
-			"Timesheet": ["timesheets", "time_sheet"],
+	"internal_links": {
+		"Sales Order": ["items", "sales_order"],
+	},
+	"internal_and_external_links": {
+		"Delivery Note": ["items", "delivery_note"],
+	},
+	"transactions": [
+		{
+			"label": _("Payment"),
+			"items": [
+				"Payment Entry",
+				"Payment Request",
+				"Journal Entry",
+				"Invoice Discounting",
+				"Dunning",
+			],
 		},
-		"internal_and_external_links": {
-			"Delivery Note": ["items", "delivery_note"],
-		},
-		"transactions": [
-			{
-				"label": _("Payment"),
-				"items": [
-					"Payment Entry",
-					"Payment Request",
-					"Journal Entry",
-					"Invoice Discounting",
-					"Dunning",
-				],
-			},
-			{"label": _("Reference"), "items": ["Timesheet", "Delivery Note", "Sales Order"]},
-			{"label": _("Returns"), "items": ["Sales Invoice"]},
-			{"label": _("Subscription"), "items": ["Auto Repeat"]},
-			{"label": _("Internal Transfers"), "items": ["Purchase Invoice"]},
-		],
+		{"label": _("Reference"), "items": ["Delivery Note", "Sales Order"]},
+		{"label": _("Returns"), "items": ["Sales Invoice"]},
+		{"label": _("Subscription"), "items": ["Auto Repeat"]},
+		{"label": _("Internal Transfers"), "items": ["Purchase Invoice"]},
+	],
 	}

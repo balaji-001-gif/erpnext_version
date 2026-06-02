@@ -324,9 +324,6 @@ class SalesInvoice(SellingController):
 		if self.is_return and not self.return_against and self.timesheets:
 			frappe.throw(_("Direct return is not allowed for Timesheet."))
 
-		if not self.is_return:
-			self.validate_time_sheets_are_submitted()
-
 		self.validate_multiple_billing("Delivery Note", "dn_detail", "amount")
 
 		if self.is_return and self.return_against:
@@ -684,16 +681,7 @@ class SalesInvoice(SellingController):
 			check_credit_limit(self.customer, self.company, bypass_credit_limit_check_at_sales_order)
 
 	def unlink_sales_invoice_from_timesheets(self):
-		for row in self.timesheets:
-			timesheet = frappe.get_doc("Timesheet", row.time_sheet)
-			for time_log in timesheet.time_logs:
-				if time_log.sales_invoice == self.name:
-					time_log.sales_invoice = None
-			timesheet.calculate_total_amounts()
-			timesheet.calculate_percentage_billed()
-			timesheet.flags.ignore_validate_update_after_submit = True
-			timesheet.set_status()
-			timesheet.db_update_all()
+		pass
 
 	@frappe.whitelist()
 	def set_missing_values(self, for_validate=False):
@@ -730,36 +718,10 @@ class SalesInvoice(SellingController):
 			}
 
 	def update_time_sheet(self, sales_invoice):
-		for d in self.timesheets:
-			if d.time_sheet:
-				timesheet = frappe.get_doc("Timesheet", d.time_sheet)
-				self.update_time_sheet_detail(timesheet, d, sales_invoice)
-				timesheet.calculate_total_amounts()
-				timesheet.calculate_percentage_billed()
-				timesheet.flags.ignore_validate_update_after_submit = True
-				timesheet.set_status()
-				timesheet.db_update_all()
+		pass
 
 	def update_time_sheet_detail(self, timesheet, args, sales_invoice):
-		for data in timesheet.time_logs:
-			if (
-				(self.project and args.timesheet_detail == data.name)
-				or (not self.project and not data.sales_invoice and args.timesheet_detail == data.name)
-				or (
-					not sales_invoice
-					and data.sales_invoice == self.name
-					and args.timesheet_detail == data.name
-				)
-				or (
-					self.is_return
-					and self.return_against
-					and data.sales_invoice
-					and data.sales_invoice == self.return_against
-					and not sales_invoice
-					and args.timesheet_detail == data.name
-				)
-			):
-				data.sales_invoice = sales_invoice
+		pass
 
 	def on_update_after_submit(self):
 		fields_to_check = [
@@ -797,25 +759,7 @@ class SalesInvoice(SellingController):
 			payment.account = get_bank_cash_account(payment.mode_of_payment, self.company).get("account")
 
 	def validate_time_sheets_are_submitted(self):
-		# Note: This validation is skipped for return invoices
-		# to allow returns to reference already-billed timesheet details
-		for data in self.timesheets:
-			# Handle invoice duplication
-			if data.time_sheet and data.timesheet_detail:
-				if sales_invoice := frappe.db.get_value(
-					"Timesheet Detail", data.timesheet_detail, "sales_invoice"
-				):
-					frappe.throw(
-						_("Row {0}: Sales Invoice {1} is already created for {2}").format(
-							data.idx, frappe.bold(sales_invoice), frappe.bold(data.time_sheet)
-						)
-					)
-			if data.time_sheet:
-				status = frappe.db.get_value("Timesheet", data.time_sheet, "status")
-				if status not in ["Submitted", "Payslip", "Partially Billed"]:
-					frappe.throw(
-						_("Timesheet {0} cannot be invoiced in its current state").format(data.time_sheet)
-					)
+		pass
 
 	def set_pos_fields(self, for_validate=False):
 		"""Set retail related fields from POS Profiles"""
@@ -1137,14 +1081,7 @@ class SalesInvoice(SellingController):
 			self.set("packed_items", [])
 
 	def set_billing_hours_and_amount(self):
-		if not self.project:
-			for timesheet in self.timesheets:
-				ts_doc = frappe.get_doc("Timesheet", timesheet.time_sheet)
-				if not timesheet.billing_hours and ts_doc.total_billable_hours:
-					timesheet.billing_hours = ts_doc.total_billable_hours
-
-				if not timesheet.billing_amount and ts_doc.total_billable_amount:
-					timesheet.billing_amount = ts_doc.total_billable_amount
+		pass
 
 	def update_timesheet_billing_for_project(self):
 		if (
@@ -1838,15 +1775,7 @@ class SalesInvoice(SellingController):
 		self.due_date = None
 
 	def update_project(self):
-		unique_projects = list(set([d.project for d in self.get("items") if d.project]))
-		if self.project and self.project not in unique_projects:
-			unique_projects.append(self.project)
-
-		for p in unique_projects:
-			project = frappe.get_doc("Project", p)
-			project.update_billed_amount()
-			project.calculate_gross_margin()
-			project.db_update()
+		pass
 
 	def verify_payment_amount_is_positive(self):
 		for entry in self.payments:
