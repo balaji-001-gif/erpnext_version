@@ -768,8 +768,7 @@ frappe.ui.form.on("Sales Invoice", {
 			"Sales Invoice": "Return / Credit Note",
 			"Payment Request": "Payment Request",
 			"Payment Entry": "Payment",
-		}),
-			(
+		});
 
 		// discount account
 		frm.fields_dict["items"].grid.get_field("discount_account").get_query = function (doc) {

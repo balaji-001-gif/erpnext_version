@@ -173,10 +173,8 @@ frappe.ui.form.on("Purchase Order", {
 		} else {
 			frm.set_value("tax_withholding_category", frm.supplier_tds);
 		}
-	}
-		}
-		}
-		});
+	},
+});
 
 frappe.ui.form.on("Purchase Order Item", {
 	schedule_date: function (frm, cdt, cdn) {
@@ -231,7 +229,6 @@ frappe.ui.form.on("Purchase Order Item", {
 					}
 				}
 			}
-		}
 	},
 
 	fg_item: async function (frm, cdt, cdn) {
@@ -249,7 +246,6 @@ frappe.ui.form.on("Purchase Order Item", {
 					frappe.model.set_value(cdt, cdn, "uom", result.message.service_item_uom);
 				}
 			}
-		}
 	},
 
 	qty: async function (frm, cdt, cdn) {
@@ -269,9 +265,8 @@ frappe.ui.form.on("Purchase Order Item", {
 					);
 				}
 			}
-		}
 	}
-		});
+});
 
 erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 	erpnext.buying.BuyingController
@@ -381,7 +376,6 @@ erpnext.buying.PurchaseOrderController = class PurchaseOrderController extends (
 							this.make_purchase_receipt,
 							__("Create")
 						);
-						}
 					}
 					// Please do not add precision in the below flt function
 					if (flt(doc.per_billed) < 100)
@@ -744,9 +738,7 @@ cur_frm.cscript.update_status = function (label, status) {
 			cur_frm.set_value("status", status);
 			cur_frm.reload_doc();
 		}
-		});
-};
-
+	});
 }
 
 function set_schedule_date(frm) {
@@ -761,6 +753,3 @@ function set_schedule_date(frm) {
 	}
 }
 
-frappe.provide("erpnext.buying");
-
-});
