@@ -49,7 +49,6 @@ class AccountingDimension(Document):
 		if self.document_type in (
 			*core_doctypes_list,
 			"Accounting Dimension",
-			"Project",
 			"Cost Center",
 			"Accounting Dimension Detail",
 			"Company",
@@ -308,7 +307,6 @@ def get_dimensions(with_cost_center_and_project=False):
 		dimension_filters.extend(
 			[
 				frappe._dict({"fieldname": "cost_center", "document_type": "Cost Center"}),
-				frappe._dict({"fieldname": "project", "document_type": "Project"}),
 			]
 		)
 

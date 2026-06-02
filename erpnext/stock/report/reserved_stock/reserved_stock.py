@@ -180,13 +180,6 @@ def get_columns():
 			"width": 120,
 		},
 		{
-			"fieldname": "project",
-			"label": _("Project"),
-			"fieldtype": "Link",
-			"options": "Project",
-			"width": 100,
-		},
-		{
 			"fieldname": "company",
 			"label": _("Company"),
 			"fieldtype": "Link",

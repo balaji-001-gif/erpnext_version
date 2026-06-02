@@ -21,7 +21,6 @@
   "accounting_dimensions_section",
   "cost_center",
   "column_break_14",
-  "project",
   "accounting_details",
   "purchase_invoice",
   "capitalize_repair_cost",
@@ -188,12 +187,6 @@
    "fieldtype": "Link",
    "label": "Cost Center",
    "options": "Cost Center"
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
   },
   {
    "fieldname": "column_break_14",

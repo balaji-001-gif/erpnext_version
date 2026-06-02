@@ -48,8 +48,6 @@ def get_accounts_data(based_on, company):
 			.orderby(cc.name)
 			.run(as_dict=True)
 		)
-	elif based_on == "Project":
-		return frappe.get_all("Project", fields=["name"], filters={"company": company}, order_by="name")
 	else:
 		filters = {}
 		doctype = frappe.unscrub(based_on)

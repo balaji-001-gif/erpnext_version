@@ -80,7 +80,6 @@
   "reference_date",
   "clearance_date",
   "accounting_dimensions_section",
-  "project",
   "dimension_col_break",
   "cost_center",
   "section_break_12",
@@ -475,14 +474,6 @@
    "fieldname": "section_break_12",
    "fieldtype": "Section Break",
    "label": "More Information"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project",
-   "print_hide": 1
   },
   {
    "fieldname": "remarks",

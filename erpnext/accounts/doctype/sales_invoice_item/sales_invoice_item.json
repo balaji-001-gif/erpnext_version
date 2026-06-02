@@ -115,7 +115,6 @@
   "accounting_dimensions_section",
   "cost_center",
   "dimension_col_break",
-  "project",
   "section_break_54",
   "page_break"
  ],
@@ -807,14 +806,6 @@
    "fieldtype": "Link",
    "label": "Finance Book",
    "options": "Finance Book"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project",
-   "search_index": 1
   },
   {
    "depends_on": "eval:parent.update_stock == 1",

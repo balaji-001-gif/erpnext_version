@@ -57,7 +57,6 @@
   "expense_account",
   "accounting_dimensions_section",
   "cost_center",
-  "project",
   "dimension_col_break",
   "more_info",
   "actual_qty",
@@ -483,12 +482,6 @@
    "options": "Purchase Receipt",
    "read_only": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
   },
   {
    "fieldname": "po_detail",

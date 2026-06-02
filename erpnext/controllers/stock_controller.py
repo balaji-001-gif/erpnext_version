@@ -611,7 +611,7 @@ class StockController(AccountsController):
 									"account": warehouse_account[sle.warehouse]["account"],
 									"against": expense_account,
 									"cost_center": item_row.cost_center,
-									"project": sle.get("project") or item_row.project or self.get("project"),
+
 									"remarks": self.get("remarks") or _("Accounting Entry for Stock"),
 									"debit": flt(sle.stock_value_difference, precision),
 									"is_opening": item_row.get("is_opening")
@@ -631,9 +631,7 @@ class StockController(AccountsController):
 									"cost_center": item_row.cost_center,
 									"remarks": self.get("remarks") or _("Accounting Entry for Stock"),
 									"debit": -1 * flt(sle.stock_value_difference, precision),
-									"project": sle.get("project")
-									or item_row.get("project")
-									or self.get("project"),
+
 									"is_opening": item_row.get("is_opening")
 									or self.get("is_opening")
 									or "No",
@@ -665,7 +663,7 @@ class StockController(AccountsController):
 							"account": expense_account,
 							"against": warehouse_asset_account,
 							"cost_center": item_row.cost_center,
-							"project": item_row.project or self.get("project"),
+
 							"remarks": _("Rounding gain/loss Entry for Stock Transfer"),
 							"debit": sle_rounding_diff,
 							"is_opening": item_row.get("is_opening") or self.get("is_opening") or "No",
@@ -683,7 +681,7 @@ class StockController(AccountsController):
 							"cost_center": item_row.cost_center,
 							"remarks": _("Rounding gain/loss Entry for Stock Transfer"),
 							"credit": sle_rounding_diff,
-							"project": item_row.get("project") or self.get("project"),
+
 							"is_opening": item_row.get("is_opening") or self.get("is_opening") or "No",
 						},
 						item=item_row,
@@ -779,7 +777,6 @@ class StockController(AccountsController):
 				table.posting_time,
 				table.actual_qty,
 				table.qty_after_transaction,
-				table.project,
 			)
 			.where(
 				(table.voucher_type == self.doctype)
@@ -909,7 +906,6 @@ class StockController(AccountsController):
 				),
 				"incoming_rate": 0,
 				"company": self.company,
-				"project": d.get("project") or self.get("project"),
 				"is_cancelled": 1 if self.docstatus == 2 else 0,
 			}
 		)
@@ -1372,7 +1368,6 @@ class StockController(AccountsController):
 		debit_in_account_currency=None,
 		credit_in_account_currency=None,
 		account_currency=None,
-		project=None,
 		voucher_detail_no=None,
 		item=None,
 		posting_date=None,

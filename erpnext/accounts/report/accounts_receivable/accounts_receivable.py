@@ -1161,7 +1161,6 @@ class ReceivablePayableReport:
 			)
 
 		self.add_column(label=_("Cost Center"), fieldname="cost_center", fieldtype="Data")
-		self.add_column(label=_("Project"), fieldname="project", fieldtype="Link", options="Project")
 		self.add_column(label=_("Voucher Type"), fieldname="voucher_type", fieldtype="Data")
 		self.add_column(
 			label=_("Voucher No"),

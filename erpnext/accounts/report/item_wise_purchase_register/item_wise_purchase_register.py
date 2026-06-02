@@ -217,13 +217,6 @@ def get_columns(additional_table_columns, filters):
 			"width": 120,
 		},
 		{
-			"label": _("Project"),
-			"fieldname": "project",
-			"fieldtype": "Link",
-			"options": "Project",
-			"width": 80,
-		},
-		{
 			"label": _("Company"),
 			"fieldname": "company",
 			"fieldtype": "Link",

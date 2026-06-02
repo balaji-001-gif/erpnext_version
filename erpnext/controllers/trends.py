@@ -420,7 +420,6 @@ def based_wise_columns_query(based_on, trans):
 		based_on_details["based_on_group_by"] = "t1.territory"
 		based_on_details["addl_tables"] = ""
 
-	elif based_on == "Project":
 		if trans in ["Sales Invoice", "Delivery Note", "Sales Order"]:
 			based_on_details["based_on_cols"] = ["Project:Link/Project:120"]
 			based_on_details["based_on_select"] = "t1.project,"

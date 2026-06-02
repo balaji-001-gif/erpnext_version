@@ -14,7 +14,6 @@
   "account_currency",
   "debit_in_account_currency",
   "credit_in_account_currency",
-  "project",
   "company",
   "finance_book",
   "period_closing_voucher",
@@ -86,12 +85,6 @@
    "fieldtype": "Currency",
    "label": "Credit Amount in Account Currency",
    "options": "account_currency"
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
   },
   {
    "fieldname": "company",

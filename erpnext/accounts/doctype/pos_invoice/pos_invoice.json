@@ -28,7 +28,6 @@
   "amended_from",
   "return_against",
   "accounting_dimensions_section",
-  "project",
   "dimension_col_break",
   "cost_center",
   "customer_po_details",
@@ -361,16 +360,6 @@
    "fieldname": "accounting_dimensions_section",
    "fieldtype": "Section Break",
    "label": "Accounting Dimensions"
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "in_global_search": 1,
-   "label": "Project",
-   "oldfieldname": "project_name",
-   "oldfieldtype": "Link",
-   "options": "Project",
-   "print_hide": 1
   },
   {
    "fieldname": "dimension_col_break",

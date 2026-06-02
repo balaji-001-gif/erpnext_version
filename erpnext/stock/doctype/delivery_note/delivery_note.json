@@ -26,7 +26,6 @@
   "accounting_dimensions_section",
   "cost_center",
   "column_break_18",
-  "project",
   "dimension_col_break",
   "currency_and_price_list",
   "currency",
@@ -961,14 +960,6 @@
    "oldfieldtype": "Section Break",
    "options": "fa fa-file-text",
    "print_hide": 1
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "oldfieldname": "project",
-   "oldfieldtype": "Link",
-   "options": "Project"
   },
   {
    "fieldname": "campaign",

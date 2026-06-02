@@ -109,8 +109,7 @@
   "purchase_order_item",
   "accounting_dimensions_section",
   "cost_center",
-  "column_break_ihdh",
-  "project"
+  "column_break_ihdh"
  ],
  "fields": [
   {
@@ -943,14 +942,6 @@
   {
    "fieldname": "column_break_ihdh",
    "fieldtype": "Column Break"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project",
-   "search_index": 1
   },
   {
    "fieldname": "sales_order_schedule_section",

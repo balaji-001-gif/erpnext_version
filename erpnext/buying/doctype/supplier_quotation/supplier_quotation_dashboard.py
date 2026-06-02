@@ -8,11 +8,10 @@ def get_data():
 		"internal_links": {
 			"Material Request": ["items", "material_request"],
 			"Request for Quotation": ["items", "request_for_quotation"],
-			"Project": ["items", "project"],
 		},
 		"transactions": [
 			{"label": _("Related"), "items": ["Purchase Order", "Quotation"]},
-			{"label": _("Reference"), "items": ["Material Request", "Request for Quotation", "Project"]},
+			{"label": _("Reference"), "items": ["Material Request", "Request for Quotation"]},
 			{"label": _("Subscription"), "items": ["Auto Repeat"]},
 		],
 	}

@@ -96,26 +96,6 @@ def get_columns(filters):
 			"width": 100,
 		},
 		{
-			"label": _("Supplier Name"),
-			"fieldtype": "Data",
-			"fieldname": "supplier_name",
-			"width": 140,
-		},
-		{
-			"label": _("Supplier Group"),
-			"fieldtype": "Link",
-			"fieldname": "supplier_group",
-			"options": "Supplier Group",
-			"width": 120,
-		},
-		{
-			"label": _("Project"),
-			"fieldtype": "Link",
-			"fieldname": "project",
-			"options": "Project",
-			"width": 100,
-		},
-		{
 			"label": _("Received Quantity"),
 			"fieldtype": "Float",
 			"fieldname": "received_qty",

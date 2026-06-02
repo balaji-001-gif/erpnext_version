@@ -35,7 +35,6 @@
   "accounting_dimensions_section",
   "cost_center",
   "dimension_col_break",
-  "project",
   "currency_and_price_list",
   "currency",
   "conversion_rate",
@@ -1374,13 +1373,6 @@
    "fieldtype": "Small Text",
    "label": "Billing Address",
    "read_only": 1
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
   },
   {
    "allow_on_submit": 1,

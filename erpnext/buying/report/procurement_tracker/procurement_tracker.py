@@ -36,13 +36,6 @@ def get_columns(filters):
 			"width": 140,
 		},
 		{
-			"label": _("Project"),
-			"options": "Project",
-			"fieldname": "project",
-			"fieldtype": "Link",
-			"width": 140,
-		},
-		{
 			"label": _("Requesting Site"),
 			"options": "Warehouse",
 			"fieldname": "requesting_site",

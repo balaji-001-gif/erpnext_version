@@ -428,13 +428,6 @@ def get_columns(filters):
 				"width": 100,
 			},
 			{
-				"label": _("Project"),
-				"fieldname": "project",
-				"fieldtype": "Link",
-				"options": "Project",
-				"width": 100,
-			},
-			{
 				"label": _("Company"),
 				"fieldname": "company",
 				"fieldtype": "Link",
@@ -690,7 +683,6 @@ def get_opening_balance(filters, columns, sl_entries, inv_dimension_wise_value=N
 
 	project = None
 	if filters.get("project") and not frappe.get_all(
-		"Inventory Dimension", filters={"reference_document": "Project"}
 	):
 		project = filters.get("project")
 
@@ -841,7 +833,6 @@ def get_inv_dimension_wise_value(filters) -> list:
 			inv_dimension_key[dimension.fieldname] = filters.get(dimension.fieldname)
 
 	if filters.get("project") and not frappe.get_all(
-		"Inventory Dimension", filters={"reference_document": "Project"}
 	):
 		inv_dimension_key["project"] = filters.get("project")
 

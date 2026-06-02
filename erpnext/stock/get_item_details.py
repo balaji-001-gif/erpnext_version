@@ -836,9 +836,6 @@ def get_default_cost_center(args, item=None, item_group=None, brand=None, compan
 	if not company and args.get("company"):
 		company = args.get("company")
 
-	if args.get("project"):
-		cost_center = frappe.db.get_value("Project", args.get("project"), "cost_center", cache=True)
-
 	if not cost_center and (item and item_group and brand):
 		if args.get("customer"):
 			cost_center = (

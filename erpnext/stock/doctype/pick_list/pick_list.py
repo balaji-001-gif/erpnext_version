@@ -1540,7 +1540,7 @@ def get_actual_qty(item_code, warehouse):
 
 
 def update_delivery_note_item(source, target, delivery_note):
-	cost_center = frappe.db.get_value("Project", delivery_note.project, "cost_center")
+	cost_center = None
 	if not cost_center:
 		cost_center = get_cost_center(source.item_code, "Item", delivery_note.company)
 

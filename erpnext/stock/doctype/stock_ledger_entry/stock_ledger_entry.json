@@ -34,7 +34,6 @@
   "section_break_21",
   "company",
   "stock_uom",
-  "project",
   "column_break_26",
   "fiscal_year",
   "has_batch_no",
@@ -236,12 +235,6 @@
    "oldfieldtype": "Text",
    "print_hide": 1,
    "read_only": 1
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
   },
   {
    "fieldname": "company",

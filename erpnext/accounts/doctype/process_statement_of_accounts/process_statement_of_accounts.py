@@ -84,7 +84,6 @@ class ProcessStatementOfAccounts(Document):
 	def validate(self):
 		self.validate_account()
 		self.validate_company_for_table("Cost Center")
-		self.validate_company_for_table("Project")
 
 		if not self.subject:
 			self.subject = "Statement Of Accounts for {{ customer.customer_name }}"

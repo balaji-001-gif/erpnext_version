@@ -521,7 +521,7 @@ class AccountsController(TransactionBase):
 			.where(doc_field.fieldname == "company")
 		).run(as_list=True)
 
-		dimension_list = sum(dimension_list, ["Project", "Cost Center"])
+		dimension_list = sum(dimension_list, ["Cost Center"])
 		self.validate_company(dimension_list)
 
 		for child in self.get_all_children() or []:
@@ -1309,7 +1309,6 @@ class AccountsController(TransactionBase):
 				"is_opening": self.get("is_opening") or "No",
 				"party_type": None,
 				"party": None,
-				"project": self.get("project"),
 				"post_net_value": args.get("post_net_value"),
 				"voucher_detail_no": args.get("voucher_detail_no"),
 				"voucher_subtype": self.get_voucher_subtype(),
@@ -1751,7 +1750,6 @@ class AccountsController(TransactionBase):
 									arg.get("referenced_row"),
 									arg.get("cost_center"),
 									dimensions_dict,
-									arg.get("project"),
 								)
 								frappe.msgprint(
 									_("Exchange Gain/Loss amount has been booked through {0}").format(
@@ -1836,7 +1834,6 @@ class AccountsController(TransactionBase):
 							d.idx,
 							self.cost_center,
 							dimensions_dict,
-							self.project,
 						)
 						frappe.msgprint(
 							_("Exchange Gain/Loss amount has been booked through {0}").format(
@@ -2097,7 +2094,6 @@ class AccountsController(TransactionBase):
 									discount_amount, item.precision("discount_amount")
 								),
 								"cost_center": item.cost_center,
-								"project": item.project,
 							},
 							account_currency,
 							item=item,
@@ -2118,7 +2114,6 @@ class AccountsController(TransactionBase):
 									discount_amount, item.precision("discount_amount")
 								),
 								"cost_center": item.cost_center,
-								"project": item.project or self.project,
 							},
 							account_currency,
 							item=item,
@@ -2970,7 +2965,7 @@ class AccountsController(TransactionBase):
 	def check_if_fields_updated(self, fields_to_check, child_tables):
 		# Check if any field affecting accounting entry is altered
 		doc_before_update = self.get_doc_before_save()
-		accounting_dimensions = [*get_accounting_dimensions(), "cost_center", "project"]
+		accounting_dimensions = [*get_accounting_dimensions(), "cost_center"]
 
 		# Parent Level Accounts excluding party account
 		fields_to_check += accounting_dimensions
@@ -4141,7 +4136,7 @@ def update_child_qty_rate(parent_doctype, trans_items, parent_doctype_name, chil
 
 
 def check_if_child_table_updated(child_table_before_update, child_table_after_update, fields_to_check):
-	fields_to_check = list(fields_to_check) + get_accounting_dimensions() + ["cost_center", "project"]
+	fields_to_check = list(fields_to_check) + get_accounting_dimensions() + ["cost_center"]
 
 	# Check if any field affecting accounting entry is altered
 	for index, item in enumerate(child_table_before_update):

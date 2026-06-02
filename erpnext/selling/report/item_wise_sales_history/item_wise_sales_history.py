@@ -91,13 +91,6 @@ def get_columns(filters):
 			"width": 100,
 		},
 		{
-			"label": _("Project"),
-			"fieldtype": "Link",
-			"fieldname": "project",
-			"options": "Project",
-			"width": 100,
-		},
-		{
 			"label": _("Delivered Quantity"),
 			"fieldtype": "Float",
 			"fieldname": "delivered_quantity",

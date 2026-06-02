@@ -50,7 +50,6 @@
   "email_account",
   "column_break_16",
   "customer_name",
-  "project",
   "company",
   "via_customer_portal",
   "attachment",
@@ -225,12 +224,6 @@
    "oldfieldname": "customer_name",
    "oldfieldtype": "Data",
    "read_only": 1
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
   },
   {
    "fetch_from": "email_account.company",

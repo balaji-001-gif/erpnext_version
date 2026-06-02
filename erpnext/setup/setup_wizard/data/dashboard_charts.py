@@ -36,7 +36,6 @@ def get_default_dashboards():
 			},
 			{
 				"doctype": "Dashboard",
-				"dashboard_name": "Project",
 				"charts": [{"chart": "Project Summary", "width": "Full"}],
 			},
 		],

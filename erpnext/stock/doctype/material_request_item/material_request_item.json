@@ -44,7 +44,6 @@
   "wip_composite_asset",
   "bom_no",
   "accounting_dimensions_section",
-  "project",
   "dimension_col_break",
   "cost_center",
   "more_info",
@@ -269,12 +268,6 @@
    "print_hide": 1,
    "read_only": 1,
    "search_index": 1
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
   },
   {
    "fieldname": "production_plan",

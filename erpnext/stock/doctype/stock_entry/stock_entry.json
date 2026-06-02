@@ -5,7 +5,8 @@
  "creation": "2013-04-09 11:43:55",
  "doctype": "DocType",
  "document_type": "Document",
- "engine": "InnoDB",  "field_order": [
+ "engine": "InnoDB",
+ "field_order": [
   "stock_entry_details_tab",
   "naming_series",
   "stock_entry_type",
@@ -47,7 +48,6 @@
   "additional_costs",
   "total_additional_costs",
   "accounting_dimensions_section",
-  "project",
   "column_break_wgvc",
   "cost_center",
   "other_info_tab",
@@ -362,13 +362,6 @@
    "fieldtype": "Select",
    "label": "Is Opening",
    "options": "No\nYes"
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "oldfieldtype": "Link",
-   "options": "Project"
   },
   {
    "fieldname": "remarks",

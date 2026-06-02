@@ -121,7 +121,6 @@
   "column_break_102",
   "provisional_expense_account",
   "accounting_dimensions_section",
-  "project",
   "dimension_col_break",
   "cost_center",
   "section_break_80",
@@ -574,13 +573,6 @@
    "fieldtype": "Link",
    "label": "Item Tax Template",
    "options": "Item Tax Template",
-   "print_hide": 1
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project",
    "print_hide": 1
   },
   {

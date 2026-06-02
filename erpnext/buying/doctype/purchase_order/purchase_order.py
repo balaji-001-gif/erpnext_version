@@ -771,7 +771,6 @@ def get_mapped_purchase_invoice(source_name, target_doc=None, ignore_permissions
 		item_group = get_item_group_defaults(target.item_code, source_parent.company)
 		target.cost_center = (
 			obj.cost_center
-			or frappe.db.get_value("Project", obj.project, "cost_center")
 			or item.get("buying_cost_center")
 			or item_group.get("buying_cost_center")
 		)

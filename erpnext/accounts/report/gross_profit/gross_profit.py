@@ -388,8 +388,7 @@ def get_columns(group_wise_columns, filters):
 				"label": _("Project"),
 				"fieldname": "project",
 				"fieldtype": "Link",
-				"options": "Project",
-				"width": 140,
+					"width": 140,
 			},
 			"cost_center": {
 				"label": _("Cost Center"),

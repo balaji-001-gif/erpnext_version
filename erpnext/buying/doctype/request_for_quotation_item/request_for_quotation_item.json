@@ -31,7 +31,6 @@
   "material_request",
   "material_request_item",
   "section_break_24",
-  "project_name",
   "section_break_23",
   "page_break"
  ],
@@ -157,13 +156,6 @@
    "oldfieldname": "warehouse",
    "oldfieldtype": "Link",
    "options": "Warehouse",
-   "print_hide": 1
-  },
-  {
-   "fieldname": "project_name",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project",
    "print_hide": 1
   },
   {

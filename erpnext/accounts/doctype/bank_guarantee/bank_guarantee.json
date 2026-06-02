@@ -12,7 +12,6 @@
   "reference_docname",
   "customer",
   "supplier",
-  "project",
   "column_break_6",
   "amount",
   "start_date",
@@ -72,13 +71,6 @@
    "fieldtype": "Link",
    "label": "Supplier",
    "options": "Supplier"
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
   },
   {
    "fieldname": "column_break_6",

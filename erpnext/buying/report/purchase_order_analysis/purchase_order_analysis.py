@@ -214,13 +214,6 @@ def get_columns(filters):
 			"options": "Supplier",
 			"width": 130,
 		},
-		{
-			"label": _("Project"),
-			"fieldname": "project",
-			"fieldtype": "Link",
-			"options": "Project",
-			"width": 130,
-		},
 	]
 
 	if not filters.get("group_by_po"):

@@ -67,7 +67,6 @@
   "ad_sec_break",
   "cost_center",
   "dimension_col_break",
-  "project",
   "section_break_44",
   "page_break"
  ],
@@ -373,13 +372,6 @@
    "oldfieldname": "warehouse",
    "oldfieldtype": "Link",
    "options": "Warehouse",
-   "print_hide": 1
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project",
    "print_hide": 1
   },
   {

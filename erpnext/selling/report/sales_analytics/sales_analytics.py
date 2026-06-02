@@ -134,7 +134,6 @@ class Analytics:
 			self.get_sales_transactions_based_on_order_type()
 			self.get_rows_by_group()
 
-		elif self.filters.tree_type == "Project":
 			self.get_sales_transactions_based_on_project()
 			self.get_rows()
 

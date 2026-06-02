@@ -157,7 +157,7 @@ def get_cost_centers(filters):
 	if filters.get("budget_against") == "Cost Center":
 		order_by = "order by lft"
 
-	if filters.get("budget_against") in ["Cost Center", "Project"]:
+	if filters.get("budget_against") == "Cost Center":
 		return frappe.db.sql_list(
 			"""
 				select

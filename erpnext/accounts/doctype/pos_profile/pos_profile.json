@@ -56,8 +56,7 @@
   "apply_discount_on",
   "accounting_dimensions_section",
   "cost_center",
-  "dimension_col_break",
-  "project"
+  "dimension_col_break"
  ],
  "fields": [
   {
@@ -381,14 +380,6 @@
    "fieldname": "disable_grand_total_to_default_mop",
    "fieldtype": "Check",
    "label": "Disable auto setting Grand Total to default Payment Mode"
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "oldfieldname": "cost_center",
-   "oldfieldtype": "Link",
-   "options": "Project"
   },
   {
    "default": "0",

@@ -203,13 +203,6 @@ def get_columns(invoice_list, additional_table_columns, include_payments=False):
 				"fieldtype": "Data",
 				"width": 120,
 			},
-			{
-				"label": _("Project"),
-				"fieldname": "project",
-				"fieldtype": "Link",
-				"options": "Project",
-				"width": 80,
-			},
 			{"label": _("Bill No"), "fieldname": "bill_no", "fieldtype": "Data", "width": 120},
 			{"label": _("Bill Date"), "fieldname": "bill_date", "fieldtype": "Date", "width": 80},
 			{

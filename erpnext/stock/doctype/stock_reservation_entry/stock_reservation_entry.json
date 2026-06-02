@@ -34,7 +34,6 @@
   "section_break_3vb3",
   "company",
   "column_break_jbyr",
-  "project",
   "status",
   "amended_from"
  ],
@@ -123,15 +122,6 @@
    "print_width": "150px",
    "read_only": 1,
    "width": "150px"
-  },
-  {
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "no_copy": 1,
-   "options": "Project",
-   "read_only": 1,
-   "search_index": 1
   },
   {
    "fieldname": "company",

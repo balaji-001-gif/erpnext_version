@@ -16,7 +16,6 @@
   "accounting_dimensions_section",
   "cost_center",
   "dimension_col_break",
-  "project",
   "currency_section",
   "account_currency",
   "column_break_10",
@@ -203,13 +202,6 @@
    "fieldtype": "Date",
    "label": "Reference Due Date",
    "no_copy": 1
-  },
-  {
-   "allow_on_submit": 1,
-   "fieldname": "project",
-   "fieldtype": "Link",
-   "label": "Project",
-   "options": "Project"
   },
   {
    "fieldname": "col_break3",

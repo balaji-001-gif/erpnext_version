@@ -43,7 +43,7 @@ class Budget(Document):
 		applicable_on_booking_actual_expenses: DF.Check
 		applicable_on_material_request: DF.Check
 		applicable_on_purchase_order: DF.Check
-		budget_against: DF.Literal["", "Cost Center", "Project"]
+		budget_against: DF.Literal["", "Cost Center"]
 		company: DF.Link
 		cost_center: DF.Link | None
 		fiscal_year: DF.Link
@@ -163,10 +163,6 @@ def validate_expense_against_budget(args, expense_amount=0):
 		return
 
 	default_dimensions = [
-		{
-			"fieldname": "project",
-			"document_type": "Project",
-		},
 		{
 			"fieldname": "cost_center",
 			"document_type": "Cost Center",

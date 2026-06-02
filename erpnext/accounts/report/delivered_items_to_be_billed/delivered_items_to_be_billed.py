@@ -70,13 +70,6 @@ def get_column():
 		},
 		{"label": _("Item Name"), "fieldname": "item_name", "fieldtype": "Data", "width": 120},
 		{"label": _("Description"), "fieldname": "description", "fieldtype": "Data", "width": 120},
-		{
-			"label": _("Project"),
-			"fieldname": "project",
-			"fieldtype": "Link",
-			"options": "Project",
-			"width": 120,
-		},
 	]
 
 

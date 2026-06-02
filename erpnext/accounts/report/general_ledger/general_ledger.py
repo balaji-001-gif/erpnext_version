@@ -764,7 +764,6 @@ def get_columns(filters):
 		)
 
 	if filters.get("include_dimensions"):
-		columns.append({"label": _("Project"), "options": "Project", "fieldname": "project", "width": 100})
 
 		for dim in get_accounting_dimensions(as_list=False):
 			columns.append(
