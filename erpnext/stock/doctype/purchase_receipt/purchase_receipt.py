@@ -959,6 +959,9 @@ class PurchaseReceipt(BuyingController):
 					notify=True,
 				)
 
+	def set_consumed_qty_in_subcontract_order(self):
+		pass
+
 	def enable_recalculate_rate_in_sles(self):
 		rejected_warehouses = frappe.get_all(
 			"Purchase Receipt Item", filters={"parent": self.name}, pluck="rejected_warehouse"
