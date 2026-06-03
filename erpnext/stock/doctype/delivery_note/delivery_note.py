@@ -423,7 +423,7 @@ class DeliveryNote(SellingController):
 
 	def validate_proj_cust(self):
 		"""check for does customer belong to same project as entered.."""
-		if self.project and self.customer:
+		if getattr(self, 'project', None) and self.customer:
 			res = frappe.db.sql(
 				"""select name from `tabProject`
 				where name = %s and (customer = %s or
