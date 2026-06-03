@@ -245,6 +245,10 @@ class SalesInvoice(SellingController):
 			}
 		]
 
+	@property
+	def project(self):
+		return self.get('project')
+
 	def set_indicator(self):
 		"""Set indicator for portal"""
 		if self.outstanding_amount < 0:
