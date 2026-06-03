@@ -1446,7 +1446,7 @@ class SalesInvoice(SellingController):
 								),
 								"credit_in_transaction_currency": flt(amount, item.precision("net_amount")),
 								"cost_center": item.cost_center,
-								"project": item.project or self.project,
+								"project": item.get("project") or self.project,
 							},
 							account_currency,
 							item=item,
