@@ -234,6 +234,10 @@ class DeliveryNote(SellingController):
 				]
 			)
 
+	@property
+	def project(self):
+		return self.get('project')
+
 	def onload(self):
 		super().onload()
 
