@@ -1727,11 +1727,11 @@ class PurchaseInvoice(BuyingController):
 	def update_project(self):
 		projects = frappe._dict()
 		for d in self.items:
-			if d.project:
+			if d.get("project"):
 				if self.docstatus == 1:
-					projects[d.project] = projects.get(d.project, 0) + d.base_net_amount
+					projects[d.get("project")] = projects.get(d.get("project"), 0) + d.base_net_amount
 				elif self.docstatus == 2:
-					projects[d.project] = projects.get(d.project, 0) - d.base_net_amount
+					projects[d.get("project")] = projects.get(d.get("project"), 0) - d.base_net_amount
 
 		pj = frappe.qb.DocType("Project")
 		for proj, value in projects.items():
