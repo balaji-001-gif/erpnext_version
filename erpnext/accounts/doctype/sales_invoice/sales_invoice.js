@@ -865,7 +865,6 @@ frappe.ui.form.on("Sales Invoice", {
 		var parent_fields = [
 			"due_date",
 			"is_opening",
-			"source",
 			"total_advance",
 			"get_advances",
 			"advances",
