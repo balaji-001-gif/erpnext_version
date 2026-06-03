@@ -32,7 +32,6 @@
   "column_break_70",
   "companies",
   "more_info",
-  "market_segment",
   "industry",
   "customer_pos_id",
   "website",
@@ -367,12 +366,6 @@
   {
    "fieldname": "column_break_45",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "market_segment",
-   "fieldtype": "Link",
-   "label": "Market Segment",
-   "options": "Market Segment"
   },
   {
    "fieldname": "industry",
