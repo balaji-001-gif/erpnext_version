@@ -580,7 +580,6 @@ class PurchaseReceipt(BuyingController):
 							against_account=stock_asset_account_name,
 							credit_in_account_currency=flt(amount["amount"]),
 							account_currency=account_currency,
-							project=item.project,
 							item=item,
 						)
 
@@ -595,9 +594,7 @@ class PurchaseReceipt(BuyingController):
 					credit=flt(item.amount_difference_with_purchase_invoice),
 					remarks=_("Adjustment based on Purchase Invoice rate"),
 					against_account=stock_asset_account_name,
-					account_currency=account_currency,
-					project=item.project,
-					item=item,
+					account_currency=account_currency,						item=item,
 				)
 
 		def make_sub_contracting_gl_entries(item):
@@ -659,9 +656,7 @@ class PurchaseReceipt(BuyingController):
 					credit=0.0,
 					remarks=remarks,
 					against_account=stock_asset_account_name,
-					account_currency=account_currency,
-					project=item.project,
-					item=item,
+					account_currency=account_currency,						item=item,
 				)
 
 		stock_items = self.get_stock_items()
@@ -797,7 +792,6 @@ class PurchaseReceipt(BuyingController):
 			remarks=remarks,
 			against_account=expense_account,
 			account_currency=credit_currency,
-			project=item.project,
 			voucher_detail_no=item.name,
 			item=item,
 			posting_date=posting_date,
@@ -812,7 +806,6 @@ class PurchaseReceipt(BuyingController):
 			remarks=remarks,
 			against_account=provisional_account,
 			account_currency=debit_currency,
-			project=item.project,
 			voucher_detail_no=item.name,
 			item=item,
 			posting_date=posting_date,
