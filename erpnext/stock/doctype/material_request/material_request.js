@@ -518,14 +518,12 @@ erpnext.buying.MaterialRequestController = class MaterialRequestController exten
 
 			if (doc.material_request_type == "Customer Provided") {
 				filters.customer = doc.customer;
-			} else if (
-				doc.material_request_type == "Purchase" ||
-				false
-			) {
-				filters = { is_purchase_item: 1 };
-			} else if (doc.material_request_type == "Manufacture") {
-				filters.include_item_in_manufacturing = 1;
-			}
+		} else if (
+			doc.material_request_type == "Purchase" ||
+			false
+		) {
+			filters = { is_purchase_item: 1 };
+		}
 
 			return {
 				query: "erpnext.controllers.queries.item_query",
