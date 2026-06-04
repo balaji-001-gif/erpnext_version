@@ -512,7 +512,7 @@ erpnext.sales_common = {
 				if (["Delivery Note", "Sales Invoice", "Sales Order"].includes(this.frm.doc.doctype)) {
 					if (this.frm.doc.project) {
 						frappe.call({
-							method: "projects.projects.doctype.project.project.get_cost_center_name",
+							method: "erpnext.projects.doctype.project.project.get_cost_center_name",
 							args: { project: this.frm.doc.project },
 							callback: function (r, rt) {
 								if (!r.exc) {

@@ -23,7 +23,7 @@ $.extend(erpnext.queries, {
 	},
 
 	task: function () {
-		return { query: "projects.projects.utils.query_task" };
+		return { query: "erpnext.projects.utils.query_task" };
 	},
 
 	customer_filter: function (doc) {
